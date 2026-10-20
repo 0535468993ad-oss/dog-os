@@ -4,12 +4,13 @@ import { Card, SectionHeader } from '@/components/ui';
 
 import { SettingsRow } from './SettingsRow';
 
-/** Shortcuts to the behavior journal and the vet/trainer report. */
+/** Shortcuts to the emergency kitchen, the behavior journal and the vet/trainer report. */
 export function ToolsSection() {
   return (
     <>
       <SectionHeader title="כלים" />
       <Card>
+        <SettingsRow icon="restaurant-outline" label="מטבח חירום" onPress={() => router.push('/kitchen')} />
         <SettingsRow icon="book-outline" label="יומן התנהגות" onPress={() => router.push('/journal')} />
         <SettingsRow icon="document-text-outline" label="דוח לווטרינר / מאלף" onPress={() => router.push('/report')} />
       </Card>

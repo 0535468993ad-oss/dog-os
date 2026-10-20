@@ -1,0 +1,78 @@
+import type { IngredientDefinition } from '../../types';
+
+// Foods that are fine only with conditions (preparation, amount, label check). Never part of the
+// bland-diet recipe.
+export const CAUTION_FOODS: readonly IngredientDefinition[] = [
+  {
+    id: 'tuna',
+    nameHe: 'טונה',
+    tier: 'CAUTION',
+    category: 'PROTEIN',
+    aliases: ['טונה', 'tuna'],
+    preparationRulesHe: 'רק טונה במים (לא בשמן), כף או שתיים, ולא כל יום.',
+    dangerDetailsHe: 'טונה משומרת עשירה במלח ובכספית, וטונה בשמן שמנה מדי לבטן רגישה.',
+  },
+  {
+    id: 'apple',
+    nameHe: 'תפוח עץ',
+    tier: 'CAUTION',
+    category: 'VEGGIE',
+    aliases: ['תפוח', 'apple'],
+    preparationRulesHe: 'רק פרוסות קטנות של הפרי, בלי ליבה, בלי גרעינים ובלי גבעול.',
+    dangerDetailsHe: 'הגרעינים מכילים חומר שהופך בגוף לציאניד, והליבה הקשה עלולה לגרום לחסימה.',
+  },
+  {
+    id: 'dairy',
+    nameHe: 'חלב וגבינות',
+    tier: 'CAUTION',
+    category: 'PROTEIN',
+    aliases: ['חלב', 'גבינה', 'גבינה צהובה', 'milk', 'cheese'],
+    preparationRulesHe: 'רק מעט, ועדיף לוותר כשהבטן רגישה. קוטג׳ דל שומן הוא היוצא מן הכלל.',
+    dangerDetailsHe: 'הרבה כלבים לא מעכלים לקטוז, וזה עלול להחמיר שלשול.',
+  },
+  {
+    id: 'peanut-butter',
+    nameHe: 'חמאת בוטנים',
+    tier: 'CAUTION',
+    category: 'FAT_SUPPLEMENT',
+    aliases: ['חמאת בוטנים', 'peanut butter'],
+    preparationRulesHe: 'רק טבעית, בלי מלח ובלי ממתיקים – וקודם בודקים בתווית שאין קסיליטול.',
+    dangerDetailsHe: 'יש מותגים "ללא סוכר" עם קסיליטול, שהוא רעיל מאוד לכלבים.',
+  },
+  {
+    id: 'bread',
+    nameHe: 'לחם',
+    tier: 'CAUTION',
+    category: 'CARB',
+    aliases: ['לחם', 'פיתה', 'bread', 'pita'],
+    preparationRulesHe: 'פרוסה קטנה של לחם לבן פשוט בלבד, אפוי עד הסוף.',
+    dangerDetailsHe: 'לחמים רבים מכילים צימוקים, שום, אגוזים או ממתיקים, ובצק לא אפוי מסוכן.',
+  },
+  {
+    id: 'fatty-meat',
+    nameHe: 'בשר שמן, עור ונקניקים',
+    tier: 'CAUTION',
+    category: 'FAT_SUPPLEMENT',
+    aliases: ['עור עוף', 'שומן', 'נקניק', 'נקניקיה', 'בשר שמן', 'bacon', 'sausage'],
+    preparationRulesHe: 'עדיף לא לתת, ובטח לא כשהבטן רגישה.',
+    dangerDetailsHe: 'שומן בכמות גדולה עלול לגרום לדלקת בלבלב, ומוצרי בשר מעובדים מלוחים מאוד ולעתים מתובלים בשום.',
+  },
+  {
+    id: 'oil-butter',
+    nameHe: 'שמן וחמאה',
+    tier: 'CAUTION',
+    category: 'FAT_SUPPLEMENT',
+    aliases: ['שמן', 'חמאה', 'oil', 'butter'],
+    preparationRulesHe: 'לא מוסיפים לתפריט של בטן רגישה. מבשלים במים בלבד.',
+    dangerDetailsHe: 'שומן מוסף מכביד על מערכת העיכול ועלול להחמיר שלשול.',
+  },
+  {
+    id: 'salt',
+    nameHe: 'מלח ותבלינים',
+    tier: 'CAUTION',
+    category: 'OTHER',
+    aliases: ['מלח', 'תבלין', 'פפריקה', 'פלפל', 'salt', 'spice'],
+    preparationRulesHe: 'לא מוסיפים בכלל לאוכל של הכלב.',
+    dangerDetailsHe: 'מלח בכמות גדולה גורם לצמא, להקאות ובמקרים קשים להרעלת נתרן. תבלינים מגרים את הבטן.',
+  },
+];

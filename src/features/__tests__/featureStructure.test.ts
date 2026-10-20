@@ -12,7 +12,16 @@ const FEATURES = path.join(__dirname, '..');
  */
 const LEGACY_FEATURES = new Set(['auth', 'chat', 'dashboard', 'dogs', 'health', 'journal', 'report', 'training']);
 
+/**
+ * Features with no backend at all, so no api/ layer. The emergency kitchen is deterministic and on-device
+ * by design: its safety checks must work offline. ESLint already keeps the Supabase client out of them.
+ */
+const NO_BACKEND_FEATURES = new Set(['kitchen']);
+
 const REQUIRED_DIRS = ['api', 'hooks', 'utils', 'components'] as const;
+
+/** The layer folders a feature must have. */
+const requiredDirsFor = (feature: string) => REQUIRED_DIRS.filter((dir) => dir !== 'api' || !NO_BACKEND_FEATURES.has(feature));
 
 /** A feature's own layer, relative or via @/features/<name>/ – not shared code such as @/components/ui. */
 const layer = (name: string) => new RegExp(`^(\\.{1,2}/(.*/)?|@/features/[^/]+/)${name}(/|$)`);
@@ -51,7 +60,7 @@ function importsOf(file: string): string[] {
 /** Whether a feature has every required layer. */
 function conforms(feature: string): boolean {
   const root = path.join(FEATURES, feature);
-  return fs.existsSync(path.join(root, 'types.ts')) && REQUIRED_DIRS.every((dir) => sourceFiles(path.join(root, dir)).length > 0);
+  return fs.existsSync(path.join(root, 'types.ts')) && requiredDirsFor(feature).every((dir) => sourceFiles(path.join(root, dir)).length > 0);
 }
 
 describe('feature structure', () => {
@@ -60,11 +69,11 @@ describe('feature structure', () => {
     expect(layered).toEqual(expect.arrayContaining(['account', 'legal', 'support']));
   });
 
-  it.each(layered)('%s has types.ts, api/, hooks/, utils/ and components/', (feature) => {
+  it.each(layered)('%s has types.ts and its layer folders', (feature) => {
     const root = path.join(FEATURES, feature);
     const missing = [
       ...(fs.existsSync(path.join(root, 'types.ts')) ? [] : ['types.ts']),
-      ...REQUIRED_DIRS.filter((dir) => sourceFiles(path.join(root, dir)).length === 0).map((dir) => `${dir}/`),
+      ...requiredDirsFor(feature).filter((dir) => sourceFiles(path.join(root, dir)).length === 0).map((dir) => `${dir}/`),
     ];
     expect(missing).toEqual([]);
   });
@@ -88,6 +97,10 @@ describe('feature structure', () => {
     for (const shared of ['@/components/ui', '@/components/motion', '@/utils/errors', '../utils/apiHelpers', './hooksHelper']) {
       expect([layer('components'), layer('hooks'), layer('api')].some((pattern) => pattern.test(shared))).toBe(false);
     }
+  });
+
+  it.each([...NO_BACKEND_FEATURES])('%s (no backend) has no api/ folder', (feature) => {
+    expect(fs.existsSync(path.join(FEATURES, feature, 'api'))).toBe(false);
   });
 
   it('keeps the legacy list honest', () => {
