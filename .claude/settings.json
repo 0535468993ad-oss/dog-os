@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"$env:CLAUDE_PROJECT_DIR\\.claude\\hooks\\verify.ps1\"",
+            "timeout": 180,
+            "statusMessage": "tsc + lint",
+            "asyncRewake": true
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {}
+}

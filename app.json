@@ -1,0 +1,67 @@
+{
+  "expo": {
+    "name": "Dog OS",
+    "slug": "dog-os",
+    "version": "1.0.0",
+    "scheme": "dogos",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "he",
+        "CFBundleAllowMixedLocalizations": true
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "lang": "he"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-localization",
+        {
+          "supportsRTL": true,
+          "forcesRTL": true
+        }
+      ],
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F7F5F2",
+          "image": "./assets/icon.png",
+          "imageWidth": 160
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Dog OS צריכה גישה לתמונות כדי להוסיף תמונת פרופיל לכלב.",
+          "cameraPermission": "Dog OS צריכה גישה למצלמה כדי לצלם את הכלב."
+        }
+      ],
+      "expo-sharing",
+      "expo-asset",
+      "expo-secure-store",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

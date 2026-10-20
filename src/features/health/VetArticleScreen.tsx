@@ -1,0 +1,120 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Stack } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+
+import { AppText, Badge, BulletList, Card, Disclaimer, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { BREED_BY_ID } from '@/features/dogs/breeds';
+import { colors, spacing } from '@/theme';
+import { toUserMessage } from '@/utils/errors';
+
+import { useVetKnowledge } from './hooks';
+import { MEDICAL_DISCLAIMER, ORGAN_SYSTEM_LABELS, URGENCY, VET_CATEGORY_LABELS } from './labels';
+
+export function VetArticleScreen({ articleId }: { articleId: string }) {
+  const knowledge = useVetKnowledge();
+
+  if (knowledge.isLoading) return <LoadingState />;
+  if (knowledge.error || !knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
+
+  const article = knowledge.data.articles.find((a) => a.id === articleId);
+  if (!article) return <ErrorState message="הערך לא נמצא." />;
+
+  const urgency = article.urgency ? URGENCY[article.urgency] : null;
+  const breeds = article.breeds.map((id) => BREED_BY_ID.get(id)?.label).filter((label): label is string => !!label);
+
+  return (
+    <Screen edges={['bottom']}>
+      <Stack.Screen options={{ title: article.title }} />
+      <AppText variant="title" accessibilityRole="header">
+        {article.title}
+      </AppText>
+      <View style={styles.badges}>
+        <Badge label={VET_CATEGORY_LABELS[article.category]} tone="info" />
+        {article.organ_system ? <Badge label={ORGAN_SYSTEM_LABELS[article.organ_system]} /> : null}
+      </View>
+
+      {urgency ? (
+        <Card tone={urgency.tone}>
+          <View style={styles.row}>
+            <Ionicons name={urgency.icon} size={24} color={article.urgency === 'emergency' ? colors.dangerText : colors.textPrimary} accessible={false} />
+            <View style={styles.flex}>
+              <AppText variant="subheading">{`רמת דחיפות: ${urgency.label}`}</AppText>
+              <AppText>{urgency.action}</AppText>
+            </View>
+          </View>
+        </Card>
+      ) : null}
+
+      <AppText variant="bodyStrong">{article.summary}</AppText>
+      {article.overview ? <AppText>{article.overview}</AppText> : null}
+
+      {article.signs.length ? (
+        <>
+          <SectionHeader title="סימנים" />
+          <Card>
+            <BulletList items={article.signs} />
+          </Card>
+        </>
+      ) : null}
+
+      {article.actions.length ? (
+        <>
+          <SectionHeader title={article.category === 'emergency' ? 'מה עושים עכשיו' : 'מה עושים'} />
+          {article.actions.map((action, index) => (
+            <Card key={action.title}>
+              <AppText variant="subheading">{`${index + 1}. ${action.title}`}</AppText>
+              <AppText color="textSecondary">{action.body}</AppText>
+            </Card>
+          ))}
+        </>
+      ) : null}
+
+      {article.causes ? (
+        <>
+          <SectionHeader title="גורמים וגורמי סיכון" />
+          <AppText>{article.causes}</AppText>
+        </>
+      ) : null}
+
+      {article.when_to_call_vet ? (
+        <>
+          <SectionHeader title="מתי לפנות לווטרינר" />
+          <Card tone="warning">
+            <AppText>{article.when_to_call_vet}</AppText>
+          </Card>
+        </>
+      ) : null}
+
+      {article.prevention ? (
+        <>
+          <SectionHeader title="מניעה" />
+          <AppText>{article.prevention}</AppText>
+        </>
+      ) : null}
+
+      {breeds.length ? (
+        <>
+          <SectionHeader title="גזעים בסיכון מוגבר" />
+          <AppText>{breeds.join(' · ')}</AppText>
+        </>
+      ) : null}
+
+      <Disclaimer>{MEDICAL_DISCLAIMER}</Disclaimer>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  badges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+  },
+  flex: {
+    flex: 1,
+  },
+});

@@ -1,0 +1,16 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    // App code runs on devices and in browsers: no Node or Jest globals. Tests use tsconfig.test.json.
+    "types": [],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "exclude": ["node_modules", "supabase/functions", "supabase/tests", "legacy-backup", "**/__tests__/**", "src/test/**", "jest.setup.ts", "jest.setup-after-env.ts"]
+}
