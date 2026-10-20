@@ -8,7 +8,7 @@ import { spacing } from '@/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { BusinessFooter, LegalLink } from './components';
-import { useRecordConsents } from './consents';
+import { useRecordConsents } from './hooks/consents';
 import { AI_DISCLAIMER_TEXT, type ConsentBearingType } from './documents';
 
 /**

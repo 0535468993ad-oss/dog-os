@@ -1,4 +1,4 @@
-import { isSupportRequestType, REQUEST_STATUS_LABELS, REQUEST_TYPE_LABELS } from '../api';
+import { isSupportRequestType, REQUEST_STATUS_LABELS, REQUEST_TYPE_LABELS } from '../utils/labels';
 
 describe('isSupportRequestType', () => {
   it.each(Object.keys(REQUEST_TYPE_LABELS))('accepts %s', (type) => {

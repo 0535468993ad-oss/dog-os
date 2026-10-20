@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card, Skeleton, SkeletonBlock } from '@/components/ui';
-import type { AiSharing } from '@/features/legal/consents';
+import type { AiSharing } from '@/features/legal/types';
 import { colors, radius, spacing } from '@/theme';
 
 import type { InsightKind } from '../logic/insight';

@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button } from '@/components/ui';
-import type { AiSharing } from '@/features/legal/consents';
+import type { AiSharing } from '@/features/legal/types';
 import { spacing } from '@/theme';
 
 import { composerWrapStyle } from './ChatComposer';

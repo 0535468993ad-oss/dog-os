@@ -1,6 +1,6 @@
 import { makeConsent } from '@/test/fixtures';
 
-import { aiSharing, consentDocumentVersion, consentGate, latestConsents, missingConsents } from '../consents';
+import { aiSharing, consentDocumentVersion, consentGate, latestConsents, missingConsents } from '../utils/consentRules';
 import { isLegalDocId, LEGAL_DOC_IDS, LEGAL_DOCUMENTS, LEGAL_VERSIONS } from '../documents';
 
 const allCurrent = () => [

@@ -1,7 +1,7 @@
 import { focusManager, QueryClient } from '@tanstack/react-query';
 import { AppState, Platform, type AppStateStatus } from 'react-native';
 
-import { isSchemaMissingError } from './supabase';
+import { isSchemaMissingError } from './supabaseErrors';
 
 export const queryClient = new QueryClient({
   defaultOptions: {

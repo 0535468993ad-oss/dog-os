@@ -1,4 +1,4 @@
-import type { AiSharing } from '@/features/legal/consents';
+import type { AiSharing } from '@/features/legal/types';
 
 import type { Insight } from './insight';
 

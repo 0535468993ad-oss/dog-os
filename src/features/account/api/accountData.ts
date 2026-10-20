@@ -1,7 +1,7 @@
-import { exportJsonFile } from '@/features/report/exportFiles';
 import { supabase, unwrap } from '@/lib/supabase';
-import { todayIso } from '@/utils/date';
 import { readFunctionError } from '@/utils/errors';
+
+import type { UserDataByTable } from '../types';
 
 const USER_TABLES = [
   'profiles',
@@ -20,20 +20,14 @@ const USER_TABLES = [
   'support_requests',
 ] as const;
 
-/** Data portability: every row the user owns (RLS scopes each select), as one JSON file. */
-export async function exportMyData(email: string | undefined): Promise<void> {
+/** Data portability: every row the user owns, per table (RLS scopes each select). */
+export async function fetchMyData(): Promise<UserDataByTable> {
   const results = await Promise.all(USER_TABLES.map((table) => supabase.from(table).select('*')));
-  const data: Record<string, unknown> = {};
+  const data: UserDataByTable = {};
   USER_TABLES.forEach((table, index) => {
     data[table] = unwrap(results[index]!);
   });
-  const payload = {
-    exported_at: new Date().toISOString(),
-    account: { email },
-    note: 'תמונות הכלב נשמרות בנפרד ואינן כלולות בקובץ זה.',
-    data,
-  };
-  await exportJsonFile(JSON.stringify(payload, null, 2), `dog-os-data-${todayIso()}.json`);
+  return data;
 }
 
 /** Right to erasure: the Edge Function deletes photos and the auth user (all rows cascade). */

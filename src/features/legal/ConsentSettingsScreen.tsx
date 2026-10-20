@@ -10,8 +10,9 @@ import { formatDate, formatTime } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 
 import { LegalLink } from './components';
-import { aiSharing, latestConsents, useConsents, useRecordConsents } from './consents';
-import { setCookieConsent } from './cookieConsent';
+import { useConsents, useRecordConsents } from './hooks/consents';
+import { aiSharing, latestConsents } from './utils/consentRules';
+import { setCookieConsent } from './hooks/cookieConsent';
 
 const TYPE_LABELS: Record<ConsentType, string> = {
   terms_of_service: 'תקנון ותנאי שימוש',

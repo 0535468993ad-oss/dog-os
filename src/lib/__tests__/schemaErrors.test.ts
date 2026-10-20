@@ -1,5 +1,5 @@
 import { queryClient } from '../queryClient';
-import { isSchemaMissingError } from '../supabase';
+import { isSchemaMissingError } from '../supabaseErrors';
 
 describe('isSchemaMissingError', () => {
   it.each([

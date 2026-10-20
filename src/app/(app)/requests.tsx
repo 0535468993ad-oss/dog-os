@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import { isSupportRequestType } from '@/features/support/api';
+import { isSupportRequestType } from '@/features/support/utils/labels';
 import { RequestsScreen } from '@/features/support/RequestsScreen';
 
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';

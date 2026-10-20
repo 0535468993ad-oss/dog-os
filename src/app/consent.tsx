@@ -1,7 +1,8 @@
 import { ErrorState, LoadingState } from '@/components/ui';
 import { useUser } from '@/features/auth/AuthProvider';
 import { ConsentGateScreen } from '@/features/legal/ConsentGateScreen';
-import { consentGate, useConsents } from '@/features/legal/consents';
+import { useConsents } from '@/features/legal/hooks/consents';
+import { consentGate } from '@/features/legal/utils/consentRules';
 
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';
 
