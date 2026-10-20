@@ -5,6 +5,7 @@ export * from './Checkbox';
 export * from './ChipGroup';
 export * from './DateField';
 export * from './FeedbackBanner';
+export * from './glass/GlassCard';
 export * from './IconButton';
 export * from './Misc';
 export * from './Screen';
