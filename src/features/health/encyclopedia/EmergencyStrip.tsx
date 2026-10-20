@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { AppText, Card } from '@/components/ui';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import type { VetArticle } from '../api';
 

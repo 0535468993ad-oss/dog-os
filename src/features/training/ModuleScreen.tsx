@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, BulletList, Card, Checkbox, ErrorState, LoadingState, ProgressBar, Screen, SectionHeader } from '@/components/ui';
 import { useActiveDog } from '@/features/dogs/hooks';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useKnowledgeBase, useToggleStep, useTrainingSummary } from './hooks';

@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import type { VetArticle } from '../api';
 import { URGENCY, VET_CATEGORY_LABELS } from '../labels';

@@ -6,7 +6,7 @@ import { useHeroScrollStyle } from '@/components/motion';
 import { AppText } from '@/components/ui';
 import { DogSwitcher } from '@/features/dogs/components';
 import type { DogRow } from '@/lib/database.types';
-import { colors, radius, shadow, spacing } from '@/theme';
+import { colors, radius, shadow, spacing } from '@/constants/theme';
 
 import { taskSummary } from '../logic/dailyTasks';
 
@@ -15,16 +15,16 @@ interface DogHeroCardProps {
   dog: DogRow;
   /** The dashboard's scroll offset; drives the card's scale/opacity. */
   scrollY: SharedValue<number>;
-  /** Open tasks for today, shown as the hero's amber highlight. */
+  /** Open tasks for today, shown as the hero's highlight. */
   taskCount: number;
 }
 
-/** Deep-navy hero for the active dog: switcher, an amber "today" highlight, and scroll-driven depth. */
+/** Deep-navy hero for the active dog: switcher, a "today" highlight, and scroll-driven depth. */
 export function DogHeroCard({ dogs, dog, scrollY, taskCount }: DogHeroCardProps) {
   const scrollStyle = useHeroScrollStyle(scrollY);
   return (
     <Animated.View style={[styles.card, scrollStyle]}>
-      {/* Decorative amber glow in the corner; hidden from screen readers. */}
+      {/* Decorative accent glow in the corner; hidden from screen readers. */}
       <View style={styles.glow} accessible={false} importantForAccessibility="no-hide-descendants" />
       <DogSwitcher dogs={dogs} activeDog={dog} onDark />
       <View style={styles.today}>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm + 2,
     paddingVertical: spacing.xs,
   },
-  // Amber on navy is 5.6:1: AA for normal-size text.
+  // primaryBright on heroNavy is 6.7:1: AA for normal-size text.
   todayText: {
     color: colors.primaryBright,
   },

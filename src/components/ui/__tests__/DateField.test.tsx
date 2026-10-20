@@ -1,9 +1,9 @@
-// DateField (Dark Luxury): the field is its own dark container, and the pickers render dark with the
+// DateField (Dark Luxury): dark field on the dark surface, and the pickers render dark with the
 // cyan accent – native iOS sheet and the web input's color-scheme.
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { darkColors } from '@/constants/theme';
+import { colors } from '@/constants/theme';
 
 // Jest resolves '../DateField' to the native file; the lint resolver picks the .web one for both.
 // eslint-disable-next-line import/no-duplicates
@@ -28,12 +28,9 @@ describe('DateField (native)', () => {
   it('shows label, value and error in light-on-dark colors', async () => {
     await render(<DateField label="תאריך" value="2026-10-20" onChange={jest.fn()} error="תאריך לא תקין" />);
 
-    expect(flat(screen.getByText('תאריך').props.style).color).toBe(darkColors.textSecondary);
-    expect(flat(screen.getByRole('alert').props.style).color).toBe(darkColors.danger);
-    // The nearest ancestor with a fill is the field's own dark panel.
-    let node = screen.getByText('תאריך').parent;
-    while (node && !flat(node.props.style).backgroundColor) node = node.parent;
-    expect(node && flat(node.props.style).backgroundColor).toBe(darkColors.background);
+    expect(flat(screen.getByText('תאריך').props.style).color).toBe(colors.textSecondary);
+    expect(flat(screen.getByRole('alert').props.style).color).toBe(colors.dangerText);
+    expect(flat(screen.getByRole('button', { name: /^תאריך:/ }).props.style).backgroundColor).toBe(colors.surface);
   });
 
   it('opens the iOS sheet with a dark, cyan-accented picker', async () => {
@@ -44,7 +41,7 @@ describe('DateField (native)', () => {
 
     const picker = screen.getByTestId('native-picker');
     expect(picker.props.themeVariant).toBe('dark');
-    expect(picker.props.accentColor).toBe(darkColors.cyan);
+    expect(picker.props.accentColor).toBe(colors.accentCyan);
   });
 });
 
@@ -52,9 +49,9 @@ describe('DateField (web input style)', () => {
   it('asks the browser for its dark date UI and uses the dark palette', () => {
     expect(inputStyle).toMatchObject({
       colorScheme: 'dark',
-      accentColor: darkColors.cyan,
-      backgroundColor: darkColors.surfaceSolid,
-      color: darkColors.textPrimary,
+      accentColor: colors.accentCyan,
+      backgroundColor: colors.surface,
+      color: colors.textPrimary,
     });
   });
 });

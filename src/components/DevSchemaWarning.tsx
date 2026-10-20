@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, radius, shadow, spacing } from '@/theme';
+import { colors, radius, shadow, spacing } from '@/constants/theme';
 
 import { AppText } from './ui/AppText';
 import { Button } from './ui/Button';

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { colors, MIN_TOUCH_AREA, radius, shadow, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, shadow, spacing } from '@/constants/theme';
 
 import { MOTION, PressableScale } from '../motion';
 import { AppText } from './AppText';

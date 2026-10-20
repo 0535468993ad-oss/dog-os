@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated';
 import { enterAt } from '@/components/motion';
 import { AppText, Badge, Button, Card, SectionHeader } from '@/components/ui';
 import type { VaccinationRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { formatDate } from '@/utils/date';
 
 import { vaccinationStatus } from '../logic/vaccinationStatus';

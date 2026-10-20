@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, ChipGroup, DateField, Screen, Select, TextField } from '@/components/ui';
 import type { DogRow, DogSize } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { todayIso } from '@/utils/date';
 
 import { BREEDS, SIZE_LABELS } from '../breeds';

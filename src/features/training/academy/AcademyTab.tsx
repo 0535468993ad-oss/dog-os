@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Card, ErrorState, LoadingState, SectionHeader } from '@/components/ui';
 import { useActiveDog } from '@/features/dogs/hooks';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useTrainingSummary } from '../hooks';

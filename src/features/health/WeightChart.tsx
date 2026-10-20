@@ -4,7 +4,7 @@ import Svg, { Circle, Line, Polyline } from 'react-native-svg';
 
 import { AppText } from '@/components/ui';
 import type { WeightLogRow } from '@/lib/database.types';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 import { formatShortDate } from '@/utils/date';
 
 const HEIGHT = 140;

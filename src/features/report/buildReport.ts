@@ -4,7 +4,7 @@ import type { TrainingModule } from '@/features/training/api';
 import type { ModuleProgress } from '@/features/training/hooks';
 import { JOURNAL_CATEGORY_LABELS, MOOD_LABELS } from '@/features/journal/labels';
 import type { DogRow, JournalEntryRow } from '@/lib/database.types';
-import { colors } from '@/theme';
+import { colors } from '@/constants/theme';
 import { formatAge, formatDate, todayIso } from '@/utils/date';
 
 export interface ReportData {

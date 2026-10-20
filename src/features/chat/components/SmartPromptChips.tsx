@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
-import { colors, glow, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, glow, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
 import type { PromptCategory, PromptChip } from '../logic/promptChips';
 

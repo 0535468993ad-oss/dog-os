@@ -2,8 +2,7 @@ import { BlurView } from 'expo-blur';
 import type { ReactNode } from 'react';
 import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { darkTheme } from '@/constants/theme';
-import { radius, spacing } from '@/theme';
+import { blurIntensity, colors, radius, spacing } from '@/constants/theme';
 
 import { pickGlassMode } from './glassMode';
 import { useReduceTransparency } from './useReduceTransparency';
@@ -18,13 +17,11 @@ interface GlassCardProps {
   testID?: string;
 }
 
-const { colors } = darkTheme;
-
 /**
  * Dark Luxury glass surface: blurred translucent card on iOS and web, opaque fill on Android and under
- * Reduce Transparency. Text contrast is designed for the dark canvas (darkColors.background) behind it.
+ * Reduce Transparency. Its text pairings are verified against `surface`, which is what the glass looks like over the canvas.
  */
-export function GlassCard({ children, accessibilityLabel, intensity = darkTheme.blurIntensity, style, testID }: GlassCardProps) {
+export function GlassCard({ children, accessibilityLabel, intensity = blurIntensity, style, testID }: GlassCardProps) {
   const reduceTransparency = useReduceTransparency();
   const a11y = { accessible: !!accessibilityLabel, accessibilityLabel, testID };
 
@@ -54,9 +51,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   glass: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceGlass,
   },
   solid: {
-    backgroundColor: colors.surfaceSolid,
+    backgroundColor: colors.surface,
   },
 });

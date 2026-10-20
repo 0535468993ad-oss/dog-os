@@ -1,7 +1,7 @@
 import { forwardRef, useState, type ComponentRef } from 'react';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA, radius, spacing, typography } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing, typography } from '@/constants/theme';
 
 import { AppText } from './AppText';
 

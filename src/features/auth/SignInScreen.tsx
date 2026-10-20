@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, FeedbackBanner, Screen, TextField, type TextFieldHandle } from '@/components/ui';
 import { BusinessFooter } from '@/features/legal/components';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import { MIN_PASSWORD_LENGTH } from './api';
 import { BrandHero } from './signIn/BrandHero';

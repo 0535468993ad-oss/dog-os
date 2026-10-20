@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Checkbox } from '@/components/ui';
 import { LegalLink } from '@/features/legal/components';
 import { AI_DISCLAIMER_TEXT } from '@/features/legal/documents';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 const TERMS_TEXT = 'אני בן/בת 18 ומעלה ומסכים/ה לתקנון ולמדיניות הפרטיות';
 

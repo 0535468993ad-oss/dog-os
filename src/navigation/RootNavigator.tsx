@@ -9,7 +9,7 @@ import { useAuthDeepLinks, useInactivityTimeout } from '@/features/auth/sessionG
 import { ConsentCheckFailed } from '@/features/legal/components';
 import { useConsents } from '@/features/legal/hooks/consents';
 import { consentGate } from '@/features/legal/utils/consentRules';
-import { colors, fonts } from '@/theme';
+import { colors, fonts } from '@/constants/theme';
 
 import { rootRouteState } from './routeState';
 

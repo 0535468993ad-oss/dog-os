@@ -1,6 +1,6 @@
 import { I18nManager, Platform } from 'react-native';
 
-import { colors } from '@/theme';
+import { colors } from '@/constants/theme';
 
 /**
  * Hebrew-only app. Builds get RTL from the expo-localization plugin; this covers Expo Go and the first

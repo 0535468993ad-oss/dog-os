@@ -5,7 +5,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { PressableScale } from '@/components/motion';
 
 import { AppText } from '@/components/ui';
-import { colors, MIN_TOUCH_AREA, radius, shadow, spacing, typography } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, shadow, spacing, typography } from '@/constants/theme';
 
 import { MAX_MESSAGE_LENGTH } from '../logic/chatMessages';
 

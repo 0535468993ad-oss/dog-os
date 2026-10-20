@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import { AppText } from './ui/AppText';
 

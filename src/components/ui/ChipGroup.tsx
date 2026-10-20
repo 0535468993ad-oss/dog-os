@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
 import { PressableScale } from '../motion';
 import { AppText } from './AppText';

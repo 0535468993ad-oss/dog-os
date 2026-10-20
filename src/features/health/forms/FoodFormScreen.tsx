@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Card, ChipGroup, Disclaimer, ErrorState, LoadingState, TextField } from '@/components/ui';
 import type { DogRow, FoodPortionRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { ageInMonths } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 

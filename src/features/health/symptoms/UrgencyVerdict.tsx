@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
 import type { CareUrgency } from '@/lib/database.types';
-import { colors, radius, spacing, type ColorToken } from '@/theme';
+import { colors, radius, spacing, type ColorToken } from '@/constants/theme';
 
 import { URGENCY } from '../labels';
 

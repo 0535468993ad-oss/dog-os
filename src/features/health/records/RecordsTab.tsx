@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { DogRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useHealth } from '../hooks';

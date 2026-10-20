@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card, ProgressBar } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import type { TrainingModule } from '../api';
 import type { ModuleProgress } from '../hooks';

@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { colors, fonts, radius, shadow, typography } from '@/theme';
+import { colors, fonts, radius, shadow, typography } from '@/constants/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 

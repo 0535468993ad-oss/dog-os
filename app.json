@@ -6,7 +6,7 @@
     "scheme": "dogos",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -41,7 +41,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F7F5F2",
+          "backgroundColor": "#080C14",
           "image": "./assets/icon.png",
           "imageWidth": 160
         }
@@ -52,25 +52,32 @@
           "android": {
             "datePicker": {
               "colorAccent": {
-                "light": "#00E5FF"
+                "light": "#00E5FF",
+                "dark": "#00E5FF"
               },
               "colorControlActivated": {
-                "light": "#00E5FF"
+                "light": "#00E5FF",
+                "dark": "#00E5FF"
               },
               "windowBackground": {
-                "light": "#0F1522"
+                "light": "#0F1522",
+                "dark": "#0F1522"
               },
               "textColor": {
-                "light": "#F9FAFB"
+                "light": "#F9FAFB",
+                "dark": "#F9FAFB"
               },
               "textColorPrimary": {
-                "light": "#F9FAFB"
+                "light": "#F9FAFB",
+                "dark": "#F9FAFB"
               },
               "textColorSecondary": {
-                "light": "#9CA3AF"
+                "light": "#9CA3AF",
+                "dark": "#9CA3AF"
               },
               "textColorPrimaryInverse": {
-                "light": "#080C14"
+                "light": "#080C14",
+                "dark": "#080C14"
               }
             }
           }
@@ -91,6 +98,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "backgroundColor": "#080C14"
   }
 }

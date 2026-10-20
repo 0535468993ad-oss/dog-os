@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, spacing } from '@/constants/theme';
 
 import { AppText } from '../AppText';
 import type { SelectOption } from './selectLogic';

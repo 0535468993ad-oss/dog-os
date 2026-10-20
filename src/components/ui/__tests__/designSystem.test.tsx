@@ -3,7 +3,7 @@
 import { fireEvent, render, screen, userEvent } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { colors } from '@/theme';
+import { colors } from '@/constants/theme';
 
 import { Button } from '../Button';
 import { ChipGroup } from '../ChipGroup';

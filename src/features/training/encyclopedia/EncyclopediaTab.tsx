@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, ChipGroup, EmptyState, ErrorState, LoadingState, TextField } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useBookmarks, useKnowledgeBase } from '../hooks';

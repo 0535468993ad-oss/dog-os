@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import type { ComponentProps } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA, radius, type ColorToken } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, type ColorToken } from '@/constants/theme';
 
 import { PressableScale } from '../motion';
 

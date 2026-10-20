@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
 import type { SupportRequestRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { formatDate } from '@/utils/date';
 
 import { REQUEST_STATUS_LABELS, REQUEST_TYPE_LABELS, STATUS_TONE } from '../utils/labels';

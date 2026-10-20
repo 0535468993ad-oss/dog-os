@@ -1,7 +1,7 @@
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA } from '@/theme';
+import { colors, MIN_TOUCH_AREA } from '@/constants/theme';
 
 import { SmartPromptChips } from '../components/SmartPromptChips';
 import { promptChips } from '../logic/promptChips';

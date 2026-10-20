@@ -58,7 +58,7 @@ Adapted from the ECC React Native / Expo rule set (security, accessibility, prod
     - `components/ui/select/`
   - Shared form feedback uses `FeedbackBanner` from `components/ui`.
 - Before writing code, present the folder structure of the files to be added or changed.
-- Shared UI comes from `src/components/ui`; colors, spacing and type from `src/theme`. Don't hard-code colors or font sizes in features.
+- Shared UI comes from `src/components/ui`; colors, blur, spacing and type from `src/constants/theme`. Don't hard-code colors or font sizes in features.
 - All server state goes through React Query with keys from `queryKeys` in `src/lib/queryClient.ts`; invalidate the matching key after every mutation.
 - The app is Hebrew-only and RTL. Use logical layout props (`start`/`end`, `paddingStart`), never `left`/`right`, and keep user-facing copy in Hebrew.
 
@@ -87,7 +87,7 @@ Adapted from the ECC React Native / Expo rule set (security, accessibility, prod
 ### Accessibility (WCAG 2.1 AA / IS 5568)
 - Every interactive element has `accessibilityRole` plus a label (visible text or `accessibilityLabel`); icon-only buttons always have `accessibilityLabel`. Expose state with `accessibilityState`.
 - Touch targets ≥ 44pt (`MIN_TOUCH`). Don't use fixed heights that clip scaled text.
-- Text contrast ≥ 4.5:1, control boundaries ≥ 3:1 – only use `src/theme` colors, which are verified. Never convey meaning by color alone (pair urgency colors with text/icons).
+- Text contrast ≥ 4.5:1, control boundaries ≥ 3:1 – only use `src/constants/theme` colors, which are verified. Never convey meaning by color alone (pair urgency colors with text/icons).
 - Errors and async results are announced (`accessibilityRole="alert"` / `accessibilityLiveRegion`). Images have `accessibilityLabel` / `alt`.
 - Web: everything must be reachable and operable with the keyboard; the global `:focus-visible` outline must stay.
 

@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, BulletList, Card, Disclaimer, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
 import { BREED_BY_ID } from '@/features/dogs/breeds';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useVetKnowledge } from './hooks';

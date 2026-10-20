@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
 import type { ChatHistoryRow } from '@/lib/database.types';
-import { colors, fonts, spacing } from '@/theme';
+import { colors, fonts, spacing } from '@/constants/theme';
 import { formatTime } from '@/utils/date';
 
 import { bubbleStyles } from './bubbleStyles';

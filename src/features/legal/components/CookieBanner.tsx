@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Checkbox } from '@/components/ui';
-import { colors, radius, shadow, spacing } from '@/theme';
+import { colors, radius, shadow, spacing } from '@/constants/theme';
 
 import { setCookieConsent, useCookieConsent } from '../hooks/cookieConsent';
 import { LegalLink } from './LegalLink';

@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
 import { business } from '@/config/business';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import { LegalLink } from './LegalLink';
 

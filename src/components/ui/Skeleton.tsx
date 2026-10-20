@@ -2,7 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { StyleSheet, View, type DimensionValue, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useReducedMotion, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 const PULSE_MS = 900;
 

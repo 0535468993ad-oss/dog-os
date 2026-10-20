@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { AppText, Button, Checkbox, Screen } from '@/components/ui';
 import { useUser } from '@/features/auth/AuthProvider';
 import { signOut } from '@/features/auth/api';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { BusinessFooter, LegalLink } from './components';

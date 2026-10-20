@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { Card, Skeleton, SkeletonBlock } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 /** Placeholder in the dashboard's shape (header, insights, stats, tasks) while the dog loads. */
 export function DashboardSkeleton() {

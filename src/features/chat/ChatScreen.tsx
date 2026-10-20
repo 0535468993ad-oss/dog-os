@@ -6,7 +6,7 @@ import { useUser } from '@/features/auth/AuthProvider';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useAiSharing } from '@/features/legal/hooks/consents';
 import type { ChatHistoryRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { AiSharingNotice } from './components/AiSharingNotice';

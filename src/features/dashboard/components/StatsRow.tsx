@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Card } from '@/components/ui';
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 interface StatsRowProps {
   streak: number;

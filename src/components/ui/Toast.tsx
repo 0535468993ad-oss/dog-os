@@ -1,7 +1,7 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { AccessibilityInfo, Platform, StyleSheet, View } from 'react-native';
 
-import { colors, radius, shadow, spacing } from '@/theme';
+import { colors, radius, shadow, spacing } from '@/constants/theme';
 
 import { AppText } from './AppText';
 
@@ -64,13 +64,15 @@ const styles = StyleSheet.create({
   },
   toast: {
     maxWidth: 560,
-    backgroundColor: colors.dangerText,
+    backgroundColor: colors.dangerMuted,
+    borderWidth: 1,
+    borderColor: colors.danger,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     ...shadow.card,
   },
   text: {
-    color: colors.textOnDark,
+    color: colors.dangerText,
   },
 });

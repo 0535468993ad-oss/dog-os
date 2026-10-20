@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 import type { PickedPhoto } from '../api';
 import { DogAvatar } from '../components';

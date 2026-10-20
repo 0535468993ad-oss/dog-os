@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Card, Checkbox, ChipGroup, Disclaimer, ErrorState, LoadingState, SectionHeader } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { VetArticleCard } from '../encyclopedia/VetArticleCard';

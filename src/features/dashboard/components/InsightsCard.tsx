@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card, Skeleton, SkeletonBlock } from '@/components/ui';
 import type { AiSharing } from '@/features/legal/types';
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 import type { InsightKind } from '../logic/insight';
 import type { InsightsToShow } from '../logic/selectInsights';

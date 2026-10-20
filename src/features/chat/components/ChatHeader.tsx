@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, IconButton } from '@/components/ui';
 import { DogSwitcher } from '@/features/dogs/components';
 import type { DogRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 interface ChatHeaderProps {
   dogs: DogRow[];

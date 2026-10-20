@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 /** Empty conversation: who the advisor is. Starter questions are the prompt chips above the composer. */
 export function ChatEmptyState({ dogName }: { dogName: string | null }) {

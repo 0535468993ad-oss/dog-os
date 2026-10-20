@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText, Card, Divider, SectionHeader } from '@/components/ui';
-import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
 import type { DailyTask } from '../logic/dailyTasks';
 

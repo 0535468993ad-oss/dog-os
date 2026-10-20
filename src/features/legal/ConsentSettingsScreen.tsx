@@ -5,7 +5,7 @@ import { Platform, StyleSheet, Switch, View } from 'react-native';
 import { AppText, Badge, Button, Card, Divider, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
 import { useUser } from '@/features/auth/AuthProvider';
 import type { ConsentSource, ConsentType } from '@/lib/database.types';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 import { formatDate, formatTime } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 

@@ -5,7 +5,7 @@ import { AppText, Checkbox, ChipGroup, Disclaimer, EmptyState, ErrorState, Loadi
 import { BREED_BY_ID } from '@/features/dogs/breeds';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { VetCategory } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useVetKnowledge } from '../hooks';

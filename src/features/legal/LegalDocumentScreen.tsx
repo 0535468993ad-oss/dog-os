@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { AppText, Card, Screen } from '@/components/ui';
 import { isBusinessInfoComplete } from '@/config/business';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { formatDate } from '@/utils/date';
 
 import { BusinessFooter } from './components';

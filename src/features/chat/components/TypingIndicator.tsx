@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import { bubbleStyles } from './bubbleStyles';
 

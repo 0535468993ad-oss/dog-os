@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 /**
  * Shared chat bubble shapes. In RTL, flex-start is the right side: the user's messages sit on the right.
- * The user speaks in brand amber; the advisor in AI indigo (tint + accent edge) with navy text.
+ * The user speaks in brand blue; the advisor in AI indigo (tint + accent edge) with light text.
  */
 export const bubbleStyles = StyleSheet.create({
   bubble: {

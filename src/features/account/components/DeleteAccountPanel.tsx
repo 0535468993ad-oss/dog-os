@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, TextField } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import { DELETE_PHRASE, isDeleteConfirmed } from '../utils/deleteConfirmation';
 

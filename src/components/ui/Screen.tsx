@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Platform, RefreshControl, StyleSheet, View, type 
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import { useParallaxHeader } from '../motion';
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 /** Two-step delete: a button that reveals a confirmation stating exactly what will be erased. */
 export function DeleteDogSection({ dogName, deleting, onDelete }: { dogName: string; deleting: boolean; onDelete: () => void }) {

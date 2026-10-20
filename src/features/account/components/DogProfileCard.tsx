@@ -4,7 +4,7 @@ import { AppText, Badge, Button, Card } from '@/components/ui';
 import { SIZE_SHORT_LABELS } from '@/features/dogs/breeds';
 import { DogAvatar } from '@/features/dogs/components';
 import type { DogRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { formatAge } from '@/utils/date';
 
 interface DogProfileCardProps {

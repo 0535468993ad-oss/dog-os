@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Badge, Button, Card, ChipGroup, DateField, EmptyState, ErrorState, IconButton, LoadingState, Screen, SectionHeader, TextField } from '@/components/ui';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { DogRow, JournalCategory, JournalMood } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { formatDate, todayIso } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 

@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { MIN_TOUCH_AREA } from '@/theme';
+import { MIN_TOUCH_AREA } from '@/constants/theme';
 
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';

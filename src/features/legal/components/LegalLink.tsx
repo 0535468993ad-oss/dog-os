@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA, typography } from '@/theme';
+import { colors, MIN_TOUCH_AREA, typography } from '@/constants/theme';
 
 import { LEGAL_DOCUMENTS, type LegalDocId } from '../documents';
 

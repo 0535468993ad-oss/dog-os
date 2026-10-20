@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText, SectionHeader } from '@/components/ui';
-import { colors, radius, shadow, spacing } from '@/theme';
+import { colors, radius, shadow, spacing } from '@/constants/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, DateField, SectionHeader, TextField } from '@/components/ui';
 import type { WeightLogRow } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { todayIso } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 

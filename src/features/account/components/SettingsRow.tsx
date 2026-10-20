@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
-import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
 interface SettingsRowProps {
   icon: ComponentProps<typeof Ionicons>['name'];

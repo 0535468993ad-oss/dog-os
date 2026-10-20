@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import type { KnowledgeArticle } from '../api';
 import { KNOWLEDGE_CATEGORY_LABELS } from '../labels';

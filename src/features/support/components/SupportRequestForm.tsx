@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, ChipGroup, FeedbackBanner, TextField, type Feedback } from '@/components/ui';
 import type { SupportRequestType } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import type { SupportFormErrors, SupportFormValues } from '../types';
 import { TYPE_HINTS, TYPE_OPTIONS } from '../utils/labels';

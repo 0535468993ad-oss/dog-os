@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button } from '@/components/ui';
-import { colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 
 /** Inline confirmation before deleting the whole conversation. */
 export function ClearChatConfirm({ onCancel, onConfirm, clearing }: { onCancel: () => void; onConfirm: () => void; clearing: boolean }) {

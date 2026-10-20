@@ -3,7 +3,7 @@ import { router, type ErrorBoundaryProps } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 import { reportError } from '@/utils/errors';
 
 import { AppText } from './ui/AppText';

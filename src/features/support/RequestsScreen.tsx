@@ -5,7 +5,7 @@ import { AppText, Screen, SectionHeader } from '@/components/ui';
 import { useUser } from '@/features/auth/AuthProvider';
 import { LegalLink } from '@/features/legal/components';
 import type { SupportRequestType } from '@/lib/database.types';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 
 import { SupportRequestForm } from './components/SupportRequestForm';
 import { SupportRequestList } from './components/SupportRequestList';

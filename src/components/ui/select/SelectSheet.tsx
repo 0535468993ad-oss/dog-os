@@ -1,7 +1,7 @@
 import { FlatList, Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, MIN_TOUCH_AREA, radius, spacing, typography } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing, typography } from '@/constants/theme';
 
 import { AppText } from '../AppText';
 import { IconButton } from '../IconButton';

@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, IconButton } from '@/components/ui';
 import type { DogRow } from '@/lib/database.types';
-import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 import { formatAge } from '@/utils/date';
 
 import { useDogPhotoUrl, useSetActiveDog } from './hooks';

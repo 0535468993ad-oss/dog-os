@@ -3,7 +3,7 @@
 import { render, screen } from '@testing-library/react-native';
 import { AccessibilityInfo, Platform, StyleSheet, Text } from 'react-native';
 
-import { darkColors } from '@/constants/theme';
+import { colors } from '@/constants/theme';
 
 import { GlassCard } from '../glass/GlassCard';
 import { pickGlassMode } from '../glass/glassMode';
@@ -34,7 +34,7 @@ describe('GlassCard', () => {
       </GlassCard>,
     );
     expect(screen.getByText('תוכן')).toBeTruthy();
-    expect(backgroundOf('card')).toBe(Platform.OS === 'android' ? darkColors.surfaceSolid : darkColors.surface);
+    expect(backgroundOf('card')).toBe(Platform.OS === 'android' ? colors.surface : colors.surfaceGlass);
   });
 
   it('switches to the opaque fill when Reduce Transparency is on (iOS)', async () => {
@@ -44,7 +44,7 @@ describe('GlassCard', () => {
         <Text>תוכן</Text>
       </GlassCard>,
     );
-    const expected = Platform.OS === 'ios' || Platform.OS === 'android' ? darkColors.surfaceSolid : darkColors.surface;
+    const expected = Platform.OS === 'ios' || Platform.OS === 'android' ? colors.surface : colors.surfaceGlass;
     expect(backgroundOf('card')).toBe(expected);
   });
 

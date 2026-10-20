@@ -6,7 +6,7 @@ import Animated from 'react-native-reanimated';
 
 import { enterAt, PressableScale } from '@/components/motion';
 import { AppText, Card } from '@/components/ui';
-import { colors, fonts, MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, fonts, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
 import type { TrendAlert, TrendKind, TrendTone } from '../logic/trendAlerts';
 

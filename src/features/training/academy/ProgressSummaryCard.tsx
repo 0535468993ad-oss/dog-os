@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card } from '@/components/ui';
-import { colors, spacing } from '@/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import type { TrainingModule } from '../api';
 import { streakTitle } from '../logic/moduleProgress';

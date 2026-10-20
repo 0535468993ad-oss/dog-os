@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-import { colors, fonts } from '@/theme';
+import { colors, fonts } from '@/constants/theme';
 
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';
 

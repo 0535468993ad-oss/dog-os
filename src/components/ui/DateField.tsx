@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { darkTheme } from '@/constants/theme';
-import { MIN_TOUCH_AREA, radius, spacing } from '@/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 import { formatDate, parseIsoDate, toIsoDate } from '@/utils/date';
 
 import { AppText } from './AppText';
@@ -24,11 +23,8 @@ export interface DateFieldProps {
   onClear?: () => void;
 }
 
-const { colors } = darkTheme;
-
 // Native date picker (Dark Luxury): Android opens the system dialog, themed dark by the datetimepicker
-// config plugin in app.json; iOS shows the dark inline calendar in a sheet. The field is its own dark
-// container, so its contrast holds on light screens that haven't migrated yet. Web: DateField.web.tsx.
+// config plugin in app.json; iOS shows the dark inline calendar in a sheet. Web: DateField.web.tsx.
 export function DateField({ label, value, onChange, minimumDate, maximumDate, error, optional, disabled, onClear }: DateFieldProps) {
   const [iosOpen, setIosOpen] = useState(false);
   const [draft, setDraft] = useState<Date>(value ? parseIsoDate(value) : new Date());
@@ -56,31 +52,28 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
 
   return (
     <View style={styles.field}>
-      <View style={styles.panel}>
-        <AppText variant="label" style={styles.label}>
-          {label}
-          {optional ? ' (רשות)' : ''}
+      <AppText variant="label" color="textSecondary">
+        {label}
+        {optional ? ' (רשות)' : ''}
+      </AppText>
+      <Pressable
+        onPress={open}
+        disabled={disabled}
+        accessibilityRole="button"
+        accessibilityLabel={`${label}: ${value ? formatDate(value) : 'לא נבחר'}`}
+        accessibilityHint="פותח בחירת תאריך"
+        style={({ pressed }) => [styles.trigger, error ? styles.triggerError : null, pressed && styles.pressed]}
+      >
+        <AppText color={value ? 'textPrimary' : 'textSecondary'} style={styles.text}>
+          {value ? formatDate(value) : 'בחרו תאריך'}
         </AppText>
-        <Pressable
-          onPress={open}
-          disabled={disabled}
-          accessibilityRole="button"
-          accessibilityLabel={`${label}: ${value ? formatDate(value) : 'לא נבחר'}`}
-          accessibilityHint="פותח בחירת תאריך"
-          style={({ pressed }) => [styles.trigger, error ? styles.triggerError : null, pressed && styles.pressed]}
-        >
-          <AppText style={[styles.text, value ? styles.value : styles.placeholder]}>
-            {value ? formatDate(value) : 'בחרו תאריך'}
-          </AppText>
-          <Ionicons name="calendar-outline" size={20} color={colors.cyan} accessible={false} />
-        </Pressable>
-        {error ? (
-          <AppText variant="caption" style={styles.error} accessibilityRole="alert">
-            {error}
-          </AppText>
-        ) : null}
-      </View>
-      {/* Outside the dark panel: the ghost button's colors are for the surface the field sits on. */}
+        <Ionicons name="calendar-outline" size={20} color={colors.accentCyan} accessible={false} />
+      </Pressable>
+      {error ? (
+        <AppText variant="caption" color="dangerText" accessibilityRole="alert">
+          {error}
+        </AppText>
+      ) : null}
       {optional && value && onClear && !disabled ? (
         <Button title="ניקוי התאריך" variant="ghost" compact onPress={onClear} accessibilityLabel={`ניקוי ${label}`} />
       ) : null}
@@ -89,7 +82,7 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
         <Modal visible={iosOpen} transparent animationType="slide" onRequestClose={() => setIosOpen(false)}>
           <View style={styles.backdrop}>
             <SafeAreaView edges={['bottom']} style={styles.sheet} accessibilityViewIsModal>
-              <AppText variant="heading" accessibilityRole="header" style={styles.value}>
+              <AppText variant="heading" accessibilityRole="header">
                 {label}
               </AppText>
               <DateTimePicker
@@ -101,7 +94,7 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
                 maximumDate={max}
                 onChange={(_event, date) => date && setDraft(date)}
                 themeVariant="dark"
-                accentColor={colors.cyan}
+                accentColor={colors.accentCyan}
               />
               <View style={styles.actions}>
                 <Button title="ביטול" variant="secondary" onPress={() => setIosOpen(false)} />
@@ -125,21 +118,12 @@ const styles = StyleSheet.create({
   field: {
     gap: spacing.xs,
   },
-  panel: {
-    gap: spacing.xs,
-    backgroundColor: colors.background,
-    borderRadius: radius.md,
-    padding: spacing.sm,
-  },
-  label: {
-    color: colors.textSecondary,
-  },
   trigger: {
     minHeight: MIN_TOUCH_AREA + 4,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.surfaceSolid,
+    backgroundColor: colors.surface,
     borderWidth: 1.5,
     borderColor: colors.borderStrong,
     borderRadius: radius.md,
@@ -154,19 +138,10 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
-  value: {
-    color: colors.textPrimary,
-  },
-  placeholder: {
-    color: colors.textSecondary,
-  },
-  error: {
-    color: colors.danger,
-  },
   backdrop: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: colors.overlay,
   },
   sheet: {
     backgroundColor: colors.background,

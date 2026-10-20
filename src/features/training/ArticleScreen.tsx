@@ -2,7 +2,7 @@ import { router, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, BulletList, Card, ErrorState, IconButton, LoadingState, Screen, SectionHeader } from '@/components/ui';
-import { spacing } from '@/theme';
+import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
 import { useBookmarks, useKnowledgeBase, useToggleBookmark, useTrainingCatalog } from './hooks';
