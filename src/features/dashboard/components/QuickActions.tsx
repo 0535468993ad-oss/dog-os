@@ -13,6 +13,7 @@ const ACTIONS: { icon: IconName; label: string; href: Href }[] = [
   { icon: 'chatbubbles-outline', label: 'יועץ חכם', href: '/chat' },
   { icon: 'pulse-outline', label: 'בודק סימפטומים', href: '/health' },
   { icon: 'restaurant-outline', label: 'מטבח חירום', href: '/kitchen' },
+  { icon: 'nutrition-outline', label: 'תזונה', href: '/nutrition' },
   { icon: 'book-outline', label: 'יומן', href: '/journal' },
   { icon: 'document-text-outline', label: 'דוח לווטרינר', href: '/report' },
 ];

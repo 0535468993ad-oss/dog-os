@@ -159,6 +159,11 @@ export const shadow = {
 // Minimum touch target (WCAG 2.5.5 / platform guidelines).
 export const MIN_TOUCH_AREA = 44;
 
+/** A soft colored glow behind text (text shadows; works on every platform). */
+export function textGlow(color: string): TextStyle {
+  return { textShadowColor: color, textShadowRadius: 12, textShadowOffset: { width: 0, height: 0 } };
+}
+
 /** A colored glow (iOS shadow / Android elevation) for vivid accent elements such as prompt chips. */
 export function glow(color: string): ViewStyle {
   return { shadowColor: color, shadowOpacity: 0.35, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 3 };
