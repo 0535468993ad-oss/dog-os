@@ -10,13 +10,18 @@ import { ToastHost } from '@/components/ui';
 import { supabaseEnvResult } from '@/config/env';
 import { AuthProvider } from '@/features/auth/AuthProvider';
 import { CookieBanner } from '@/features/legal/components';
+import { installGlobalErrorHandlers, markAppReady } from '@/lib/globalErrorHandler';
+import { configureOnlineManager } from '@/lib/onlineStatus';
 import { queryClient } from '@/lib/queryClient';
 import { configureRtl, configureWebDocument } from '@/navigation/platformSetup';
 import { RootNavigator } from '@/navigation/RootNavigator';
 
+// First, so that errors anywhere after this point are reported instead of closing the app.
+installGlobalErrorHandlers();
 void SplashScreen.preventAutoHideAsync();
 configureRtl();
 configureWebDocument();
+configureOnlineManager();
 
 export const unstable_settings = {
   anchor: '(app)',
@@ -29,6 +34,7 @@ export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({ Heebo_400Regular, Heebo_500Medium, Heebo_600SemiBold, Heebo_700Bold });
 
   useEffect(() => {
+    markAppReady();
     if (!supabaseEnvResult.ok) void SplashScreen.hideAsync();
   }, []);
 

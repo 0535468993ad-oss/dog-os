@@ -2,7 +2,8 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Badge, Button, Card, ChipGroup, DateField, EmptyState, ErrorState, IconButton, LoadingState, Screen, SectionHeader, TextField } from '@/components/ui';
+import { AppText, Badge, Button, Card, ChipGroup, DateField, EmptyState, ErrorState, IconButton, LoadingState, Screen, SectionHeader, StaleDataNotice, TextField } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { DogRow, JournalCategory, JournalMood } from '@/lib/database.types';
 import { spacing } from '@/constants/theme';
@@ -84,9 +85,10 @@ function Journal({ dog }: { dog: DogRow }) {
           {listError}
         </AppText>
       ) : null}
+      <StaleDataNotice visible={cacheState(journal.error, journal.data !== undefined) === 'stale'} onRetry={() => void journal.refetch()} />
       {journal.isLoading ? (
         <LoadingState />
-      ) : journal.error ? (
+      ) : cacheState(journal.error, journal.data !== undefined) === 'failed' ? (
         <ErrorState message={toUserMessage(journal.error)} onRetry={() => void journal.refetch()} />
       ) : journal.data?.length ? (
         journal.data.map((entry) => (

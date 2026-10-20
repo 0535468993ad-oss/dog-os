@@ -10,6 +10,7 @@ export * from './IconButton';
 export * from './Misc';
 export * from './Screen';
 export * from './SegmentedControl';
+export * from './StaleDataNotice';
 export * from './Skeleton';
 export * from './select/Select';
 export * from './StateViews';

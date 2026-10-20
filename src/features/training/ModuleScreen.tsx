@@ -1,7 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Badge, BulletList, Card, Checkbox, ErrorState, LoadingState, ProgressBar, Screen, SectionHeader } from '@/components/ui';
+import { AppText, Badge, BulletList, Card, Checkbox, ErrorState, LoadingState, ProgressBar, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
@@ -16,7 +17,8 @@ export function ModuleScreen({ moduleId }: { moduleId: string }) {
   const toggle = useToggleStep(activeDog?.id ?? '');
 
   if (summary.isLoading) return <LoadingState />;
-  if (summary.error) return <ErrorState message={toUserMessage(summary.error)} onRetry={() => void summary.refetch()} />;
+  const view = cacheState(summary.error, summary.hasData);
+  if (view === 'failed') return <ErrorState message={toUserMessage(summary.error)} onRetry={() => void summary.refetch()} />;
 
   const module = summary.modules.find((m) => m.id === moduleId);
   if (!module) return <ErrorState message="המודול לא נמצא." />;
@@ -27,6 +29,7 @@ export function ModuleScreen({ moduleId }: { moduleId: string }) {
   return (
     <Screen edges={['bottom']}>
       <Stack.Screen options={{ title: module.title }} />
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void summary.refetch()} />
       <AppText variant="title" accessibilityRole="header">
         {module.title}
       </AppText>

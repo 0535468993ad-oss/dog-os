@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Card, ErrorState, LoadingState, SectionHeader } from '@/components/ui';
+import { AppText, Card, ErrorState, LoadingState, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
@@ -15,10 +16,12 @@ export function AcademyTab() {
   const summary = useTrainingSummary(activeDog?.id ?? null);
 
   if (dogLoading || summary.isLoading) return <LoadingState />;
-  if (summary.error) return <ErrorState message={toUserMessage(summary.error)} onRetry={() => void summary.refetch()} />;
+  const view = cacheState(summary.error, summary.hasData);
+  if (view === 'failed') return <ErrorState message={toUserMessage(summary.error)} onRetry={() => void summary.refetch()} />;
 
   return (
     <View style={styles.list}>
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void summary.refetch()} />
       {activeDog ? (
         <ProgressSummaryCard
           dogName={activeDog.name}

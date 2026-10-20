@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { ErrorState, LoadingState, Screen } from '@/components/ui';
+import { ErrorState, LoadingState, Screen, StaleDataNotice } from '@/components/ui';
 import { useUser } from '@/features/auth/AuthProvider';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useAiSharing } from '@/features/legal/hooks/consents';
 import type { ChatHistoryRow } from '@/lib/database.types';
+import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
@@ -45,7 +46,8 @@ export function ChatScreen() {
       </Screen>
     );
   }
-  if (chat.history.error) {
+  const view = cacheState(chat.history.error, chat.history.data !== undefined);
+  if (view === 'failed') {
     return (
       <Screen scroll={false}>
         <ErrorState message={toUserMessage(chat.history.error)} onRetry={() => void chat.history.refetch()} />
@@ -78,6 +80,7 @@ export function ChatScreen() {
       }
     >
       <ChatHeader dogs={dogs} activeDog={activeDog} hasMessages={chat.messages.length > 0} onRequestClear={() => setConfirmClear(true)} />
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void chat.history.refetch()} />
 
       {confirmClear ? (
         <ClearChatConfirm onCancel={() => setConfirmClear(false)} onConfirm={() => chat.clearConversation(() => setConfirmClear(false))} clearing={chat.isClearing} />

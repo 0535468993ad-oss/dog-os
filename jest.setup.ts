@@ -13,3 +13,6 @@ jest.mock('react-native-safe-area-context', () => require('react-native-safe-are
 // Icon fonts load through the native asset registry, which doesn't exist under Jest. Every icon in the app
 // is decorative (accessible={false}), so rendering nothing loses no accessible content.
 jest.mock('@expo/vector-icons/Ionicons', () => ({ __esModule: true, default: () => null }));
+
+// NetInfo's native module doesn't exist under Jest; its official mock reports a connected device.
+jest.mock('@react-native-community/netinfo', () => require('@react-native-community/netinfo/jest/netinfo-mock.js'));

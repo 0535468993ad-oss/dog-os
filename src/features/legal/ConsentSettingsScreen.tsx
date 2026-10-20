@@ -2,7 +2,8 @@ import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Platform, StyleSheet, Switch, View } from 'react-native';
 
-import { AppText, Badge, Button, Card, Divider, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { AppText, Badge, Button, Card, Divider, ErrorState, LoadingState, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useUser } from '@/features/auth/AuthProvider';
 import type { ConsentSource, ConsentType } from '@/lib/database.types';
 import { colors, spacing } from '@/constants/theme';
@@ -38,7 +39,8 @@ export function ConsentSettingsScreen() {
   const [error, setError] = useState<string | null>(null);
 
   if (consents.isLoading) return <LoadingState />;
-  if (consents.error) return <ErrorState message={toUserMessage(consents.error)} onRetry={() => void consents.refetch()} />;
+  const view = cacheState(consents.error, consents.data !== undefined);
+  if (view === 'failed') return <ErrorState message={toUserMessage(consents.error)} onRetry={() => void consents.refetch()} />;
 
   const rows = consents.data ?? [];
   const latest = latestConsents(rows);
@@ -61,6 +63,7 @@ export function ConsentSettingsScreen() {
   return (
     <Screen edges={['bottom']}>
       <Stack.Screen options={{ title: 'ניהול הסכמות' }} />
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void consents.refetch()} />
       <AppText color="textSecondary">כאן מתועדות ההסכמות שנתתם, באיזו גרסת מסמך ומתי. התיעוד נשמר לפי חוק הגנת הפרטיות.</AppText>
 
       <SectionHeader title="הסכמות חובה לשימוש בשירות" />

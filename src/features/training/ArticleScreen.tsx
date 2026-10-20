@@ -1,7 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Badge, BulletList, Card, ErrorState, IconButton, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { AppText, Badge, BulletList, Card, ErrorState, IconButton, LoadingState, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
@@ -15,7 +16,8 @@ export function ArticleScreen({ articleId }: { articleId: string }) {
   const catalog = useTrainingCatalog();
 
   if (articles.isLoading) return <LoadingState />;
-  if (articles.error) return <ErrorState message={toUserMessage(articles.error)} onRetry={() => void articles.refetch()} />;
+  const view = cacheState(articles.error, articles.data !== undefined);
+  if (view === 'failed') return <ErrorState message={toUserMessage(articles.error)} onRetry={() => void articles.refetch()} />;
 
   const article = articles.data?.find((a) => a.id === articleId);
   if (!article) return <ErrorState message="המאמר לא נמצא." />;
@@ -25,6 +27,7 @@ export function ArticleScreen({ articleId }: { articleId: string }) {
 
   return (
     <Screen edges={['bottom']}>
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void articles.refetch()} />
       <Stack.Screen
         options={{
           title: article.title,

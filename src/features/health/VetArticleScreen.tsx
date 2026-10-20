@@ -2,7 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Badge, BulletList, Card, Disclaimer, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { AppText, Badge, BulletList, Card, Disclaimer, ErrorState, LoadingState, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { BREED_BY_ID } from '@/features/dogs/breeds';
 import { colors, spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
@@ -14,7 +15,7 @@ export function VetArticleScreen({ articleId }: { articleId: string }) {
   const knowledge = useVetKnowledge();
 
   if (knowledge.isLoading) return <LoadingState />;
-  if (knowledge.error || !knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
+  if (!knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
 
   const article = knowledge.data.articles.find((a) => a.id === articleId);
   if (!article) return <ErrorState message="הערך לא נמצא." />;
@@ -25,6 +26,7 @@ export function VetArticleScreen({ articleId }: { articleId: string }) {
   return (
     <Screen edges={['bottom']}>
       <Stack.Screen options={{ title: article.title }} />
+      <StaleDataNotice visible={cacheState(knowledge.error, true) === 'stale'} onRetry={() => void knowledge.refetch()} />
       <AppText variant="title" accessibilityRole="header">
         {article.title}
       </AppText>

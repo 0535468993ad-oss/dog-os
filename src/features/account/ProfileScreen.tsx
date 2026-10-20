@@ -13,7 +13,7 @@ import { useAccountActions } from './hooks/useAccountActions';
 /** Profile and settings: the user's dogs, tools, privacy controls, sign-out and account deletion. */
 export function ProfileScreen() {
   const user = useUser();
-  const { dogs, activeDog, isLoading, error, refetch } = useActiveDog();
+  const { dogs, activeDog, isLoading, error, hasData, refetch } = useActiveDog();
   const setActive = useSetActiveDog();
   const account = useAccountActions(user.email);
 
@@ -30,6 +30,7 @@ export function ProfileScreen() {
         activeDogId={activeDog?.id}
         isLoading={isLoading}
         error={error}
+        hasData={hasData}
         onRetry={() => void refetch()}
         onActivate={(dogId) => setActive.mutate(dogId)}
       />

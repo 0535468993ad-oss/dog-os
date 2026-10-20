@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
+import { Button, EmptyState, ErrorState, LoadingState, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { DogRow } from '@/lib/database.types';
 import { spacing } from '@/constants/theme';
@@ -35,11 +36,12 @@ function DogRecords({ dog }: { dog: DogRow }) {
   const health = useHealth(dog.id);
 
   if (health.isLoading) return <LoadingState />;
-  if (health.error || !health.data) return <ErrorState message={toUserMessage(health.error)} onRetry={() => void health.refetch()} />;
+  if (!health.data) return <ErrorState message={toUserMessage(health.error)} onRetry={() => void health.refetch()} />;
   const { vaccinations, weights, food, notes } = health.data;
 
   return (
     <View style={styles.list}>
+      <StaleDataNotice visible={cacheState(health.error, true) === 'stale'} onRetry={() => void health.refetch()} />
       <VaccinationList vaccinations={vaccinations} />
       <WeightCard dogId={dog.id} weights={weights} />
       <FoodList food={food} />

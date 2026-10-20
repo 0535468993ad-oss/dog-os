@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, ChipGroup, EmptyState, ErrorState, LoadingState, TextField } from '@/components/ui';
+import { AppText, ChipGroup, EmptyState, ErrorState, LoadingState, StaleDataNotice, TextField } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
@@ -21,12 +22,14 @@ export function EncyclopediaTab() {
   const filtered = useMemo(() => filterArticles(articles.data ?? [], { query, category, method, saved }), [articles.data, saved, query, category, method]);
 
   if (articles.isLoading) return <LoadingState />;
-  if (articles.error) return <ErrorState message={toUserMessage(articles.error)} onRetry={() => void articles.refetch()} />;
+  const view = cacheState(articles.error, articles.data !== undefined);
+  if (view === 'failed') return <ErrorState message={toUserMessage(articles.error)} onRetry={() => void articles.refetch()} />;
 
   const savedView = category === 'saved';
 
   return (
     <View style={styles.list}>
+      <StaleDataNotice visible={view === 'stale'} onRetry={() => void articles.refetch()} />
       <TextField label="חיפוש באנציקלופדיה" value={query} onChangeText={setQuery} placeholder="למשל: חרדת נטישה, קליקר…" returnKeyType="search" />
       <ChipGroup options={categoryOptions(saved.size)} value={category} onChange={setCategory} accessibilityLabel="סינון לפי קטגוריה" scrollable />
       <ChipGroup options={METHOD_OPTIONS} value={method} onChange={setMethod} accessibilityLabel="סינון לפי שיטה" scrollable />

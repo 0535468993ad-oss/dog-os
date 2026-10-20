@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, Disclaimer, ErrorState, LoadingState, Screen } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { SIZE_LABELS } from '@/features/dogs/breeds';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
@@ -32,7 +33,9 @@ export function AdvisorContextScreen() {
 
   if (dogsLoading || health.isLoading || journal.isLoading || training.isLoading) return <LoadingState />;
   const error = health.error ?? journal.error ?? training.error;
-  if (error) return <ErrorState message={toUserMessage(error)} onRetry={() => void Promise.all([health.refetch(), journal.refetch(), training.refetch()])} />;
+  const view = cacheState(error, health.data !== undefined && journal.data !== undefined && training.hasData);
+  const retry = () => void Promise.all([health.refetch(), journal.refetch(), training.refetch()]);
+  if (view === 'failed') return <ErrorState message={toUserMessage(error)} onRetry={retry} />;
 
   if (!activeDog) {
     return (

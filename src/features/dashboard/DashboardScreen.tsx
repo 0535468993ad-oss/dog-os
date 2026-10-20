@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { enterAt } from '@/components/motion';
-import { AppText, Button, EmptyState, ErrorState, Screen } from '@/components/ui';
+import { AppText, Button, EmptyState, ErrorState, Screen, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { DogRow } from '@/lib/database.types';
 import { toUserMessage } from '@/utils/errors';
@@ -20,7 +21,8 @@ import { buildTrendAlerts } from './logic/trendAlerts';
 
 /** Home tab: loading/error/first-dog states, then the dashboard for the active dog. */
 export function DashboardScreen() {
-  const { dogs, activeDog, isLoading, error, refetch } = useActiveDog();
+  const { dogs, activeDog, isLoading, error, hasData, refetch } = useActiveDog();
+  const view = cacheState(error, hasData);
 
   if (isLoading) {
     return (
@@ -29,7 +31,7 @@ export function DashboardScreen() {
       </Screen>
     );
   }
-  if (error) {
+  if (view === 'failed') {
     return (
       <Screen>
         <ErrorState message={toUserMessage(error)} onRetry={() => void refetch()} />
@@ -51,11 +53,11 @@ export function DashboardScreen() {
       </Screen>
     );
   }
-  return <Dashboard dogs={dogs} dog={activeDog} />;
+  return <Dashboard dogs={dogs} dog={activeDog} stale={view === 'stale'} onRetry={() => void refetch()} />;
 }
 
 /** The dashboard sections for one dog under the navy hero, entering one after another. */
-function Dashboard({ dogs, dog }: { dogs: DogRow[]; dog: DogRow }) {
+function Dashboard({ dogs, dog, stale, onRetry }: { dogs: DogRow[]; dog: DogRow; stale: boolean; onRetry: () => void }) {
   const data = useDashboardData(dog);
   const scrollY = useSharedValue(0);
   const weights = data.health.data?.weights ?? [];
@@ -76,6 +78,7 @@ function Dashboard({ dogs, dog }: { dogs: DogRow[]; dog: DogRow }) {
       scrollY={scrollY}
       parallaxHeader={<DogHeroCard dogs={dogs} dog={dog} scrollY={scrollY} taskCount={tasks.length} />}
     >
+      <StaleDataNotice visible={stale} onRetry={onRetry} />
       {alerts.length ? (
         <Animated.View entering={enterAt(0)}>
           <TrendsAlertCard alerts={alerts} />

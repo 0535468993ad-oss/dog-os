@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Checkbox, ChipGroup, Disclaimer, EmptyState, ErrorState, LoadingState, TextField } from '@/components/ui';
+import { AppText, Checkbox, ChipGroup, Disclaimer, EmptyState, ErrorState, LoadingState, StaleDataNotice, TextField } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { BREED_BY_ID } from '@/features/dogs/breeds';
 import { useActiveDog } from '@/features/dogs/hooks';
 import type { VetCategory } from '@/lib/database.types';
@@ -36,10 +37,11 @@ export function EncyclopediaTab() {
   );
 
   if (knowledge.isLoading) return <LoadingState />;
-  if (knowledge.error || !knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
+  if (!knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
 
   return (
     <View style={styles.list}>
+      <StaleDataNotice visible={cacheState(knowledge.error, true) === 'stale'} onRetry={() => void knowledge.refetch()} />
       <Disclaimer>{MEDICAL_DISCLAIMER}</Disclaimer>
       <EmergencyStrip articles={emergencyArticles(knowledge.data.articles)} />
       <TextField label="חיפוש מהיר" value={query} onChangeText={setQuery} placeholder="מחלה, סימפטום, גזע…" returnKeyType="search" />

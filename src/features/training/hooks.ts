@@ -78,9 +78,11 @@ export function useTrainingSummary(dogId: string | null) {
       completedModules,
       isLoading: catalog.isLoading || progress.isLoading,
       error: catalog.error ?? progress.error,
+      /** The catalog (and, for a dog, its progress) is cached. */
+      hasData: catalog.data !== undefined && (!dogId || progress.data !== undefined),
       refetch: () => Promise.all([catalog.refetch(), progress.refetch()]),
     };
-  }, [catalog, progress]);
+  }, [catalog, progress, dogId]);
 }
 
 export function useToggleStep(dogId: string) {

@@ -2,7 +2,8 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Platform } from 'react-native';
 
-import { AppText, Button, Card, Disclaimer, EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
+import { AppText, Button, Card, Disclaimer, EmptyState, ErrorState, LoadingState, Screen, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
 import { useJournal } from '@/features/journal/hooks';
@@ -55,10 +56,11 @@ export function ReportScreen() {
         <LoadingState />
       ) : !activeDog ? (
         <EmptyState icon="paw-outline" title="אין כלב פעיל" />
-      ) : health.error ? (
+      ) : cacheState(health.error, health.data !== undefined) === 'failed' ? (
         <ErrorState message={toUserMessage(health.error)} onRetry={() => void health.refetch()} />
       ) : (
         <>
+          <StaleDataNotice visible={cacheState(health.error, health.data !== undefined) === 'stale'} onRetry={() => void health.refetch()} />
           <AppText variant="title" accessibilityRole="header">
             {`סיכום בריאות והתנהגות – ${activeDog.name}`}
           </AppText>

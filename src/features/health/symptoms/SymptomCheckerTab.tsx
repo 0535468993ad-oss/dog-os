@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { AppText, Card, Checkbox, ChipGroup, Disclaimer, ErrorState, LoadingState, SectionHeader } from '@/components/ui';
+import { AppText, Card, Checkbox, ChipGroup, Disclaimer, ErrorState, LoadingState, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
@@ -18,7 +19,7 @@ export function SymptomCheckerTab() {
   const [redFlags, setRedFlags] = useState<string[]>([]);
 
   if (knowledge.isLoading) return <LoadingState />;
-  if (knowledge.error || !knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
+  if (!knowledge.data) return <ErrorState message={toUserMessage(knowledge.error)} onRetry={() => void knowledge.refetch()} />;
 
   const { symptoms, articles, conditionsBySymptom } = knowledge.data;
   const { redFlagOptions, urgency, matches } = triageSymptoms({ symptoms, selectedIds: selected, checkedRedFlags: redFlags, articles, conditionsBySymptom });
@@ -28,6 +29,7 @@ export function SymptomCheckerTab() {
 
   return (
     <View style={styles.list}>
+      <StaleDataNotice visible={cacheState(knowledge.error, true) === 'stale'} onRetry={() => void knowledge.refetch()} />
       <Disclaimer>בודק הסימפטומים עוזר להעריך כמה דחוף לפנות לווטרינר. הוא אינו מאבחן מחלות. {MEDICAL_DISCLAIMER}</Disclaimer>
 
       <SectionHeader title="1. מה אתם רואים?" />

@@ -7,6 +7,12 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60_000,
+      // Keep data for screens the user left for a day: going back to one offline still shows it.
+      gcTime: 24 * 60 * 60 * 1000,
+      // Always attempt the request, even when the device reports no connection: a failed refresh keeps the
+      // cached data (screens show it with a notice), an empty cache gets the "no connection" message, and
+      // nothing waits silently in a paused state. Reconnecting refetches stale queries (see onlineStatus.ts).
+      networkMode: 'always',
       retry: (failureCount, error) => {
         // Don't retry auth/permission/validation errors or a missing table – they won't succeed on retry.
         if (isSchemaMissingError(error)) return false;
@@ -15,7 +21,8 @@ export const queryClient = new QueryClient({
         return failureCount < 2;
       },
     },
-    mutations: { retry: false },
+    // Fail fast offline instead of pausing: a save button must not spin until the connection returns.
+    mutations: { retry: false, networkMode: 'always' },
   },
 });
 

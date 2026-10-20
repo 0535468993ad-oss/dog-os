@@ -29,6 +29,8 @@ export function useActiveDog() {
     activeDog,
     isLoading: dogs.isLoading || profile.isLoading,
     error: dogs.error ?? profile.error,
+    /** The dogs list is cached (a failed refresh then shows it as stale, not as an error page). */
+    hasData: dogs.data !== undefined,
     refetch: () => Promise.all([dogs.refetch(), profile.refetch()]),
   };
 }
