@@ -1,13 +1,20 @@
-import type { Json, KnowledgeBaseCategory, KnowledgeMatchRow } from '@/lib/database.types';
+import type { KnowledgeChunkCategory, KnowledgeMatchRow } from '@/lib/database.types';
 
-/** Must match vector(1536) in supabase/migrations/20261019150000_canine_knowledge_base.sql. */
+/** Must match vector(1536) in supabase/migrations/20261021120000_knowledge_chunks.sql. */
 export const EMBEDDING_DIMENSIONS = 1536;
-export const DEFAULT_MATCH_THRESHOLD = 0.75;
+/** Same default as match_dog_knowledge: below it the advisor says it doesn't know rather than stretch a loose match. */
+export const DEFAULT_MATCH_THRESHOLD = 0.82;
 export const DEFAULT_MATCH_COUNT = 5;
 /** The RPC clamps to this too (HNSW ef_search limit); validating here surfaces the mistake instead. */
 export const MAX_MATCH_COUNT = 40;
 
-export const KNOWLEDGE_BASE_CATEGORIES: readonly KnowledgeBaseCategory[] = ['nutrition', 'triage', 'breed_traits', 'behavior', 'vaccinations'];
+export const KNOWLEDGE_BASE_CATEGORIES: readonly KnowledgeChunkCategory[] = [
+  'EMERGENCY_TOXICOLOGY',
+  'CLINICAL_NUTRITION',
+  'ETHOLOGY_BEHAVIOR',
+  'TRAINING_DRIVE',
+  'ISRAEL_REGULATION_BREEDS',
+];
 
 export interface KnowledgeSearchQuery {
   queryVector: number[];
@@ -15,20 +22,22 @@ export interface KnowledgeSearchQuery {
   threshold: number;
   /** Maximum number of results, 1..MAX_MATCH_COUNT. */
   count: number;
-  category: KnowledgeBaseCategory | null;
+  category: KnowledgeChunkCategory | null;
 }
 
+/** One verified knowledge chunk as the app uses it. */
 export interface KnowledgeItem {
   id: string;
-  category: KnowledgeBaseCategory;
+  category: KnowledgeChunkCategory;
   title: string;
   content: string;
-  metadata: { [key: string]: Json | undefined };
+  /** Where the content comes from; every chunk the advisor cites carries one. */
+  sourceReference: string;
   /** Cosine similarity to the query, -1..1 (higher is closer). */
   similarity: number;
 }
 
-export function isKnowledgeBaseCategory(value: unknown): value is KnowledgeBaseCategory {
+export function isKnowledgeBaseCategory(value: unknown): value is KnowledgeChunkCategory {
   return typeof value === 'string' && (KNOWLEDGE_BASE_CATEGORIES as readonly string[]).includes(value);
 }
 
@@ -52,18 +61,22 @@ export function toVectorLiteral(vector: readonly number[]): string {
 }
 
 /** Runtime guard for one RPC row: the response crosses a network boundary, so its shape is not trusted. */
-export function isKnowledgeMatchRow(value: unknown): value is KnowledgeMatchRow & { metadata: KnowledgeItem['metadata'] } {
+export function isKnowledgeMatchRow(value: unknown): value is KnowledgeMatchRow {
   if (!value || typeof value !== 'object') return false;
   const v = value as Record<string, unknown>;
   return (
     typeof v.id === 'string' &&
     isKnowledgeBaseCategory(v.category) &&
-    typeof v.title === 'string' &&
-    typeof v.content === 'string' &&
-    !!v.metadata &&
-    typeof v.metadata === 'object' &&
-    !Array.isArray(v.metadata) &&
+    typeof v.title_he === 'string' &&
+    typeof v.content_he === 'string' &&
+    typeof v.source_reference === 'string' &&
+    v.source_reference.trim().length > 0 &&
     typeof v.similarity === 'number' &&
     Number.isFinite(v.similarity)
   );
+}
+
+/** Maps a validated RPC row to the app's shape. */
+export function toKnowledgeItem(row: KnowledgeMatchRow): KnowledgeItem {
+  return { id: row.id, category: row.category, title: row.title_he, content: row.content_he, sourceReference: row.source_reference, similarity: row.similarity };
 }

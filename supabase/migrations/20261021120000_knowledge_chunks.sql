@@ -1,0 +1,119 @@
+-- AI advisor knowledge base: verified, sourced Hebrew knowledge chunks with embeddings, searched
+-- semantically (pgvector, cosine) so the advisor answers from reviewed content instead of model recall.
+--
+-- Supersedes canine_knowledge_base (20261019150000), which never received content: one knowledge base,
+-- one search function. The retirement below refuses to run if that table holds any rows.
+--
+-- Security model:
+--   * Shared, non-personal reference content: readable by anon and authenticated users – but only rows
+--     marked is_verified, enforced by RLS, so unreviewed content is invisible to every client query.
+--   * Writable only by the service role (ingestion pipeline / migrations). No client write grants exist,
+--     and service_role bypasses RLS, so no write policies are needed.
+--   * match_dog_knowledge runs as SECURITY INVOKER, so the table's RLS applies to every search.
+
+create extension if not exists vector with schema extensions;
+
+-- ---------------------------------------------------------------------------------------------------
+-- Retire canine_knowledge_base (empty: no ingestion job ever populated it)
+-- ---------------------------------------------------------------------------------------------------
+do $$
+begin
+  if to_regclass('public.canine_knowledge_base') is not null
+     and exists (select 1 from public.canine_knowledge_base) then
+    raise exception 'canine_knowledge_base has rows – move them into knowledge_chunks before running this migration';
+  end if;
+end
+$$;
+
+drop function if exists public.match_knowledge_base(vector, float, int, text);
+drop table if exists public.canine_knowledge_base;
+
+-- ---------------------------------------------------------------------------------------------------
+-- knowledge_chunks
+-- ---------------------------------------------------------------------------------------------------
+create table public.knowledge_chunks (
+  id uuid primary key default gen_random_uuid(),
+  -- Keep in sync with KnowledgeChunkCategory in src/lib/database.types.ts.
+  category text not null check (category in (
+    'EMERGENCY_TOXICOLOGY',
+    'CLINICAL_NUTRITION',
+    'ETHOLOGY_BEHAVIOR',
+    'TRAINING_DRIVE',
+    'ISRAEL_REGULATION_BREEDS'
+  )),
+  title_he text not null check (char_length(title_he) between 1 and 300),
+  content_he text not null check (char_length(content_he) between 1 and 20000),
+  -- Where the content comes from (e.g. "Tufts Cummings School – Petfoodology"). Required: a chunk the
+  -- advisor cannot attribute is a chunk it cannot ground an answer in.
+  source_reference text not null check (char_length(btrim(source_reference)) between 1 and 500),
+  -- Default per the product spec. The ingestion job must set it deliberately: false until reviewed.
+  is_verified boolean not null default true,
+  -- 1536 dimensions = OpenAI text-embedding-3-small. Null until the ingestion job embeds the row; such
+  -- rows are never returned by search.
+  embedding vector(1536),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- HNSW over cosine distance: good recall/latency, and unlike IVFFlat it needs no training data, so it can
+-- be built on an empty table and stays accurate as rows are added.
+create index knowledge_chunks_embedding_idx on public.knowledge_chunks
+  using hnsw (embedding vector_cosine_ops);
+create index knowledge_chunks_category_idx on public.knowledge_chunks (category);
+
+create trigger knowledge_chunks_set_updated_at
+  before update on public.knowledge_chunks
+  for each row execute function public.set_updated_at();
+
+alter table public.knowledge_chunks enable row level security;
+
+create policy "knowledge_chunks_read_verified" on public.knowledge_chunks
+  for select to anon, authenticated using (is_verified);
+
+revoke all on table public.knowledge_chunks from anon, authenticated;
+grant select on table public.knowledge_chunks to anon, authenticated;
+
+-- ---------------------------------------------------------------------------------------------------
+-- match_dog_knowledge – semantic search over verified chunks
+-- ---------------------------------------------------------------------------------------------------
+-- similarity = 1 - cosine distance (1 = identical direction). The 0.82 default keeps only close matches:
+-- below it the advisor says it does not know rather than stretching a loosely related chunk. Ordering by
+-- the raw distance expression lets the planner use the HNSW index. match_count is clamped to 1..40: HNSW
+-- returns at most hnsw.ef_search (default 40) candidates per scan, so larger requests would truncate.
+create or replace function public.match_dog_knowledge(
+  query_embedding vector(1536),
+  match_threshold float default 0.82,
+  match_count int default 5,
+  filter_category text default null
+)
+returns table (
+  id uuid,
+  category text,
+  title_he text,
+  content_he text,
+  source_reference text,
+  similarity float
+)
+language sql
+stable
+security invoker
+set search_path = public, extensions, pg_temp
+as $$
+  select
+    kc.id,
+    kc.category,
+    kc.title_he,
+    kc.content_he,
+    kc.source_reference,
+    1 - (kc.embedding <=> query_embedding) as similarity
+  from public.knowledge_chunks kc
+  where kc.is_verified
+    and kc.embedding is not null
+    and (filter_category is null or kc.category = filter_category)
+    and 1 - (kc.embedding <=> query_embedding) >= coalesce(match_threshold, 0.82)
+  order by kc.embedding <=> query_embedding
+  limit least(greatest(coalesce(match_count, 5), 1), 40);
+$$;
+
+revoke all on function public.match_dog_knowledge(vector, float, int, text) from public;
+grant execute on function public.match_dog_knowledge(vector, float, int, text) to anon, authenticated, service_role;

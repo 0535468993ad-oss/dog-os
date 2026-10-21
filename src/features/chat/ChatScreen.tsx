@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ErrorState, LoadingState, Screen, StaleDataNotice } from '@/components/ui';
+import { EmergencyAlertPanel } from '@/features/ai-advisor/components/EmergencyAlertPanel';
+import { useEmergencyIntercept } from '@/features/ai-advisor/hooks/useEmergencyIntercept';
 import { useUser } from '@/features/auth/AuthProvider';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useAiSharing } from '@/features/legal/hooks/consents';
@@ -30,14 +32,22 @@ export function ChatScreen() {
   const [draft, setDraft] = useState('');
   const [confirmClear, setConfirmClear] = useState(false);
   const listRef = useRef<FlatList<ChatHistoryRow>>(null);
+  const emergency = useEmergencyIntercept();
 
   // Sends the draft (or a prompt chip's question); a failed send puts the text back in the composer.
+  // The on-device emergency guardrail runs first: an emergency gets fixed first-aid steps at once, not the model.
   const submit = (text = draft) => {
     const message = text.trim();
     if (!message || chat.isSending || sharing !== 'allowed') return;
     setDraft('');
+    if (emergency.intercept(message)) return;
     chat.sendMessage(message, setDraft);
   };
+  const sendAnyway = () => {
+    const message = emergency.release();
+    if (message) chat.sendMessage(message, setDraft);
+  };
+  const closeEmergency = () => setDraft(emergency.release() ?? '');
 
   if (isLoading || chat.history.isLoading) {
     return (
@@ -86,17 +96,23 @@ export function ChatScreen() {
         <ClearChatConfirm onCancel={() => setConfirmClear(false)} onConfirm={() => chat.clearConversation(() => setConfirmClear(false))} clearing={chat.isClearing} />
       ) : null}
 
-      <FlatList
-        ref={listRef}
-        data={chat.messages}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
-        accessibilityLabel="היסטוריית השיחה"
-        ListEmptyComponent={<ChatEmptyState dogName={dogName} />}
-        ListFooterComponent={chat.isSending ? <TypingIndicator /> : undefined}
-        renderItem={({ item }) => <MessageBubble message={item} />}
-      />
+      {emergency.alerts ? (
+        <ScrollView contentContainerStyle={styles.list}>
+          <EmergencyAlertPanel alerts={emergency.alerts} onSendAnyway={sendAnyway} onClose={closeEmergency} />
+        </ScrollView>
+      ) : (
+        <FlatList
+          ref={listRef}
+          data={chat.messages}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
+          accessibilityLabel="היסטוריית השיחה"
+          ListEmptyComponent={<ChatEmptyState dogName={dogName} />}
+          ListFooterComponent={chat.isSending ? <TypingIndicator /> : undefined}
+          renderItem={({ item }) => <MessageBubble message={item} />}
+        />
+      )}
     </Screen>
   );
 }

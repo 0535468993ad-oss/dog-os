@@ -2,7 +2,7 @@ import type { ChatHistoryRow } from '@/lib/database.types';
 import { isSchemaMissingError, supabase, unwrap } from '@/lib/supabase';
 import { readFunctionError } from '@/utils/errors';
 
-import { buildKnowledgeQuery, isKnowledgeMatchRow, toVectorLiteral, type KnowledgeItem } from './logic/knowledgeQuery';
+import { buildKnowledgeQuery, isKnowledgeMatchRow, toKnowledgeItem, toVectorLiteral, type KnowledgeItem } from './logic/knowledgeQuery';
 
 export type { KnowledgeItem, KnowledgeSearchQuery } from './logic/knowledgeQuery';
 
@@ -64,7 +64,9 @@ function knowledgeErrorCode(error: unknown): KnowledgeBaseErrorCode {
 }
 
 /**
- * Semantic search over canine_knowledge_base via the match_knowledge_base RPC, closest first.
+ * Semantic search over verified knowledge_chunks via the match_dog_knowledge RPC, closest first. An empty
+ * result means nothing reached the similarity threshold (0.82 by default): the caller must then answer
+ * "I don't know" rather than fall back to unsourced text.
  * Throws KnowledgeBaseError: `invalid_query` for out-of-range input (no request is sent), `schema_missing`
  * when the migration isn't applied, `network` when the server is unreachable, `internal` otherwise.
  */
@@ -72,7 +74,7 @@ export async function searchKnowledgeBase(queryVector: number[], threshold?: num
   const query = buildKnowledgeQuery(queryVector, threshold, count, category);
   if (!query) throw new KnowledgeBaseError('invalid_query');
   try {
-    const { data, error } = await supabase.rpc('match_knowledge_base', {
+    const { data, error } = await supabase.rpc('match_dog_knowledge', {
       query_embedding: toVectorLiteral(query.queryVector),
       match_threshold: query.threshold,
       match_count: query.count,
@@ -81,7 +83,7 @@ export async function searchKnowledgeBase(queryVector: number[], threshold?: num
     if (error) throw new KnowledgeBaseError(knowledgeErrorCode(error), { cause: error });
     const rows: unknown = data;
     if (!Array.isArray(rows) || !rows.every(isKnowledgeMatchRow)) throw new KnowledgeBaseError('internal');
-    return rows.map(({ id, category: rowCategory, title, content, metadata, similarity }) => ({ id, category: rowCategory, title, content, metadata, similarity }));
+    return rows.map(toKnowledgeItem);
   } catch (error) {
     if (error instanceof KnowledgeBaseError) throw error;
     throw new KnowledgeBaseError(knowledgeErrorCode(error), { cause: error });

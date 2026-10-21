@@ -16,7 +16,7 @@ const LEGACY_FEATURES = new Set(['auth', 'chat', 'dashboard', 'dogs', 'health', 
  * Features with no backend at all, so no api/ layer. The emergency kitchen is deterministic and on-device
  * by design: its safety checks must work offline. ESLint already keeps the Supabase client out of them.
  */
-const NO_BACKEND_FEATURES = new Set(['kitchen', 'nutrition']);
+const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'kitchen', 'nutrition']);
 
 const REQUIRED_DIRS = ['api', 'hooks', 'utils', 'components'] as const;
 

@@ -217,21 +217,22 @@ export type VetSymptomConditionRow = {
   article_id: string;
 };
 
-/** Mirrors the check constraint on canine_knowledge_base.category. */
-export type KnowledgeBaseCategory = 'nutrition' | 'triage' | 'breed_traits' | 'behavior' | 'vaccinations';
+/** Mirrors the check constraint on knowledge_chunks.category. */
+export type KnowledgeChunkCategory = 'EMERGENCY_TOXICOLOGY' | 'CLINICAL_NUTRITION' | 'ETHOLOGY_BEHAVIOR' | 'TRAINING_DRIVE' | 'ISRAEL_REGULATION_BREEDS';
 
-export type CanineKnowledgeRow = {
+export type KnowledgeChunkRow = {
   id: string;
-  category: KnowledgeBaseCategory;
-  title: string;
-  content: string;
-  metadata: Json;
+  category: KnowledgeChunkCategory;
+  title_he: string;
+  content_he: string;
+  source_reference: string;
+  is_verified: boolean;
   // PostgREST serializes pgvector as its text form, e.g. "[0.1,0.2,...]".
   embedding: string | null;
 } & Timestamps;
 
-/** One row of the match_knowledge_base RPC. */
-export type KnowledgeMatchRow = Pick<CanineKnowledgeRow, 'id' | 'category' | 'title' | 'content' | 'metadata'> & { similarity: number };
+/** One row of the match_dog_knowledge RPC (verified chunks only). */
+export type KnowledgeMatchRow = Pick<KnowledgeChunkRow, 'id' | 'category' | 'title_he' | 'content_he' | 'source_reference'> & { similarity: number };
 
 export type JournalEntryRow = {
   id: string;
@@ -297,13 +298,13 @@ export type Database = {
       dog_daily_insights: Table<DailyInsightsRow, 'created_at'>;
       user_consents: Table<UserConsentRow, UserOwned>;
       support_requests: Table<SupportRequestRow, UserOwned | 'updated_at' | 'contact_email' | 'status'>;
-      canine_knowledge_base: Table<CanineKnowledgeRow, 'id' | 'metadata' | 'embedding' | 'created_at' | 'updated_at'>;
+      knowledge_chunks: Table<KnowledgeChunkRow, 'id' | 'is_verified' | 'embedding' | 'created_at' | 'updated_at'>;
     };
     Views: Record<string, never>;
     Functions: {
       ai_data_sharing_allowed: { Args: Record<string, never>; Returns: boolean };
-      match_knowledge_base: {
-        Args: { query_embedding: string; match_threshold: number; match_count: number; filter_category?: KnowledgeBaseCategory | null };
+      match_dog_knowledge: {
+        Args: { query_embedding: string; match_threshold?: number; match_count?: number; filter_category?: KnowledgeChunkCategory | null };
         Returns: KnowledgeMatchRow[];
       };
     };

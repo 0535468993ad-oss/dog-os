@@ -2,19 +2,29 @@ import type { KnowledgeMatchRow } from '@/lib/database.types';
 import { supabase } from '@/lib/supabase';
 
 import { KnowledgeBaseError, searchKnowledgeBase } from '../api';
-import { buildKnowledgeQuery, DEFAULT_MATCH_COUNT, DEFAULT_MATCH_THRESHOLD, EMBEDDING_DIMENSIONS, toVectorLiteral } from '../logic/knowledgeQuery';
+import {
+  buildKnowledgeQuery,
+  DEFAULT_MATCH_COUNT,
+  DEFAULT_MATCH_THRESHOLD,
+  EMBEDDING_DIMENSIONS,
+  KNOWLEDGE_BASE_CATEGORIES,
+  toVectorLiteral,
+} from '../logic/knowledgeQuery';
 
 const vector = (value = 0.01): number[] => Array.from({ length: EMBEDDING_DIMENSIONS }, () => value);
 
 const match = (overrides: Partial<KnowledgeMatchRow> = {}): KnowledgeMatchRow => ({
   id: '6f1c2a3e-0000-4000-8000-000000000001',
-  category: 'nutrition',
-  title: 'Chocolate toxicity',
-  content: 'Theobromine is toxic to dogs.',
-  metadata: { tags: ['toxins'], urgency: 'emergency' },
+  category: 'EMERGENCY_TOXICOLOGY',
+  title_he: 'הרעלת שוקולד',
+  content_he: 'תאוברומין רעיל לכלבים.',
+  source_reference: 'Merck Veterinary Manual – Chocolate Toxicosis',
   similarity: 0.91,
   ...overrides,
 });
+
+/** The app's shape for match(): the RPC's snake_case columns mapped to camelCase. */
+const item = (row = match()) => ({ id: row.id, category: row.category, title: row.title_he, content: row.content_he, sourceReference: row.source_reference, similarity: row.similarity });
 
 /** Stubs the next supabase.rpc call with a resolved `{ data, error }` result (or a rejection). */
 function mockRpc(result: { data: unknown; error: unknown } | Error) {
@@ -32,8 +42,14 @@ async function expectCode(promise: Promise<unknown>, code: KnowledgeBaseError['c
 afterEach(() => jest.restoreAllMocks());
 
 describe('buildKnowledgeQuery', () => {
-  it('applies defaults', () => {
-    expect(buildKnowledgeQuery(vector())).toMatchObject({ threshold: DEFAULT_MATCH_THRESHOLD, count: DEFAULT_MATCH_COUNT, category: null });
+  it('applies defaults: the 0.82 threshold of match_dog_knowledge', () => {
+    expect(DEFAULT_MATCH_THRESHOLD).toBe(0.82);
+    expect(buildKnowledgeQuery(vector())).toMatchObject({ threshold: 0.82, count: DEFAULT_MATCH_COUNT, category: null });
+  });
+
+  it('accepts exactly the five knowledge categories', () => {
+    expect([...KNOWLEDGE_BASE_CATEGORIES].sort()).toEqual(['CLINICAL_NUTRITION', 'EMERGENCY_TOXICOLOGY', 'ETHOLOGY_BEHAVIOR', 'ISRAEL_REGULATION_BREEDS', 'TRAINING_DRIVE']);
+    for (const category of KNOWLEDGE_BASE_CATEGORIES) expect(buildKnowledgeQuery(vector(), 0.9, 5, category)).toMatchObject({ category });
   });
 
   it.each<[string, Parameters<typeof buildKnowledgeQuery>]>([
@@ -45,6 +61,7 @@ describe('buildKnowledgeQuery', () => {
     ['fractional count', [vector(), 0.5, 2.5]],
     ['count above the cap', [vector(), 0.5, 41]],
     ['unknown category', [vector(), 0.5, 5, 'astrology']],
+    ['a retired lowercase category', [vector(), 0.5, 5, 'nutrition']],
   ])('rejects %s', (_, args) => {
     expect(buildKnowledgeQuery(...args)).toBeNull();
   });
@@ -55,29 +72,34 @@ describe('buildKnowledgeQuery', () => {
 });
 
 describe('searchKnowledgeBase', () => {
-  it('calls the RPC with validated arguments and returns typed items', async () => {
+  it('calls match_dog_knowledge with validated arguments and returns typed items', async () => {
     const spy = mockRpc({ data: [match()], error: null });
-    const items = await searchKnowledgeBase(vector(0.5), 0.8, 3, 'nutrition');
+    const items = await searchKnowledgeBase(vector(0.5), 0.9, 3, 'EMERGENCY_TOXICOLOGY');
 
-    expect(spy).toHaveBeenCalledWith('match_knowledge_base', {
+    expect(spy).toHaveBeenCalledWith('match_dog_knowledge', {
       query_embedding: toVectorLiteral(vector(0.5)),
-      match_threshold: 0.8,
+      match_threshold: 0.9,
       match_count: 3,
-      filter_category: 'nutrition',
+      filter_category: 'EMERGENCY_TOXICOLOGY',
     });
-    expect(items).toEqual([match()]);
+    expect(items).toEqual([item()]);
   });
 
-  it('sends defaults and a null category when omitted', async () => {
+  it('sends the 0.82 default and a null category when omitted', async () => {
     const spy = mockRpc({ data: [], error: null });
     await expect(searchKnowledgeBase(vector())).resolves.toEqual([]);
-    expect(spy).toHaveBeenCalledWith('match_knowledge_base', expect.objectContaining({ match_threshold: DEFAULT_MATCH_THRESHOLD, match_count: DEFAULT_MATCH_COUNT, filter_category: null }));
+    expect(spy).toHaveBeenCalledWith('match_dog_knowledge', expect.objectContaining({ match_threshold: 0.82, match_count: DEFAULT_MATCH_COUNT, filter_category: null }));
+  });
+
+  it('returns no items when nothing clears the threshold – the caller must then say it does not know', async () => {
+    mockRpc({ data: [], error: null });
+    await expect(searchKnowledgeBase(vector())).resolves.toEqual([]);
   });
 
   it('strips unexpected extra columns', async () => {
-    mockRpc({ data: [{ ...match(), embedding: '[0.1]' }], error: null });
-    const [item] = await searchKnowledgeBase(vector());
-    expect(item).not.toHaveProperty('embedding');
+    mockRpc({ data: [{ ...match(), embedding: '[0.1]', is_verified: true }], error: null });
+    const [first] = await searchKnowledgeBase(vector());
+    expect(first).toEqual(item());
   });
 
   it('rejects invalid input without a network call', async () => {
@@ -111,7 +133,8 @@ describe('searchKnowledgeBase', () => {
     ['a non-array payload', { rows: [] }],
     ['a row with an unknown category', [match({ category: 'astrology' as KnowledgeMatchRow['category'] })]],
     ['a row with a non-numeric similarity', [{ ...match(), similarity: 'high' }]],
-    ['a row with array metadata', [match({ metadata: ['x'] })]],
+    ['a row without a source reference', [match({ source_reference: '  ' })]],
+    ['a row in the retired shape', [{ id: 'x', category: 'EMERGENCY_TOXICOLOGY', title: 't', content: 'c', metadata: {}, similarity: 0.9 }]],
   ])('rejects %s as internal', async (_, data) => {
     mockRpc({ data, error: null });
     await expectCode(searchKnowledgeBase(vector()), 'internal');
