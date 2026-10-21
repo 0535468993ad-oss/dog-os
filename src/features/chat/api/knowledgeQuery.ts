@@ -1,5 +1,7 @@
 import type { KnowledgeChunkCategory, KnowledgeMatchRow } from '@/lib/database.types';
 
+import type { KnowledgeItem, KnowledgeSearchQuery } from '../types';
+
 /** Must match vector(1536) in supabase/migrations/20261021120000_knowledge_chunks.sql. */
 export const EMBEDDING_DIMENSIONS = 1536;
 /** Same default as match_dog_knowledge: below it the advisor says it doesn't know rather than stretch a loose match. */
@@ -15,27 +17,6 @@ export const KNOWLEDGE_BASE_CATEGORIES: readonly KnowledgeChunkCategory[] = [
   'TRAINING_DRIVE',
   'ISRAEL_REGULATION_BREEDS',
 ];
-
-export interface KnowledgeSearchQuery {
-  queryVector: number[];
-  /** Minimum cosine similarity, -1..1. */
-  threshold: number;
-  /** Maximum number of results, 1..MAX_MATCH_COUNT. */
-  count: number;
-  category: KnowledgeChunkCategory | null;
-}
-
-/** One verified knowledge chunk as the app uses it. */
-export interface KnowledgeItem {
-  id: string;
-  category: KnowledgeChunkCategory;
-  title: string;
-  content: string;
-  /** Where the content comes from; every chunk the advisor cites carries one. */
-  sourceReference: string;
-  /** Cosine similarity to the query, -1..1 (higher is closer). */
-  similarity: number;
-}
 
 export function isKnowledgeBaseCategory(value: unknown): value is KnowledgeChunkCategory {
   return typeof value === 'string' && (KNOWLEDGE_BASE_CATEGORIES as readonly string[]).includes(value);

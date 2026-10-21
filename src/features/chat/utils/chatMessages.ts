@@ -1,7 +1,7 @@
 import type { ChatHistoryRow } from '@/lib/database.types';
 import { toUserMessage } from '@/utils/errors';
 
-import { CHAT_ERROR_MESSAGES, ChatError } from '../api';
+import { CHAT_ERROR_MESSAGES, ChatError } from './chatErrors';
 
 export const MAX_MESSAGE_LENGTH = 4000;
 

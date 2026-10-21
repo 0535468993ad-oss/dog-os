@@ -1,7 +1,7 @@
 import type { ChatHistoryRow } from '@/lib/database.types';
 
-import { ChatError } from '../api';
-import { chatErrorMessage, mergeSentMessages, optimisticUserMessage, withoutMessage } from '../logic/chatMessages';
+import { ChatError } from '../utils/chatErrors';
+import { chatErrorMessage, mergeSentMessages, optimisticUserMessage, withoutMessage } from '../utils/chatMessages';
 
 const row = (id: string, role: ChatHistoryRow['role'] = 'user'): ChatHistoryRow => ({ id, user_id: 'u', dog_id: 'd', role, message: id, created_at: '2026-10-18T10:00:00Z' });
 

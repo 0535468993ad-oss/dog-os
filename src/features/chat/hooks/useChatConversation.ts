@@ -5,8 +5,8 @@ import type { ChatHistoryRow } from '@/lib/database.types';
 import { queryKeys } from '@/lib/queryClient';
 import { toUserMessage } from '@/utils/errors';
 
-import { clearChat, fetchChat, sendChatMessage } from './api';
-import { chatErrorMessage, mergeSentMessages, optimisticUserMessage, withoutMessage } from './logic/chatMessages';
+import { clearChat, fetchChat, sendChatMessage } from '../api/chat';
+import { chatErrorMessage, mergeSentMessages, optimisticUserMessage, withoutMessage } from '../utils/chatMessages';
 
 /**
  * Server state of one conversation (per dog, or general when dogId is null): history, optimistic sending

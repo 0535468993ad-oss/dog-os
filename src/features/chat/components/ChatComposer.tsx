@@ -7,7 +7,7 @@ import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
 import { colors, MIN_TOUCH_AREA, radius, shadow, spacing, typography } from '@/constants/theme';
 
-import { MAX_MESSAGE_LENGTH } from '../logic/chatMessages';
+import { MAX_MESSAGE_LENGTH } from '../utils/chatMessages';
 
 interface ChatComposerProps {
   draft: string;

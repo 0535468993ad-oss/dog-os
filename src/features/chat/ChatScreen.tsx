@@ -20,8 +20,8 @@ import { ClearChatConfirm } from './components/ClearChatConfirm';
 import { MessageBubble } from './components/MessageBubble';
 import { SmartPromptChips } from './components/SmartPromptChips';
 import { TypingIndicator } from './components/TypingIndicator';
-import { promptChips } from './logic/promptChips';
-import { useChatConversation } from './useChatConversation';
+import { promptChips } from './utils/promptChips';
+import { useChatConversation } from './hooks/useChatConversation';
 
 /** AI advisor tab: composes the conversation, composer and controls for the active dog. */
 export function ChatScreen() {

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { colors, MIN_TOUCH_AREA } from '@/constants/theme';
 
 import { SmartPromptChips } from '../components/SmartPromptChips';
-import { promptChips } from '../logic/promptChips';
+import { promptChips } from '../utils/promptChips';
 
 function flat(element: { props: { style?: unknown } }) {
   return StyleSheet.flatten(element.props.style as never) as { minHeight?: number; borderColor?: string; backgroundColor?: string };

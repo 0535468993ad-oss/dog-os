@@ -10,7 +10,7 @@ const FEATURES = path.join(__dirname, '..');
  * Features that predate the layout (api.ts / hooks.ts / logic/). Each moves to the layout the next time it
  * is modified, and is then removed from this list – the last test fails until it is.
  */
-const LEGACY_FEATURES = new Set(['auth', 'chat', 'dashboard', 'dogs', 'health', 'journal', 'report', 'training']);
+const LEGACY_FEATURES = new Set(['auth', 'dashboard', 'dogs', 'health', 'journal', 'report', 'training']);
 
 /**
  * Features with no backend at all, so no api/ layer. The emergency kitchen is deterministic and on-device

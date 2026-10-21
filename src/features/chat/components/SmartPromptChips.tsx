@@ -6,7 +6,7 @@ import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
 import { colors, glow, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 
-import type { PromptCategory, PromptChip } from '../logic/promptChips';
+import type { PromptCategory, PromptChip } from '../utils/promptChips';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 

@@ -1,7 +1,7 @@
 import type { KnowledgeMatchRow } from '@/lib/database.types';
 import { supabase } from '@/lib/supabase';
 
-import { KnowledgeBaseError, searchKnowledgeBase } from '../api';
+import { searchKnowledgeBase } from '../api/knowledgeBase';
 import {
   buildKnowledgeQuery,
   DEFAULT_MATCH_COUNT,
@@ -9,7 +9,8 @@ import {
   EMBEDDING_DIMENSIONS,
   KNOWLEDGE_BASE_CATEGORIES,
   toVectorLiteral,
-} from '../logic/knowledgeQuery';
+} from '../api/knowledgeQuery';
+import { KnowledgeBaseError } from '../utils/chatErrors';
 
 const vector = (value = 0.01): number[] => Array.from({ length: EMBEDDING_DIMENSIONS }, () => value);
 
