@@ -1,0 +1,19 @@
+{
+  // Node-only maintenance scripts, run directly by Node 24 (type stripping): erasable syntax only, and
+  // relative imports keep their .ts extension. The app's tsconfig excludes this folder.
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "../supabase/functions/_shared/embeddings.ts"]
+}
