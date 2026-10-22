@@ -61,15 +61,27 @@ export interface EdgeFunctionError {
   status: number;
 }
 
+/**
+ * The code for a response that did not come from our function: the Supabase gateway answers with
+ * `{ code, message }` (no `error` object) when the function isn't deployed, failed to boot, or the
+ * gateway rejected the JWT.
+ */
+function gatewayCode(status: number): string {
+  if (status === 404) return 'not_deployed';
+  if (status === 401) return 'unauthorized';
+  return status >= 500 ? 'unavailable' : 'internal';
+}
+
 /** Extracts `{ error: { code } }` and the HTTP status from a supabase.functions.invoke error. */
 export async function readFunctionError(error: unknown): Promise<EdgeFunctionError> {
   if (error instanceof FunctionsHttpError) {
     const response = error.context as Response;
     try {
-      const body = (await response.json()) as { error?: { code?: string } };
-      return { code: body.error?.code ?? 'internal', status: response.status };
+      const body = (await response.json()) as { error?: { code?: unknown } };
+      const code = body.error?.code;
+      return { code: typeof code === 'string' ? code : gatewayCode(response.status), status: response.status };
     } catch {
-      return { code: 'internal', status: response.status };
+      return { code: gatewayCode(response.status), status: response.status };
     }
   }
   return { code: 'network', status: 0 };

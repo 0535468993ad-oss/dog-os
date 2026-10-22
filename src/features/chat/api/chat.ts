@@ -1,6 +1,6 @@
 import type { ChatHistoryRow } from '@/lib/database.types';
 import { supabase, unwrap } from '@/lib/supabase';
-import { readFunctionError } from '@/utils/errors';
+import { readFunctionError, reportError } from '@/utils/errors';
 
 import { ChatError } from '../utils/chatErrors';
 
@@ -19,7 +19,9 @@ function isChatRow(value: unknown): value is ChatHistoryRow {
 export async function sendChatMessage(dogId: string | null, message: string): Promise<ChatHistoryRow[]> {
   const { data, error } = await supabase.functions.invoke<unknown>('chat', { body: { dogId, message } });
   if (error) {
-    const { code } = await readFunctionError(error);
+    const { code, status } = await readFunctionError(error);
+    // A server-side misconfiguration (missing function, boot failure) is an anomaly worth reporting.
+    if (code === 'not_deployed' || code === 'unavailable' || code === 'internal') reportError(error, `chat:invoke:${status}`);
     throw new ChatError(code);
   }
   const rows = (data as { messages?: unknown } | null)?.messages;
