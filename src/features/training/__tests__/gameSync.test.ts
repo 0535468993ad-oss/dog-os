@@ -101,6 +101,17 @@ describe('loadSyncedGame / saveSyncedGame', () => {
     expect((await loadSyncedGame('dog-1', TODAY)).totalXp).toBe(50);
   });
 
+  it('trains on the device alone, silently, until the migration is applied', async () => {
+    const missing = Object.assign(new Error('table not found'), { code: 'PGRST205' });
+    fetchRemote.mockRejectedValue(missing);
+    upsert.mockRejectedValue(missing);
+    expect((await loadSyncedGame('dog-1', TODAY)).totalXp).toBe(0);
+    const { uploaded } = await saveSyncedGame('dog-1', trained(10), TODAY);
+    await expect(uploaded).rejects.toBe(missing);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(reportError).not.toHaveBeenCalled();
+  });
+
   it('caches before uploading, and reports an upload failure while keeping the cache', async () => {
     upsert.mockRejectedValue(new Error('violates check constraint'));
     const { uploaded } = await saveSyncedGame('dog-1', trained(400), TODAY);

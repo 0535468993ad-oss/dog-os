@@ -1,6 +1,8 @@
+import { isSchemaMissingError } from '@/lib/supabase';
 import { reportError } from '@/utils/errors';
 
 import type { GameState } from '../types';
+import { parseGameState } from '../utils/gameState';
 import { reconcile, summarizeGame } from '../utils/gameSync';
 import { fetchRemoteGame, upsertRemoteGame } from './gameRemote';
 import { loadCachedGame, saveCachedGame } from './gameStorage';
@@ -15,7 +17,8 @@ const queues = new Map<string, Promise<void>>();
 function enqueueUpload(dogId: string, state: GameState, today: string): Promise<void> {
   const previous = queues.get(dogId) ?? Promise.resolve();
   const next = previous.then(() => upsertRemoteGame(dogId, state, summarizeGame(state, today)));
-  const settled = next.catch((error: unknown) => reportError(error, 'training/syncGame'));
+  // A missing table means the migration isn't applied yet: the cache carries on alone, without noise.
+  const settled = next.catch((error: unknown) => (isSchemaMissingError(error) ? undefined : reportError(error, 'training/syncGame')));
   queues.set(dogId, settled);
   return next;
 }
@@ -31,6 +34,8 @@ export async function loadSyncedGame(dogId: string, today: string): Promise<Game
     remote = await fetchRemoteGame(dogId);
   } catch (error) {
     if (cached) return cached;
+    // Before the dog_training_game migration is applied, train on the device alone.
+    if (isSchemaMissingError(error)) return parseGameState(null);
     throw error;
   }
   const { state, push } = reconcile(cached, remote);
