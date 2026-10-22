@@ -26,6 +26,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       if (event === 'SIGNED_OUT') {
         queryClient.clear(); // never leak one user's cache to the next
         void AsyncStorage.removeItem(LAST_ACTIVE_KEY).catch(() => undefined);
+        // Training XP, streaks and trophies are not cleared: they live in Supabase, and the device copy
+        // is only an offline cache keyed by dog id.
       }
       setState(session ? { status: 'signedIn', session, user: session.user } : { status: 'signedOut' });
     });

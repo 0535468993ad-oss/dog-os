@@ -9,7 +9,7 @@ import { SIZE_LABELS } from '@/features/dogs/breeds';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
 import { useJournal } from '@/features/journal/hooks';
-import { useTrainingSummary } from '@/features/training/hooks';
+import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
 import { colors, spacing } from '@/constants/theme';
 import { formatAge, todayIso } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';

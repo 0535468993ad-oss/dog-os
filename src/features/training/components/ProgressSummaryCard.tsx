@@ -5,8 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Button, Card } from '@/components/ui';
 import { colors, spacing } from '@/constants/theme';
 
-import type { TrainingModule } from '../api';
-import { streakTitle } from '../logic/moduleProgress';
+import type { TrainingModule } from '../types';
+import { streakTitle } from '../utils/moduleProgress';
 
 interface ProgressSummaryCardProps {
   dogName: string;

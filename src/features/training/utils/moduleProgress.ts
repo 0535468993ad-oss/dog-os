@@ -1,6 +1,5 @@
-import type { TrainingModule } from '../api';
-import type { ModuleProgress } from '../hooks';
-import { DIFFICULTY_LABELS } from '../labels';
+import type { ModuleProgress, TrainingModule } from '../types';
+import { DIFFICULTY_LABELS } from './labels';
 
 /** A module counts as done when every one of its steps is completed. */
 export function isModuleComplete(progress: ModuleProgress | undefined): boolean {

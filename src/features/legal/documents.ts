@@ -368,7 +368,7 @@ const licenses: LegalDocument = {
       heading: '4. ספריות קוד (רישיון MIT)',
       paragraphs: [
         'React, React DOM ו-React Native – © Meta Platforms, Inc. and affiliates.',
-        'Expo SDK, Expo Router ומודולי Expo (expo-image, expo-image-picker, expo-print, expo-sharing, expo-file-system, expo-font, expo-localization, expo-linking, expo-splash-screen, expo-status-bar, expo-constants) – © 650 Industries, Inc.',
+        'Expo SDK, Expo Router ומודולי Expo (expo-image, expo-image-picker, expo-print, expo-sharing, expo-file-system, expo-font, expo-localization, expo-linking, expo-splash-screen, expo-status-bar, expo-constants, expo-haptics) – © 650 Industries, Inc.',
         'React Native Web – © Nicolas Gallagher. React Navigation – © React Navigation Contributors. react-native-screens ו-react-native-svg – © Software Mansion ותורמים. react-native-safe-area-context – © 2019 Th3rd Wave.',
         '@react-native-async-storage/async-storage ו-@react-native-community/datetimepicker – © React Native Community.',
         'supabase-js – © Supabase, Inc. TanStack Query – © Tanner Linsley.',

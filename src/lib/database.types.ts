@@ -253,6 +253,22 @@ export type DailyInsightsRow = {
   created_at: string;
 };
 
+/** Per-dog training gamification state (supabase/migrations/20261022120000_dog_training_game.sql). */
+export type TrainingGameRow = {
+  dog_id: string;
+  user_id: string;
+  xp: number;
+  level: number;
+  streak_days: number;
+  distinct_active_days: number;
+  daily_xp_earned: number;
+  daily_xp_date: string | null;
+  unlocked_trophies: string[];
+  last_session_at: string | null;
+  state: Json;
+  client_updated_at: string;
+} & Timestamps;
+
 export type UserConsentRow = {
   id: string;
   user_id: string;
@@ -296,6 +312,7 @@ export type Database = {
       vet_symptom_conditions: Table<VetSymptomConditionRow>;
       journal_entries: Table<JournalEntryRow, UserOwned | 'updated_at' | 'entry_date' | 'category' | 'mood'>;
       dog_daily_insights: Table<DailyInsightsRow, 'created_at'>;
+      dog_training_game: Table<TrainingGameRow, 'user_id' | 'created_at' | 'updated_at'>;
       user_consents: Table<UserConsentRow, UserOwned>;
       support_requests: Table<SupportRequestRow, UserOwned | 'updated_at' | 'contact_email' | 'status'>;
       knowledge_chunks: Table<KnowledgeChunkRow, 'id' | 'is_verified' | 'embedding' | 'created_at' | 'updated_at'>;

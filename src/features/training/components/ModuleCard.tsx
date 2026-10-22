@@ -4,10 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Badge, Card, ProgressBar } from '@/components/ui';
 import { spacing } from '@/constants/theme';
 
-import type { TrainingModule } from '../api';
-import type { ModuleProgress } from '../hooks';
-import { CATEGORY_LABELS, DIFFICULTY_LABELS } from '../labels';
-import { isModuleComplete, moduleAccessibilityLabel } from '../logic/moduleProgress';
+import type { ModuleProgress, TrainingModule } from '../types';
+import { CATEGORY_LABELS, DIFFICULTY_LABELS } from '../utils/labels';
+import { isModuleComplete, moduleAccessibilityLabel } from '../utils/moduleProgress';
 
 /** One training module: summary, category/difficulty/duration badges and, with a dog, its progress. */
 export function ModuleCard({ module, progress, showProgress }: { module: TrainingModule; progress: ModuleProgress | undefined; showProgress: boolean }) {

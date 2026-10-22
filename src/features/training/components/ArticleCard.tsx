@@ -5,8 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Badge, Card } from '@/components/ui';
 import { colors, spacing } from '@/constants/theme';
 
-import type { KnowledgeArticle } from '../api';
-import { KNOWLEDGE_CATEGORY_LABELS } from '../labels';
+import type { KnowledgeArticle } from '../types';
+import { KNOWLEDGE_CATEGORY_LABELS } from '../utils/labels';
 
 /** One encyclopedia article: summary, category and reading time; "saved" is in the label, not only the icon. */
 export function ArticleCard({ article, saved }: { article: KnowledgeArticle; saved: boolean }) {

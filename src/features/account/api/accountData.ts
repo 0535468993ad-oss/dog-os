@@ -16,6 +16,7 @@ const USER_TABLES = [
   'journal_entries',
   'chat_history',
   'dog_daily_insights',
+  'dog_training_game',
   'user_consents',
   'support_requests',
 ] as const;

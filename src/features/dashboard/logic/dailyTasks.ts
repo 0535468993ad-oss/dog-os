@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 
 import type { HealthData } from '@/features/health/api';
 import { vaccinationStatus } from '@/features/health/logic/vaccinationStatus';
-import type { TrainingModule } from '@/features/training/api';
+import type { TrainingModule } from '@/features/training/types';
 import type { JournalEntryRow, VaccinationRow } from '@/lib/database.types';
 import { daysBetween } from '@/utils/date';
 

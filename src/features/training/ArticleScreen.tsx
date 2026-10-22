@@ -6,8 +6,9 @@ import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
-import { useBookmarks, useKnowledgeBase, useToggleBookmark, useTrainingCatalog } from './hooks';
-import { KNOWLEDGE_CATEGORY_LABELS, METHOD_LABELS } from './labels';
+import { useBookmarks, useKnowledgeBase, useToggleBookmark } from './hooks/useKnowledgeBase';
+import { useTrainingCatalog } from './hooks/useTrainingSummary';
+import { KNOWLEDGE_CATEGORY_LABELS, METHOD_LABELS } from './utils/labels';
 
 export function ArticleScreen({ articleId }: { articleId: string }) {
   const articles = useKnowledgeBase();

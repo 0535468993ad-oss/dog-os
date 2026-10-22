@@ -1,18 +1,7 @@
 import type { KnowledgeCategory, TrainingMethod } from '@/lib/database.types';
 
-import type { KnowledgeArticle } from '../api';
-import { KNOWLEDGE_CATEGORY_LABELS, METHOD_LABELS } from '../labels';
-
-export type CategoryFilter = KnowledgeCategory | 'all' | 'saved';
-export type MethodFilter = TrainingMethod | 'all';
-
-export interface ArticleFilter {
-  query: string;
-  category: CategoryFilter;
-  method: MethodFilter;
-  /** Ids of the user's bookmarked articles (for the "saved" filter). */
-  saved: ReadonlySet<string>;
-}
+import type { ArticleFilter, CategoryFilter, KnowledgeArticle, MethodFilter } from '../types';
+import { KNOWLEDGE_CATEGORY_LABELS, METHOD_LABELS } from './labels';
 
 /** Filters encyclopedia articles by saved/category, method and a free-text query. */
 export function filterArticles(articles: KnowledgeArticle[], { query, category, method, saved }: ArticleFilter): KnowledgeArticle[] {

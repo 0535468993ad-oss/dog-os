@@ -1,6 +1,6 @@
 import { BREED_BY_ID } from '@/features/dogs/breeds';
 import type { HealthData, VetArticle } from '@/features/health/api';
-import type { TrainingModule } from '@/features/training/api';
+import type { TrainingModule } from '@/features/training/types';
 import type { DogRow, JournalEntryRow } from '@/lib/database.types';
 import { ageInMonths, daysBetween, todayIso } from '@/utils/date';
 

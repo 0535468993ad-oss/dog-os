@@ -6,7 +6,7 @@ import { useHealth, useVetKnowledge } from '@/features/health/hooks';
 import { useJournal } from '@/features/journal/hooks';
 import { useAiSharing } from '@/features/legal/hooks/consents';
 import type { AiSharing } from '@/features/legal/types';
-import { useTrainingSummary } from '@/features/training/hooks';
+import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
 import type { DogRow } from '@/lib/database.types';
 import { queryKeys } from '@/lib/queryClient';
 import { todayIso } from '@/utils/date';

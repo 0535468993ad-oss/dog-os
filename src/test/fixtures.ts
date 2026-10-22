@@ -1,7 +1,7 @@
 // Typed test factories. Each returns a complete, valid row; tests override only what they assert on.
 
 import type { HealthData, VetArticle } from '@/features/health/api';
-import type { TrainingModule } from '@/features/training/api';
+import type { TrainingModule } from '@/features/training/types';
 import type { DogRow, FoodPortionRow, JournalEntryRow, UserConsentRow, VaccinationRow, VetSymptomRow, WeightLogRow } from '@/lib/database.types';
 
 const USER_ID = '00000000-0000-4000-8000-000000000001';

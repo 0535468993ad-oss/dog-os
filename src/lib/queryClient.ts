@@ -41,6 +41,8 @@ export const queryKeys = {
   dogPhoto: (path: string) => ['dog-photo', path] as const,
   trainingCatalog: ['training-catalog'] as const,
   trainingProgress: (dogId: string) => ['training-progress', dogId] as const,
+  /** On-device gamification state (XP, streak, trophies) for a dog. */
+  trainingGame: (dogId: string) => ['training-game', dogId] as const,
   knowledgeBase: ['knowledge-base'] as const,
   knowledgeBookmarks: (userId: string) => ['knowledge-bookmarks', userId] as const,
   chat: (dogId: string | null) => ['chat', dogId ?? 'general'] as const,

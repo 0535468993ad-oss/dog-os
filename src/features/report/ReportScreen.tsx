@@ -7,7 +7,7 @@ import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
 import { useJournal } from '@/features/journal/hooks';
-import { useTrainingSummary } from '@/features/training/hooks';
+import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
 import { formatAge } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 

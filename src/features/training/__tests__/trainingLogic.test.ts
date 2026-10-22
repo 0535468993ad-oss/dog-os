@@ -1,8 +1,8 @@
 import { makeModule } from '@/test/fixtures';
 
-import type { KnowledgeArticle } from '../api';
-import { categoryOptions, filterArticles, METHOD_OPTIONS } from '../logic/articleSearch';
-import { isModuleComplete, moduleAccessibilityLabel, streakTitle } from '../logic/moduleProgress';
+import type { KnowledgeArticle } from '../types';
+import { categoryOptions, filterArticles, METHOD_OPTIONS } from '../utils/articleSearch';
+import { isModuleComplete, moduleAccessibilityLabel, streakTitle } from '../utils/moduleProgress';
 
 function article(overrides: Partial<KnowledgeArticle>): KnowledgeArticle {
   return {

@@ -6,8 +6,9 @@ import { cacheState } from '@/lib/queryView';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
-import { useBookmarks, useKnowledgeBase } from '../hooks';
-import { categoryOptions, filterArticles, METHOD_OPTIONS, type CategoryFilter, type MethodFilter } from '../logic/articleSearch';
+import { useBookmarks, useKnowledgeBase } from '../hooks/useKnowledgeBase';
+import type { CategoryFilter, MethodFilter } from '../types';
+import { categoryOptions, filterArticles, METHOD_OPTIONS } from '../utils/articleSearch';
 import { ArticleCard } from './ArticleCard';
 
 /** Training encyclopedia tab: search, category/saved and method filters over the knowledge base. */

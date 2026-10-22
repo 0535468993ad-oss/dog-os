@@ -55,7 +55,7 @@ Adapted from the ECC React Native / Expo rule set (security, accessibility, prod
   - `<Feature>Screen.tsx` at the feature root composes the layers
 - Route files in `src/app/` stay thin: they render the feature screen and export the `ErrorBoundary`.
 - Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`) have no `api/` folder and are listed in the guard's `NO_BACKEND_FEATURES`.
-- `auth`, `dashboard`, `dogs`, `health`, `journal`, `report` and `training` predate the layout (`api.ts`, `hooks.ts`, `logic/`). They are on the guard's `LEGACY_FEATURES` list; migrate one when it is substantially changed, then remove it from the list.
+- `auth`, `dashboard`, `dogs`, `health`, `journal` and `report` predate the layout (`api.ts`, `hooks.ts`, `logic/`). They are on the guard's `LEGACY_FEATURES` list; migrate one when it is substantially changed, then remove it from the list.
 - Modular, single-responsibility files:
   - Keep UI components, pure business logic and API calls in separate files.
   - Give every exported function a one-line comment saying what it's for.

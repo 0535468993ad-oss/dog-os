@@ -21,7 +21,7 @@ This file adds the rules Claude must follow on top of it. Where the two differ, 
   - `components/` – one component per file; never import `api/` directly
   - `<Feature>Screen.tsx` composes; `src/app/` route files only render it and export the `ErrorBoundary`
   - Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`) have no `api/` and are listed in `NO_BACKEND_FEATURES`.
-  - `auth`, `dashboard`, `dogs`, `health`, `journal`, `report`, `training` are on the guard's `LEGACY_FEATURES` list. Migrate one when it is substantially changed, then remove it from the list.
+  - `auth`, `dashboard`, `dogs`, `health`, `journal`, `report` are on the guard's `LEGACY_FEATURES` list. Migrate one when it is substantially changed, then remove it from the list.
 - **Size limits:** ESLint `max-lines` – 250 per `.ts`, 200 per `.tsx` (blank lines and comments excluded). Split before you get close; big datasets go in several `data/` files plus an aggregator.
 - **Comments:** one line per exported function saying what it is for; comment *why*, not *what*.
 - **Design system:** colors, spacing, radius and type come only from `src/constants/theme.ts` (Dark Luxury). The app is dark-only – never force a light color scheme. Every new text/background pairing goes into `src/constants/__tests__/theme.test.ts`.

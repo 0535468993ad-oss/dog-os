@@ -6,7 +6,7 @@ import { useActiveDog } from '@/features/dogs/hooks';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
-import { useTrainingSummary } from '../hooks';
+import { useTrainingSummary } from '../hooks/useTrainingSummary';
 import { ModuleCard } from './ModuleCard';
 import { ProgressSummaryCard } from './ProgressSummaryCard';
 

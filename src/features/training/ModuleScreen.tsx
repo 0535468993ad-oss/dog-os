@@ -7,8 +7,9 @@ import { useActiveDog } from '@/features/dogs/hooks';
 import { spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
-import { useKnowledgeBase, useToggleStep, useTrainingSummary } from './hooks';
-import { CATEGORY_LABELS, DIFFICULTY_LABELS } from './labels';
+import { useKnowledgeBase } from './hooks/useKnowledgeBase';
+import { useToggleStep, useTrainingSummary } from './hooks/useTrainingSummary';
+import { CATEGORY_LABELS, DIFFICULTY_LABELS } from './utils/labels';
 
 export function ModuleScreen({ moduleId }: { moduleId: string }) {
   const { activeDog } = useActiveDog();
