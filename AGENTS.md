@@ -45,17 +45,22 @@ Docs: https://docs.expo.dev/eas/index.md
 Adapted from the ECC React Native / Expo rule set (security, accessibility, production readiness, database migrations) to this codebase.
 
 ### Architecture
-- Feature code lives in `src/features/<feature>/` (`api.ts` = Supabase calls, `hooks.ts` = React Query hooks, screens/components). Route files in `src/app/` stay thin and only render feature screens.
+- Feature code lives in `src/features/<feature>/`, in layers that only import downward. `src/features/__tests__/featureStructure.test.ts` enforces this:
+  - `types.ts` – the feature's contracts (may re-export from a `types/` folder)
+  - `api/` – Supabase calls; the only place that imports `@/lib/supabase` (ESLint enforces this too)
+  - `data/` – static datasets: plain values and types only
+  - `utils/` – pure, tested business logic: no React, no Supabase, no hooks or components
+  - `hooks/` – state and React Query hooks; never import components
+  - `components/` – one component per file; never import `api/` directly
+  - `<Feature>Screen.tsx` at the feature root composes the layers
+- Route files in `src/app/` stay thin: they render the feature screen and export the `ErrorBoundary`.
+- Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`) have no `api/` folder and are listed in the guard's `NO_BACKEND_FEATURES`.
+- `auth`, `dashboard`, `dogs`, `health`, `journal`, `report` and `training` predate the layout (`api.ts`, `hooks.ts`, `logic/`). They are on the guard's `LEGACY_FEATURES` list; migrate one when it is substantially changed, then remove it from the list.
 - Modular, single-responsibility files:
-  - Keep UI components, pure business logic and API calls in separate files: one component per file, logic in plain tested modules.
+  - Keep UI components, pure business logic and API calls in separate files.
   - Give every exported function a one-line comment saying what it's for.
-  - Split a file once it holds more than one screen or concern. Reference layout:
-    - `features/health` (`logic/`, `records/`, `encyclopedia/`, `symptoms/`, `forms/`)
-    - `features/chat` (`logic/`, `components/`, `useChatConversation.ts`)
-    - `features/dashboard` (`api.ts`, `hooks.ts`, `logic/`, `components/`)
-    - `features/training` (`logic/`, `academy/`, `encyclopedia/`)
-    - `features/dogs/form/`, `features/auth/signIn/` (screen + `use…Form` hook + pure `…Logic.ts`)
-    - `components/ui/select/`
+  - Split a file before it reaches the ESLint `max-lines` limit (250 per `.ts`, 200 per `.tsx`). Large datasets go in several `data/` files plus an aggregator.
+  - Reusable UI lives in `src/components/ui/`, and the app shell in `src/navigation/`.
   - Shared form feedback uses `FeedbackBanner` from `components/ui`.
 - Before writing code, present the folder structure of the files to be added or changed.
 - Shared UI comes from `src/components/ui`; colors, blur, spacing and type from `src/constants/theme`. Don't hard-code colors or font sizes in features.
