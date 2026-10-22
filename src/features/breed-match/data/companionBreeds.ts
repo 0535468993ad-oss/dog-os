@@ -1,0 +1,83 @@
+import type { BreedProfile } from '../types';
+
+// Companion breeds (FCI group 9). Estimated Israeli ranges, October 2026; grooming assumes a groomer
+// every 4–6 weeks where the coat needs one.
+
+export const COMPANION_BREEDS: readonly BreedProfile[] = [
+  {
+    id: 'french-bulldog',
+    nameHe: 'בולדוג צרפתי',
+    nameEn: 'French Bulldog',
+    category: 'COMPANION',
+    acquisition: 'IKC_BREEDER',
+    size: 'SMALL',
+    weightRangeKg: { min: 8, max: 14 },
+    lifeExpectancyYears: { min: 9, max: 12 },
+    metrics: { energyLevel: 2, mentalStimulationNeed: 2, sheddingLevel: 3, droolingLevel: 3, kidCompatibility: 4, strangerFriendliness: 4, dogSociability: 3, barkingTendency: 2, groomingEffort: 2, noviceFriendly: 4, preyDrive: 2 },
+    tolerances: { maxAloneHoursPerDay: 6, minExerciseMinutesPerDay: 30, apartmentSuitable: true, hypoallergenic: false, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 160, estimatedMonthlyInsuranceAndVetILS: 380, estimatedMonthlyGroomingILS: 40, ikcPuppyPriceRangeILS: { min: 8000, max: 15000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['תסמונת דרכי אוויר ברכיצפלית (BOAS) – נחיריים צרים וחך רך ארוך', 'מכת חום – סכנת חיים כבר ב־28 מעלות עם לחות', 'פריצות דיסק (IVDD) וחוליות פרפר (Hemivertebrae)', 'דלקות בקפלי העור ובאוזניים', 'רוב ההמלטות בניתוח קיסרי'],
+      mandatoryParentClearancesHe: ['דירוג תפקוד נשימתי (RFG) להורים – לא לקנות מהורים בדרגה 2 ומעלה', 'צילום עמוד שדרה להורים', 'DNA: CMR1, HUU ו־DM', 'נחיריים פתוחים לעין – בקשו לראות את ההורים נושמים אחרי מאמץ קל'],
+    },
+    realityCheckWarningHe: 'הנחירות "המתוקות" הן מצוקה נשימתית. בקיץ הישראלי הבולדוג הצרפתי מוגבל לטיולים קצרים בשעות קרירות בלבד, וחלק נזקקים לניתוח הרחבת דרכי אוויר. תתכננו תקציב וטרינרי גבוה מהממוצע.',
+    ikcClubId: 'toy',
+  },
+  {
+    id: 'poodle',
+    nameHe: 'פודל טוי / מיניאטורי',
+    nameEn: 'Toy / Miniature Poodle',
+    category: 'COMPANION',
+    acquisition: 'IKC_BREEDER',
+    size: 'SMALL',
+    weightRangeKg: { min: 3, max: 8 },
+    lifeExpectancyYears: { min: 14, max: 17 },
+    metrics: { energyLevel: 3, mentalStimulationNeed: 4, sheddingLevel: 1, droolingLevel: 1, kidCompatibility: 3, strangerFriendliness: 3, dogSociability: 3, barkingTendency: 4, groomingEffort: 5, noviceFriendly: 4, preyDrive: 2 },
+    tolerances: { maxAloneHoursPerDay: 5, minExerciseMinutesPerDay: 40, apartmentSuitable: true, hypoallergenic: true, heatSensitive: false },
+    israeliEconomics: { estimatedMonthlyFoodILS: 130, estimatedMonthlyInsuranceAndVetILS: 180, estimatedMonthlyGroomingILS: 250, ikcPuppyPriceRangeILS: { min: 7000, max: 12000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['פריקת פיקת הברך (Patellar Luxation)', 'מחלת לג־קאלווה־פרתס (נמק ראש הירך)', 'ניוון רשתית מתקדם (PRA-prcd)', 'מחלות חניכיים ושיניים'],
+      mandatoryParentClearancesHe: ['בדיקת פיקות ברך רשמית לשני ההורים', 'DNA: PRA-prcd', 'בדיקת עיניים ECVO', 'לוודא את גודל ההורים – "טיקאפ" זעיר במיוחד הוא סימן לרבייה לא אחראית'],
+    },
+    realityCheckWarningHe: 'פודל הוא אחד הגזעים החכמים: בלי אימון ומשחקי חשיבה הוא נובח, דורש ומפתח תלות. הפרווה לא נושרת – היא מסתבכת. בלי מספרה כל 4–6 שבועות נוצרים קשרים שכואבים לעור.',
+    ikcClubId: 'toy',
+  },
+  {
+    id: 'cavalier',
+    nameHe: 'קבליר קינג צ׳ארלס ספניאל',
+    nameEn: 'Cavalier King Charles Spaniel',
+    category: 'COMPANION',
+    acquisition: 'IKC_BREEDER',
+    size: 'SMALL',
+    weightRangeKg: { min: 5, max: 9 },
+    lifeExpectancyYears: { min: 9, max: 14 },
+    metrics: { energyLevel: 3, mentalStimulationNeed: 2, sheddingLevel: 3, droolingLevel: 2, kidCompatibility: 5, strangerFriendliness: 5, dogSociability: 5, barkingTendency: 2, groomingEffort: 3, noviceFriendly: 5, preyDrive: 2 },
+    tolerances: { maxAloneHoursPerDay: 4, minExerciseMinutesPerDay: 40, apartmentSuitable: true, hypoallergenic: false, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 140, estimatedMonthlyInsuranceAndVetILS: 360, estimatedMonthlyGroomingILS: 80, ikcPuppyPriceRangeILS: { min: 8000, max: 14000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['מחלת המסתם המיטרלי (MVD) – רוב הקבלירים יפתחו אוושה עד גיל 10', 'מום קיארי וסירינגומיאליה (CM/SM) – כאב נוירולוגי כרוני', 'נפילה אפיזודית (EF)', 'יובש עיניים ושיער מסולסל (CC/DE)'],
+      mandatoryParentClearancesHe: ['בדיקת לב שנתית אצל קרדיולוג לשני ההורים – הורים מעל גיל 2.5 עם לב תקין', 'MRI לקיארי/סירינגומיאליה להורים', 'DNA: EF ו־CC/DE'],
+    },
+    realityCheckWarningHe: 'הקבליר הוא הכלב החברותי ביותר שתמצאו – ובדיוק בגלל זה הוא סובל מבדידות. לצד זה, הגזע נושא עומס גנטי כבד: בלי הורים שעברו בדיקות לב ו־MRI, אתם מהמרים על שנים של טיפול תרופתי.',
+    ikcClubId: 'toy',
+  },
+  {
+    id: 'shih-tzu',
+    nameHe: 'שיצו',
+    nameEn: 'Shih Tzu',
+    category: 'COMPANION',
+    acquisition: 'IKC_BREEDER',
+    size: 'SMALL',
+    weightRangeKg: { min: 4, max: 8 },
+    lifeExpectancyYears: { min: 11, max: 16 },
+    metrics: { energyLevel: 2, mentalStimulationNeed: 2, sheddingLevel: 1, droolingLevel: 1, kidCompatibility: 3, strangerFriendliness: 4, dogSociability: 4, barkingTendency: 3, groomingEffort: 5, noviceFriendly: 5, preyDrive: 1 },
+    tolerances: { maxAloneHoursPerDay: 6, minExerciseMinutesPerDay: 30, apartmentSuitable: true, hypoallergenic: true, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 120, estimatedMonthlyInsuranceAndVetILS: 220, estimatedMonthlyGroomingILS: 250, ikcPuppyPriceRangeILS: { min: 5000, max: 9000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['פנים מקוצרות – קוצר נשימה ורגישות לחום', 'פגיעות קרנית ויובש עיניים (KCS) – העיניים בולטות וחשופות', 'פריקת פיקת הברך', 'דיספלזיה כלייתית תורשתית'],
+      mandatoryParentClearancesHe: ['בדיקת עיניים ECVO לשני ההורים', 'בדיקת פיקות ברך', 'בדיקת תפקודי כליות (דם ושתן) להורים', 'נחיריים פתוחים – לראות את ההורים נושמים בשקט'],
+    },
+    realityCheckWarningHe: 'השיצו מתאים מאוד לדירה ולמתחילים, אבל הפרווה דורשת סירוק יומי ומספרה קבועה. בלי טיפוח – קשרים, דלקות עור ועיניים מגורות משיער שנכנס אליהן.',
+    ikcClubId: 'toy',
+  },
+];

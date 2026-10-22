@@ -1,0 +1,83 @@
+import type { BreedProfile } from '../types';
+
+// Working and guardian breeds. Prices and monthly costs are estimated Israeli ranges (October 2026):
+// IKC-registered litters, premium food, a mid-tier Hayuta/Phoenix policy plus preventive care.
+
+export const WORKING_BREEDS: readonly BreedProfile[] = [
+  {
+    id: 'german-shepherd',
+    nameHe: 'רועה גרמני',
+    nameEn: 'German Shepherd Dog',
+    category: 'HERDING',
+    acquisition: 'IKC_BREEDER',
+    size: 'LARGE',
+    weightRangeKg: { min: 22, max: 40 },
+    lifeExpectancyYears: { min: 9, max: 13 },
+    metrics: { energyLevel: 4, mentalStimulationNeed: 5, sheddingLevel: 5, droolingLevel: 2, kidCompatibility: 4, strangerFriendliness: 2, dogSociability: 3, barkingTendency: 4, groomingEffort: 3, noviceFriendly: 2, preyDrive: 3 },
+    tolerances: { maxAloneHoursPerDay: 6, minExerciseMinutesPerDay: 90, apartmentSuitable: false, hypoallergenic: false, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 400, estimatedMonthlyInsuranceAndVetILS: 280, estimatedMonthlyGroomingILS: 60, ikcPuppyPriceRangeILS: { min: 6000, max: 12000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['דיספלזיה של מפרק הירך (HD) ושל המרפק (ED)', 'מיאלופתיה ניוונית (DM) – שיתוק הדרגתי של הגפיים האחוריות', 'היפוך קיבה (GDV) – מצב חירום כירורגי', 'אי־ספיקת לבלב אקסוקרינית (EPI)', 'פיסטולות סביב פי הטבעת'],
+      mandatoryParentClearancesHe: ['צילומי אגן ומרפקים רשמיים של שני ההורים, עם תוצאה מוסמכת (לא "הווטרינר אמר שזה בסדר")', 'בדיקת DNA ל־DM (גן SOD1) לשני ההורים', 'תעודת יוחסין של ההתאחדות לשני ההורים ולגור'],
+    },
+    realityCheckWarningHe: 'רועה גרמני בלי עבודה מחשבתית יומית ובלי חשיפה מוקדמת לאנשים ולסביבה הופך לכלב דרוך, נובח ושומר־יתר. השעמום מתבטא בהרס ובתסכול – לא ב"עקשנות".',
+    ikcClubId: 'shepherd',
+  },
+  {
+    id: 'belgian-malinois',
+    nameHe: 'רועה בלגי מלינואה',
+    nameEn: 'Belgian Malinois',
+    category: 'HERDING',
+    acquisition: 'IKC_BREEDER',
+    size: 'LARGE',
+    weightRangeKg: { min: 20, max: 30 },
+    lifeExpectancyYears: { min: 12, max: 14 },
+    metrics: { energyLevel: 5, mentalStimulationNeed: 5, sheddingLevel: 3, droolingLevel: 1, kidCompatibility: 2, strangerFriendliness: 2, dogSociability: 2, barkingTendency: 3, groomingEffort: 2, noviceFriendly: 1, preyDrive: 5 },
+    tolerances: { maxAloneHoursPerDay: 4, minExerciseMinutesPerDay: 120, apartmentSuitable: false, hypoallergenic: false, heatSensitive: false },
+    israeliEconomics: { estimatedMonthlyFoodILS: 350, estimatedMonthlyInsuranceAndVetILS: 230, estimatedMonthlyGroomingILS: 30, ikcPuppyPriceRangeILS: { min: 5000, max: 10000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['דיספלזיה של הירך והמרפק (HD/ED)', 'אפילפסיה אידיופתית', 'ניוון ספוגי עם אטקסיה מוחונית (SDCA) – תורשתי', 'פציעות שרירים וגידים מעומס עבודה'],
+      mandatoryParentClearancesHe: ['צילומי אגן ומרפקים רשמיים לשני ההורים', 'בדיקת DNA ל־SDCA1 ו־SDCA2 – לפחות הורה אחד נקי', 'בדיקת עיניים אצל רופא עיניים וטרינרי (ECVO)', 'היסטוריית אפילפסיה בקו הדם – לשאול ישירות ולקבל תשובה כתובה'],
+    },
+    realityCheckWarningHe: 'המלינואה נבחר לעבודה מבצעית בגלל סף גירוי נמוך ודחף שלא נכבה. בדירה, עם בעלים מתחילים ושעה של הליכה, הוא מפתח רדיפת צללים, נשיכות תסכול והרס. זה לא כלב שמרגיעים – זה כלב שמעסיקים, כל יום.',
+    ikcClubId: 'shepherd',
+  },
+  {
+    id: 'boxer',
+    nameHe: 'בוקסר',
+    nameEn: 'Boxer',
+    category: 'WORKING_GUARDIAN',
+    acquisition: 'IKC_BREEDER',
+    size: 'LARGE',
+    weightRangeKg: { min: 25, max: 32 },
+    lifeExpectancyYears: { min: 10, max: 12 },
+    metrics: { energyLevel: 4, mentalStimulationNeed: 3, sheddingLevel: 2, droolingLevel: 3, kidCompatibility: 5, strangerFriendliness: 3, dogSociability: 3, barkingTendency: 2, groomingEffort: 1, noviceFriendly: 3, preyDrive: 3 },
+    tolerances: { maxAloneHoursPerDay: 5, minExerciseMinutesPerDay: 75, apartmentSuitable: true, hypoallergenic: false, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 350, estimatedMonthlyInsuranceAndVetILS: 330, estimatedMonthlyGroomingILS: 20, ikcPuppyPriceRangeILS: { min: 6000, max: 10000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['קרדיומיופתיה של החדר הימני (ARVC) – הפרעות קצב ומוות פתאומי', 'היצרות תת־אאורטלית (SAS)', 'גידולי תאי פיטום (MCT) ולימפומה', 'קוצר נשימה קל ורגישות לחום (פנים מקוצרות)'],
+      mandatoryParentClearancesHe: ['בדיקת הולטר 24 שעות לשני ההורים (ARVC)', 'אקו לב אצל קרדיולוג וטרינרי (SAS)', 'בדיקת DNA לגן Striatin (ARVC)', 'צילומי אגן רשמיים'],
+    },
+    realityCheckWarningHe: 'בוקסר הוא ילד נצחי בגוף של 30 ק״ג: בלי תרגול שליטה עצמית הוא קופץ על אנשים ומפיל ילדים קטנים מרוב שמחה. בקיץ הישראלי – פעילות רק בשעות הקרירות, אחרת זה מכת חום.',
+    ikcClubId: 'working-sport',
+  },
+  {
+    id: 'cane-corso',
+    nameHe: 'קנה קורסו',
+    nameEn: 'Cane Corso',
+    category: 'WORKING_GUARDIAN',
+    acquisition: 'IKC_BREEDER',
+    size: 'GIANT',
+    weightRangeKg: { min: 40, max: 50 },
+    lifeExpectancyYears: { min: 9, max: 12 },
+    metrics: { energyLevel: 3, mentalStimulationNeed: 4, sheddingLevel: 3, droolingLevel: 3, kidCompatibility: 3, strangerFriendliness: 1, dogSociability: 2, barkingTendency: 3, groomingEffort: 1, noviceFriendly: 1, preyDrive: 3 },
+    tolerances: { maxAloneHoursPerDay: 6, minExerciseMinutesPerDay: 75, apartmentSuitable: false, hypoallergenic: false, heatSensitive: true },
+    israeliEconomics: { estimatedMonthlyFoodILS: 500, estimatedMonthlyInsuranceAndVetILS: 320, estimatedMonthlyGroomingILS: 20, ikcPuppyPriceRangeILS: { min: 7000, max: 13000 } },
+    medicalAndGenetics: {
+      commonVulnerabilitiesHe: ['דיספלזיה של הירך והמרפק (HD/ED)', 'היפוך קיבה (GDV)', 'אנטרופיון ואקטרופיון (קיפול עפעפיים)', 'מחלות לב'],
+      mandatoryParentClearancesHe: ['צילומי אגן ומרפקים רשמיים לשני ההורים', 'בדיקת עיניים ועפעפיים (ECVO)', 'בדיקת לב אצל קרדיולוג', 'הכרות עם האם במקום – מזג יציב ורגוע מול זרים'],
+    },
+    realityCheckWarningHe: 'כלב שמירה מולוסי של 45 ק״ג שלא עבר חשיפה חברתית מסיבית בגיל 3–14 שבועות ואחריו הופך לחשדן כלפי כל אורח. כשהוא מחליט לא לזוז – אין לכם כוח פיזי לשנות את זה. רק לבעלים מנוסים, עם מאלף מקצועי מהיום הראשון.',
+    ikcClubId: 'working-sport',
+  },
+];

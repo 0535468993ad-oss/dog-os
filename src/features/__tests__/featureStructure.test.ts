@@ -14,9 +14,10 @@ const LEGACY_FEATURES = new Set(['auth', 'dashboard', 'dogs', 'health', 'journal
 
 /**
  * Features with no backend at all, so no api/ layer. The emergency kitchen is deterministic and on-device
- * by design: its safety checks must work offline. ESLint already keeps the Supabase client out of them.
+ * by design: its safety checks must work offline; breed-match keeps the lifestyle answers on the device.
+ * ESLint already keeps the Supabase client out of them.
  */
-const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'kitchen', 'nutrition']);
+const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'breed-match', 'kitchen', 'nutrition']);
 
 const REQUIRED_DIRS = ['api', 'hooks', 'utils', 'components'] as const;
 
@@ -28,6 +29,8 @@ const layer = (name: string) => new RegExp(`^(\\.{1,2}/(.*/)?|@/features/[^/]+/)
 
 /** What a file in each layer must not import. */
 const FORBIDDEN_IMPORTS: Record<string, RegExp[]> = {
+  // Static datasets: plain values and types only.
+  data: [/^react(-native)?$/, /^@\/lib\/supabase$/, layer('api'), layer('utils'), layer('hooks'), layer('components')],
   utils: [/^react(-native)?$/, /^@\/lib\/supabase$/, layer('api'), layer('hooks'), layer('components')],
   api: [/^react(-native)?$/, layer('hooks'), layer('components')],
   hooks: [/^@\/lib\/supabase$/, layer('components')],

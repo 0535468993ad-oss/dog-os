@@ -14,6 +14,7 @@ const ACTIONS: { icon: IconName; label: string; href: Href }[] = [
   { icon: 'pulse-outline', label: 'בודק סימפטומים', href: '/health' },
   { icon: 'restaurant-outline', label: 'מטבח חירום', href: '/kitchen' },
   { icon: 'nutrition-outline', label: 'תזונה', href: '/nutrition' },
+  { icon: 'paw-outline', label: 'בחירת כלב', href: '/breed-match' },
   { icon: 'book-outline', label: 'יומן', href: '/journal' },
   { icon: 'document-text-outline', label: 'דוח לווטרינר', href: '/report' },
 ];

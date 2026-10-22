@@ -45,6 +45,8 @@ const TEXT_PAIRS: Pair[] = [
   ['accentOrange', 'surface', 'kitchen calls to action as text'],
   ['accentCyan', 'surface', 'active indicators as text'],
   ['accentBlue', 'surface', 'primary actions as text'],
+  ['warning', 'surface', 'breed-match warning headings'],
+  ['success', 'surface', 'breed-match "best home" labels'],
   ['accentMint', 'successMuted', 'safe-food badge'],
   ['accentOrange', 'warningMuted', 'caution-food badge'],
   ['accentRed', 'dangerMuted', 'toxic-food badge'],
