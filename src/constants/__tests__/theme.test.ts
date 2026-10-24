@@ -41,6 +41,8 @@ const TEXT_PAIRS: Pair[] = [
   ['info', 'infoMuted', 'info badges, disclaimers'],
   ['secondary', 'secondaryMuted', 'secondary-tone content'],
   ['accentMint', 'surface', 'safe-food labels'],
+  ['accentMint', 'surfaceAlt', 'marker cues on the focused story step'],
+  ['accentMint', 'background', 'marker cues on unfocused story steps'],
   ['accentRed', 'surface', 'toxic-food labels'],
   ['accentOrange', 'surface', 'kitchen calls to action as text'],
   ['accentCyan', 'surface', 'active indicators as text'],

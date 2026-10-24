@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { elapsedSeconds } from '../utils/integrity';
+import { elapsedSeconds } from '@/features/gamification/utils/integrity';
 
 /**
  * A live session timer. Time is measured from the start timestamp, not by counting ticks, so it stays

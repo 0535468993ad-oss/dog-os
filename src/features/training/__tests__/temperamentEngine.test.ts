@@ -1,6 +1,6 @@
 // The temperament-adaptive engine: anxious dogs and puppies stay force-free; adult high-arousal dogs
 // get the balanced track with a trainer.
-import { recommendTraining } from '../utils/temperamentEngine';
+import { breedNoteFor, recommendTraining } from '../utils/temperamentEngine';
 
 const JACKSON = { ageMonths: 36, breedId: 'german-shepherd' };
 
@@ -44,5 +44,15 @@ describe('recommendTraining', () => {
       return [rec.titleHe, ...rec.reasonsHe, ...rec.principlesHe];
     });
     expect(all.filter((text) => /דומיננט|אלפא/.test(text))).toEqual([]);
+  });
+});
+
+describe('breedNoteFor', () => {
+  it('notes working breeds only, and the recommendation carries the same note', () => {
+    const note = breedNoteFor('german-shepherd');
+    expect(note).toMatch(/^גזע עבודה:/);
+    expect(breedNoteFor('beagle')).toBeNull();
+    expect(breedNoteFor(null)).toBeNull();
+    expect(recommendTraining({ ...JACKSON, trait: 'STEADY' }).reasonsHe).toContain(note);
   });
 });

@@ -45,7 +45,7 @@ if (!isWeb) {
 }
 
 // Pure error classification lives apart from the client, so utils/ code can use it without the client.
-export { isSchemaMissingError } from './supabaseErrors';
+export { isColumnMissingError, isSchemaMissingError } from './supabaseErrors';
 
 /**
  * Throws the Supabase error if present, otherwise returns the data. Takes the success/error union that

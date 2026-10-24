@@ -1,4 +1,5 @@
 import type { KnowledgeCategory, TrainingCategory, TrainingDifficulty, TrainingMethod } from '@/lib/database.types';
+import type { DifficultyLevel, TrainingCategory as TrainingCommandCategory } from '../types';
 
 export const CATEGORY_LABELS: Record<TrainingCategory, string> = {
   basics: 'יסודות',
@@ -32,4 +33,17 @@ export const METHOD_LABELS: Record<TrainingMethod, string> = {
   ethology: 'אתולוגיה',
   cognitive_science: 'מדע קוגניטיבי',
   desensitization: 'דה-סנסיטיזציה',
+};
+
+export const COMMAND_CATEGORY_LABELS: Record<TrainingCommandCategory, string> = {
+  FOUNDATION_OBEDIENCE: 'יסודות וצייתנות',
+  IMPULSE_CONTROL: 'שליטה בדחפים',
+  LIFE_SAVING_SAFETY: 'בטיחות מצילת חיים',
+  ENGAGEMENT_TARGETING: 'קשב ואיפוס',
+};
+
+export const COMMAND_DIFFICULTY_LABELS: Record<DifficultyLevel, string> = {
+  BEGINNER: 'מתחילים',
+  INTERMEDIATE: 'בינוני',
+  ADVANCED: 'מתקדם',
 };

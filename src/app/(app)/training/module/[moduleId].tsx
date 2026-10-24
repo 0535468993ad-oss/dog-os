@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import { ModuleScreen } from '@/features/training/ModuleScreen';
+import { ModuleScreen } from '@/features/training/screens/ModuleScreen';
 
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';
 

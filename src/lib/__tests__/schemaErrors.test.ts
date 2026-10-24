@@ -1,5 +1,5 @@
 import { queryClient } from '../queryClient';
-import { isSchemaMissingError } from '../supabaseErrors';
+import { isColumnMissingError, isSchemaMissingError } from '../supabaseErrors';
 
 describe('isSchemaMissingError', () => {
   it.each([
@@ -12,6 +12,17 @@ describe('isSchemaMissingError', () => {
     ['PGRST205', false],
   ])('%p -> %p', (error, expected) => {
     expect(isSchemaMissingError(error)).toBe(expected);
+  });
+});
+
+describe('isColumnMissingError', () => {
+  it.each([
+    [{ code: 'PGRST204', message: "Could not find the 'claimed_rewards' column" }, true],
+    [{ code: 'PGRST205' }, false],
+    [null, false],
+    ['PGRST204', false],
+  ])('%p -> %p', (error, expected) => {
+    expect(isColumnMissingError(error)).toBe(expected);
   });
 });
 

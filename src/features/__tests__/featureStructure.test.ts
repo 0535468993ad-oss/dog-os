@@ -17,7 +17,7 @@ const LEGACY_FEATURES = new Set(['auth', 'dashboard', 'dogs', 'health', 'journal
  * by design: its safety checks must work offline; breed-match keeps the lifestyle answers on the device.
  * ESLint already keeps the Supabase client out of them.
  */
-const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'breed-match', 'kitchen', 'nutrition']);
+const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'breed-match', 'kitchen', 'nutrition', 'tools']);
 
 const REQUIRED_DIRS = ['api', 'hooks', 'utils', 'components'] as const;
 
@@ -32,6 +32,10 @@ const FORBIDDEN_IMPORTS: Record<string, RegExp[]> = {
   // Static datasets: plain values and types only.
   data: [/^react(-native)?$/, /^@\/lib\/supabase$/, layer('api'), layer('utils'), layer('hooks'), layer('components')],
   utils: [/^react(-native)?$/, /^@\/lib\/supabase$/, layer('api'), layer('hooks'), layer('components')],
+  // Optional pure domain engines (e.g. gamification's scoring): same rules as utils.
+  services: [/^react(-native)?$/, /^@\/lib\/supabase$/, layer('api'), layer('hooks'), layer('components')],
+  // Optional screen folder: screens compose hooks and components, like components.
+  screens: [/^@\/lib\/supabase$/, layer('api')],
   api: [/^react(-native)?$/, layer('hooks'), layer('components')],
   hooks: [/^@\/lib\/supabase$/, layer('components')],
   components: [/^@\/lib\/supabase$/, layer('api')],

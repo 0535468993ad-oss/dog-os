@@ -1,5 +1,5 @@
-import { TrainingScreen } from '@/features/training/TrainingScreen';
+import { TrainingHomeScreen } from '@/features/training/screens/TrainingHomeScreen';
 
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';
 
-export default TrainingScreen;
+export default TrainingHomeScreen;

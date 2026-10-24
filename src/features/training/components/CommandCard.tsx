@@ -1,75 +1,56 @@
-import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
-import { AppText, Badge, GlassCard, SegmentedControl } from '@/components/ui';
-import { spacing } from '@/constants/theme';
+import { AppText, Badge } from '@/components/ui';
+import { colors, radius, spacing } from '@/constants/theme';
 
-import { TRACK_LABELS_HE } from '../data/methodology';
-import type { CompletionOutcome, MasterCommand, SessionEnvironment, TrainingTrack } from '../types';
-import { protocolFor } from '../utils/protocol';
-import { BalancedSafetyNotice } from './BalancedSafetyNotice';
-import { CommandProtocolView } from './CommandProtocolView';
-import { TrainingSessionPanel } from './TrainingSessionPanel';
-
-const TRACKS = (Object.keys(TRACK_LABELS_HE) as TrainingTrack[]).map((value) => ({ value, label: TRACK_LABELS_HE[value] }));
+import type { TrainingCommand } from '../types';
+import { COMMAND_CATEGORY_LABELS, COMMAND_DIFFICULTY_LABELS } from '../utils/labels';
 
 interface CommandCardProps {
-  command: MasterCommand;
-  track: TrainingTrack;
+  command: TrainingCommand;
   sessions: number;
-  balancedAllowed: boolean;
-  balancedAcknowledged: boolean;
-  onTrackChange: (track: TrainingTrack) => void;
-  onAcknowledgeBalanced: () => void;
-  onMarkStep: () => boolean;
-  onComplete: (input: { commandId: MasterCommand['id']; track: TrainingTrack; environment: SessionEnvironment; startedAt: number }) => CompletionOutcome;
+  onOpen: () => void;
 }
 
-/** One master command: the track switch, its protocol (behind the safety notice for balanced), and a live session. */
-export function CommandCard(props: CommandCardProps) {
-  const { command, track, sessions, balancedAllowed, balancedAcknowledged } = props;
-  const [open, setOpen] = useState(false);
-  const balancedLocked = track === 'BALANCED' && !balancedAllowed;
-
+/** One master command in the list: category, difficulty, XP reward and how often it was trained. */
+export function CommandCard({ command, sessions, onOpen }: CommandCardProps) {
+  const category = COMMAND_CATEGORY_LABELS[command.category];
+  const difficulty = COMMAND_DIFFICULTY_LABELS[command.difficulty];
   return (
-    <GlassCard>
-      <PressableScale
-        onPress={() => setOpen(!open)}
-        accessibilityRole="button"
-        accessibilityState={{ expanded: open }}
-        accessibilityLabel={`${command.order}. ${command.nameHe} (${command.nameEn}), ${sessions} אימונים`}
-        style={styles.header}
-      >
+    <PressableScale
+      onPress={onOpen}
+      accessibilityRole="button"
+      accessibilityLabel={`${command.order}. ${command.nameHe} (${command.nameEn}), ${category}, ${difficulty}, ${command.xpReward} XP, ${sessions} אימונים`}
+      accessibilityHint="פתיחת שלבי האימון"
+      style={styles.card}
+    >
+      <View style={styles.row}>
         <View style={styles.flex}>
           <AppText variant="subheading">{`${command.order}. ${command.nameHe}`}</AppText>
           <AppText variant="caption" color="textSecondary">{`${command.nameEn} · מילת הפקודה: "${command.cueHe}"`}</AppText>
         </View>
+        <AppText variant="bodyStrong" color="accentMint">{`+${command.xpReward} XP`}</AppText>
+      </View>
+      <View style={styles.badges}>
+        <Badge label={category} tone={command.category === 'LIFE_SAVING_SAFETY' ? 'danger' : 'primary'} />
+        <Badge label={difficulty} />
         <Badge label={`${sessions} אימונים`} tone={sessions > 0 ? 'success' : 'neutral'} />
-      </PressableScale>
-
-      {open ? (
-        <View style={styles.body}>
-          <AppText>{command.goalHe}</AppText>
-          <SegmentedControl segments={TRACKS} value={track} onChange={props.onTrackChange} accessibilityLabel={`שיטת האילוף ל${command.nameHe}`} />
-          {balancedLocked ? (
-            <AppText color="warning">המסלול המאוזן לא מתאים לכלב הזה לפי פרופיל המזג והגיל. נשארים בחיזוק חיובי.</AppText>
-          ) : track === 'BALANCED' && !balancedAcknowledged ? (
-            <BalancedSafetyNotice onAcknowledge={props.onAcknowledgeBalanced} />
-          ) : (
-            <>
-              <CommandProtocolView protocol={protocolFor(command, track)} />
-              <TrainingSessionPanel command={command} track={track} onMarkStep={props.onMarkStep} onComplete={props.onComplete} />
-            </>
-          )}
-        </View>
-      ) : null}
-    </GlassCard>
+      </View>
+    </PressableScale>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
+  card: {
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
@@ -77,7 +58,9 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
-  body: {
-    gap: spacing.md,
+  badges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
   },
 });

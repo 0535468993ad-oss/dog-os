@@ -19,8 +19,9 @@ This file adds the rules Claude must follow on top of it. Where the two differ, 
   - `utils/` – pure, tested logic: no React, no Supabase, no hooks/components
   - `hooks/` – state and React Query; never import components
   - `components/` – one component per file; never import `api/` directly
-  - `<Feature>Screen.tsx` composes; `src/app/` route files only render it and export the `ErrorBoundary`
-  - Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`) have no `api/` and are listed in `NO_BACKEND_FEATURES`.
+  - `services/` (optional) – pure domain engines (e.g. gamification scoring); same import rules as `utils/`
+  - `<Feature>Screen.tsx` at the root, or `screens/` for several screens, composes; `src/app/` route files only render it and export the `ErrorBoundary`
+  - Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`, `tools`) have no `api/` and are listed in `NO_BACKEND_FEATURES`.
   - `auth`, `dashboard`, `dogs`, `health`, `journal`, `report` are on the guard's `LEGACY_FEATURES` list. Migrate one when it is substantially changed, then remove it from the list.
 - **Size limits:** ESLint `max-lines` – 250 per `.ts`, 200 per `.tsx` (blank lines and comments excluded). Split before you get close; big datasets go in several `data/` files plus an aggregator.
 - **Comments:** one line per exported function saying what it is for; comment *why*, not *what*.

@@ -263,7 +263,9 @@ export type TrainingGameRow = {
   distinct_active_days: number;
   daily_xp_earned: number;
   daily_xp_date: string | null;
+  /** Badge ids (20261022150000 widened the check to the gamification badges). */
   unlocked_trophies: string[];
+  claimed_rewards: string[];
   last_session_at: string | null;
   state: Json;
   client_updated_at: string;

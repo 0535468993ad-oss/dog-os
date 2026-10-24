@@ -15,10 +15,16 @@ const R_PLUS_PRINCIPLES = [
   'מעלים קושי בהדרגה: קודם בבית, אחר כך בחוץ.',
 ];
 
+/** The working-breed note for a breed, or null when the breed has none. */
+export function breedNoteFor(breedId: string | null): string | null {
+  return breedId && WORKING_BREEDS.has(breedId) ? 'גזע עבודה: הדחף הגבוה הוא מנוע – כשהוא מקבל תעסוקה מתאימה, הוא עובד בשבילכם.' : null;
+}
+
 /** The recommended track for a dog, with the reasons and working principles behind it. */
 export function recommendTraining({ trait, ageMonths, breedId }: TemperamentInput): TrainingRecommendation {
   const isPuppy = ageMonths !== null && ageMonths < MIN_MONTHS_FOR_TOOLS;
-  const breedNote = breedId && WORKING_BREEDS.has(breedId) ? ['גזע עבודה: הדחף הגבוה הוא מנוע – כשהוא מקבל תעסוקה מתאימה, הוא עובד בשבילכם.'] : [];
+  const note = breedNoteFor(breedId);
+  const breedNote = note ? [note] : [];
 
   if (trait === 'ANXIOUS_SENSITIVE') {
     return {

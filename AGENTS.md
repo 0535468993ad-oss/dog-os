@@ -52,9 +52,10 @@ Adapted from the ECC React Native / Expo rule set (security, accessibility, prod
   - `utils/` – pure, tested business logic: no React, no Supabase, no hooks or components
   - `hooks/` – state and React Query hooks; never import components
   - `components/` – one component per file; never import `api/` directly
-  - `<Feature>Screen.tsx` at the feature root composes the layers
+  - `services/` (optional) – pure domain engines; same import rules as `utils/`
+  - `<Feature>Screen.tsx` at the feature root, or a `screens/` folder for several screens, composes the layers
 - Route files in `src/app/` stay thin: they render the feature screen and export the `ErrorBoundary`.
-- Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`) have no `api/` folder and are listed in the guard's `NO_BACKEND_FEATURES`.
+- Features with no backend (`ai-advisor`, `breed-match`, `kitchen`, `nutrition`, `tools`) have no `api/` folder and are listed in the guard's `NO_BACKEND_FEATURES`.
 - `auth`, `dashboard`, `dogs`, `health`, `journal` and `report` predate the layout (`api.ts`, `hooks.ts`, `logic/`). They are on the guard's `LEGACY_FEATURES` list; migrate one when it is substantially changed, then remove it from the list.
 - Modular, single-responsibility files:
   - Keep UI components, pure business logic and API calls in separate files.
