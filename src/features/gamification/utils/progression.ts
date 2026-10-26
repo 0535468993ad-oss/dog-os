@@ -12,9 +12,14 @@ export function activeDays(state: GameState): string[] {
   return [...new Set([...state.activeDays, ...state.sessions.map((session) => session.day)])].sort();
 }
 
-/** Consecutive training days ending today (or yesterday, so an unfinished today doesn't break it). */
+/** Days that keep a streak alive: training days plus missed days a freeze shield covered. */
+export function streakDays(state: GameState): string[] {
+  return [...new Set([...activeDays(state), ...state.shieldedDays])].sort();
+}
+
+/** Consecutive streak days ending today (or yesterday, so an unfinished today doesn't break it). */
 export function streakFor(state: GameState, today: string): number {
-  return computeStreak(activeDays(state), today);
+  return computeStreak(streakDays(state), today);
 }
 
 /** The longest run of consecutive training days ever. */
@@ -22,7 +27,7 @@ export function longestStreak(state: GameState): number {
   let best = 0;
   let run = 0;
   let previous: string | null = null;
-  for (const day of activeDays(state)) {
+  for (const day of streakDays(state)) {
     run = previous !== null && addDays(previous, 1) === day ? run + 1 : 1;
     best = Math.max(best, run);
     previous = day;

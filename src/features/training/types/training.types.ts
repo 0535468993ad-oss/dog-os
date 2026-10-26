@@ -6,6 +6,9 @@ export type TrainingCategory = 'FOUNDATION_OBEDIENCE' | 'IMPULSE_CONTROL' | 'LIF
 
 export type DifficultyLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
 
+/** The three usual reasons a rep fails: the setting is too hard, the marker came late, the pace is too fast. */
+export type StruggleCause = 'TOO_DISTRACTING' | 'LATE_MARKER' | 'TOO_FAST';
+
 export interface TrainingStep {
   stepIndex: number;
   titleHe: string;
@@ -39,4 +42,9 @@ export interface TrainingCommand {
   cueHe: string;
   /** Tactical gear for this command, whatever the track. */
   gear: readonly GearItem[];
+  /** A one-sentence fix for each struggle cause, shown by the "we're stuck" sheet. */
+  struggleDiagnostics: Readonly<Record<StruggleCause, string>>;
 }
+
+/** A command as written in the data files; the struggle fixes are joined in by commandsData. */
+export type TrainingCommandBase = Omit<TrainingCommand, 'struggleDiagnostics'>;

@@ -29,3 +29,15 @@ export function hapticCelebrate(): void {
 export function hapticWarning(): void {
   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(ignore);
 }
+
+/** One beat of the contract's heartbeat: stronger as the press nears three seconds. */
+export function hapticHeartbeat(strength: 0 | 1 | 2): void {
+  const styles = [Haptics.ImpactFeedbackStyle.Light, Haptics.ImpactFeedbackStyle.Medium, Haptics.ImpactFeedbackStyle.Heavy] as const;
+  Haptics.impactAsync(styles[strength]).catch(ignore);
+}
+
+/** A loot-box tap: medium shake, heavy crack, success burst. */
+export function hapticLootTap(tap: number): void {
+  if (tap >= 2) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(ignore);
+  else Haptics.impactAsync(tap === 1 ? Haptics.ImpactFeedbackStyle.Heavy : Haptics.ImpactFeedbackStyle.Medium).catch(ignore);
+}

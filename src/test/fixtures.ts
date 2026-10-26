@@ -1,7 +1,7 @@
 // Typed test factories. Each returns a complete, valid row; tests override only what they assert on.
 
 import type { HealthData, VetArticle } from '@/features/health/api';
-import type { TrainingModule } from '@/features/training/types';
+import type { AssessmentAnswers, TrainingModule } from '@/features/training/types';
 import type { DogRow, FoodPortionRow, JournalEntryRow, UserConsentRow, VaccinationRow, VetSymptomRow, WeightLogRow } from '@/lib/database.types';
 
 const USER_ID = '00000000-0000-4000-8000-000000000001';
@@ -135,3 +135,21 @@ export function makeSymptom(overrides: Partial<VetSymptomRow> = {}): VetSymptomR
 }
 
 export const TEST_USER_ID = USER_ID;
+
+/** A stable, adult, middle-of-the-road dog's assessment: nothing risky, nothing pointing to either track. */
+export function makeAnswers(overrides: Partial<AssessmentAnswers> = {}): AssessmentAnswers {
+  return {
+    ageStage: 'ADULT_1_7Y',
+    livingEnv: 'QUIET_APT',
+    handlerExperience: 'INTERMEDIATE',
+    foodDrive: 3,
+    playPreyDrive: 3,
+    energyLevel: 3,
+    startleRecovery: 'STARTLES_RECOVERS_FAST',
+    correctionSensitivity: 'LISTENS_AND_ADJUSTS',
+    outdoorFocus: 'HIGH_CHECK_IN',
+    reactivityType: 'CALM_SOCIAL',
+    primaryGoals: ['STOP_LEASH_PULLING'],
+    ...overrides,
+  };
+}

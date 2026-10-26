@@ -40,6 +40,7 @@ export const BREEDS: readonly Breed[] = [
   { id: 'amstaff', label: 'אמסטף', typicalSize: 'medium' },
   { id: 'doberman', label: 'דוברמן', typicalSize: 'large' },
   { id: 'rottweiler', label: 'רוטווילר', typicalSize: 'large' },
+  { id: 'cane-corso', label: 'קאנה קורסו', typicalSize: 'giant' },
   { id: 'weimaraner', label: 'ויימרנר', typicalSize: 'large' },
   { id: 'dalmatian', label: 'דלמטי', typicalSize: 'large' },
   { id: 'husky', label: 'האסקי סיבירי', typicalSize: 'large' },

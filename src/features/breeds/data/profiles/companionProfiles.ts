@@ -1,0 +1,121 @@
+import type { BreedProfile } from '../../types';
+import { FCI_GROUP_NAMES_HE } from '../fciGroups';
+
+// The family and companion breeds: the Golden Retriever (FCI 8), the French Bulldog and the Cavalier
+// King Charles Spaniel (FCI 9). The two companions carry the heaviest inherited health load here.
+
+export const COMPANION_PROFILES: readonly BreedProfile[] = [
+  {
+    id: 'golden-retriever',
+    names: { he: 'גולדן רטריבר', en: 'Golden Retriever', original: 'Golden Retriever' },
+    tags: ['משפחה', 'רטריבר', 'כלב נחייה וטיפול'],
+    aliases: ['golden', 'golden retriever', 'גולדן', 'גולדן רטריבר', 'רטריבר'],
+    fci: { group: 8, section: 1, standardNumber: 111, groupNameHe: FCI_GROUP_NAMES_HE[8] },
+    phenotype: { sizeCategory: 'LARGE', maleWeightKg: { min: 30, max: 34 }, femaleWeightKg: { min: 25, max: 30 }, maleHeightCm: { min: 56, max: 61 }, femaleHeightCm: { min: 51, max: 56 }, coatType: 'DOUBLE_COAT', sheddingLevel: 4, droolTendency: 2 },
+    genesis: {
+      centuryOfOrigin: 'המאה ה־19 (1868)',
+      countryOfOrigin: 'סקוטלנד',
+      ancestorBreeds: ['רטריבר גלי־שיער צהוב', 'טוויד ווטר ספניאל (גזע שנכחד)'],
+      founderOrHistoricalKeyFigures: 'דאדלי מרג׳וריבנקס, הלורד טוודמאות׳ הראשון, שזיווג ב־1868 באחוזת גיסאכן את הכלב הצהוב "נוּס" עם הכלבה "בל" מגזע טוויד ווטר ספניאל.',
+      originalUtilityAndFunction: 'השבת עופות מים וציד שנורו – ממים קרים ומשטח קשה – בפה רך שלא פוגע בציד.',
+      historicalContextNarrativeHe: 'הלורד טוודמאות׳ תיעד את תוכנית הרבייה שלו במשך עשרות שנים, וחיפש רטריבר עמיד, צייתן ורך־פה. אותן תכונות הפכו את הגזע לאחד מכלבי הנחייה, הטיפול והמשפחה הנפוצים בעולם.',
+    },
+    drives: { preyDrive: 2, defenseDrive: 1, packDriveSocial: 5, playDrive: 5, handlerFocusBiddability: 5, environmentalSensitivity: 2, energyStaminaHoursDaily: 1.5, mentalStimulationRequirementHe: 'משחקי השבה, חיפוש חטיפים ולמידת טריקים – ולעיסה מותרת כדי לפרוק את הצורך לשאת חפצים בפה.' },
+    behavior: {
+      separationAnxietyRisk: 'MODERATE',
+      leashReactivityPredisposition: 'LOW',
+      resourceGuardingTendency: 'LOW',
+      vocalizationProfile: { tendency: 2, commonTriggersHe: ['התרגשות לפני טיול', 'בדידות'] },
+      understimulationFalloutHe: 'לעיסה וגניבת חפצים, קפיצה על אנשים מהתרגשות ועלייה במשקל.',
+      recommendedHandlingStyleHe: 'מתאים לבעלים מתחילים: תגמול, עקביות, ולימוד רוגע בפגישה עם אנשים – החום שלו נוטה להתפרץ בקפיצות.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'דיספלזיה של מפרק הירך והמרפק', conditionNameEn: 'Hip and Elbow Dysplasia', pathologySummaryHe: 'התפתחות לא תקינה של המפרק שמובילה לכאב ולדלקת מפרקים, מוחמרת בעודף משקל.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'צילומי ירך ומרפק מוערכים להורים; שמירה על משקל רזה לאורך החיים.' },
+        { conditionNameHe: 'המנגיוסרקומה ולימפומה', conditionNameEn: 'Hemangiosarcoma and Lymphoma', pathologySummaryHe: 'שיעור גבוה של סרטן בגזע: גידול של כלי הדם (לעיתים בטחול) וסרטן של בלוטות הלימפה.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'בדיקה וטרינרית שנתית ומישוש בלוטות לימפה; מגיל 8 – בדיקה חצי־שנתית. חולשה פתאומית וחניכיים חיוורות הן מצב חירום.' },
+        { conditionNameHe: 'דלקת ענבייה פיגמנטרית של הגולדן', conditionNameEn: 'Pigmentary Uveitis', pathologySummaryHe: 'דלקת כרונית בתוך העין שעלולה להוביל לגלאוקומה ולעיוורון, בדרך כלל בגיל העמידה.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'בדיקת עיניים שנתית אצל רופא עיניים וטרינרי.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: false, chestConformationNotesHe: 'חזה עמוק במידה – אין נטייה מוגברת מיוחדת, אבל לא אוכלים מהר לפני פעילות.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה מוכרת ל־MDR1.' },
+      averageLongevityYears: { min: 10, max: 12 },
+    },
+    suitability: { living: 'APARTMENT_FRIENDLY', experience: 'NOVICE_FRIENDLY' },
+    popularity: { akcRank2024: 3, akcBreedNameEn: 'Golden Retriever' },
+  },
+  {
+    id: 'french-bulldog',
+    names: { he: 'בולדוג צרפתי', en: 'French Bulldog', original: 'Bouledogue Français' },
+    tags: ['חברה', 'ברכיצפלי', 'דירה'],
+    aliases: ['frenchie', 'french bulldog', 'french', 'פרנצ׳י', 'פרנצי', 'בולדוג צרפתי', 'בולדוג'],
+    fci: { group: 9, section: 11, standardNumber: 101, groupNameHe: FCI_GROUP_NAMES_HE[9] },
+    phenotype: { sizeCategory: 'SMALL', maleWeightKg: { min: 9, max: 14 }, femaleWeightKg: { min: 8, max: 13 }, maleHeightCm: { min: 27, max: 35 }, femaleHeightCm: { min: 24, max: 32 }, coatType: 'SHORT_SINGLE', sheddingLevel: 2, droolTendency: 2 },
+    genesis: {
+      centuryOfOrigin: 'המאה ה־19',
+      countryOfOrigin: 'צרפת',
+      ancestorBreeds: ['בולדוג אנגלי מטיפוס "צעצוע"', 'כלבי רחוב פריזאיים מטיפוס טרייר'],
+      founderOrHistoricalKeyFigures: 'עובדי תחרה מנוטינגהאם שהיגרו לנורמנדי במהפכה התעשייתית והביאו איתם בולדוגים קטנים; הגזע התגבש בפריז, ומועדון הגזע הראשון נוסד שם בשלהי המאה ה־19.',
+      originalUtilityAndFunction: 'לכידת חולדות בסדנאות ובחנויות, ובעיקר כלב חברה.',
+      historicalContextNarrativeHe: 'הבולדוגים הקטנים שהגיעו מאנגליה הפכו לחביבי הפועלים, הסוחרים והאמנים של פריז. הבחירה המתמשכת בפנים שטוחות מאוד הפכה את הגזע לפופולרי – ובמקביל לאחד הפגיעים ביותר לבעיות נשימה.',
+    },
+    drives: { preyDrive: 2, defenseDrive: 2, packDriveSocial: 4, playDrive: 4, handlerFocusBiddability: 3, environmentalSensitivity: 3, energyStaminaHoursDaily: 0.75, mentalStimulationRequirementHe: 'משחקי חיפוש ופאזלים בבית, טיולים קצרים בשעות הקרירות – בלי ריצות במאמץ.' },
+    behavior: {
+      separationAnxietyRisk: 'HIGH',
+      leashReactivityPredisposition: 'LOW',
+      resourceGuardingTendency: 'MODERATE',
+      vocalizationProfile: { tendency: 2, commonTriggersHe: ['בדידות', 'התרגשות'] },
+      understimulationFalloutHe: 'נביחות ויללות כשנשאר לבד, לעיסה ודרישת תשומת לב מתמדת.',
+      recommendedHandlingStyleHe: 'מתאים למתחילים: תגמול וסבלנות. האימונים קצרים וקרירים, ומפסיקים בכל נשימה רועשת או מאומצת.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'תסמונת חסימת דרכי הנשימה הברכיצפלית', conditionNameEn: 'Brachycephalic Obstructive Airway Syndrome', pathologySummaryHe: 'נחיריים צרים, חך רך ארוך וקנה נשימה צר: נחירות, אי־סבילות למאמץ ולחום, ומכת חום מסכנת חיים.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'הערכת נשימה תפקודית (Cambridge BOAS Functional Grading) להורים ולכלב; הערכה כירורגית כשהנשימה מאומצת.' },
+        { conditionNameHe: 'מחלת דיסק בין־חולייתי וחוליות פגומות', conditionNameEn: 'Intervertebral Disc Disease and Hemivertebrae', pathologySummaryHe: 'דיסקים שמתנוונים מוקדם וחוליות בצורת טריז שלוחצים על חוט השדרה – כאב גב ועד שיתוק.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'צילום עמוד שדרה להורים; פנייה מיידית לווטרינר בכל כאב גב, חולשה או גרירת רגליים.' },
+        { conditionNameHe: 'דרמטיטיס בקפלי העור ואלרגיות עור', conditionNameEn: 'Skin Fold Dermatitis and Atopic Dermatitis', pathologySummaryHe: 'זיהומים בקפלי הפנים והזנב, ונטייה לגרד אלרגי כרוני.', severity: 'CHRONIC', recommendedScreeningProtocol: 'ניקוי וייבוש קפלים שבועי ובדיקת עור אצל וטרינר בכל גרד מתמשך.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: false, chestConformationNotesHe: 'חזה רחב ולא עמוק – אין נטייה לתסובב קיבה, אבל בליעת אוויר בגלל מבנה הפנים גורמת לנפיחות ולגזים.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה ל־MDR1, אבל ההרדמה מסוכנת יותר בגלל דרכי הנשימה: צום והכנה לפי הוראות הווטרינר, ומעקב צמוד בהתעוררות.' },
+      brachycephalicBoasGrade: 'MODERATE',
+      averageLongevityYears: { min: 9, max: 12 },
+    },
+    suitability: { living: 'APARTMENT_FRIENDLY', experience: 'NOVICE_FRIENDLY' },
+    popularity: { akcRank2024: 1, akcBreedNameEn: 'French Bulldog' },
+  },
+  {
+    id: 'cavalier',
+    names: { he: 'קבליר קינג צ׳ארלס ספניאל', en: 'Cavalier King Charles Spaniel', original: 'Cavalier King Charles Spaniel' },
+    tags: ['חברה', 'צעצוע', 'דירה', 'משפחה'],
+    aliases: ['cavalier', 'ckcs', 'king charles', 'קבליר', 'קבלייר', 'קינג צ׳ארלס', 'קינג צארלס'],
+    fci: { group: 9, section: 7, standardNumber: 136, groupNameHe: FCI_GROUP_NAMES_HE[9] },
+    phenotype: { sizeCategory: 'TOY', maleWeightKg: { min: 5.4, max: 8 }, femaleWeightKg: { min: 5.4, max: 8 }, maleHeightCm: { min: 30, max: 33 }, femaleHeightCm: { min: 30, max: 33 }, coatType: 'LONG_SILKY', sheddingLevel: 3, droolTendency: 1 },
+    genesis: {
+      centuryOfOrigin: 'שורשים במאה ה־17; הגזע המודרני שוקם בשנות ה־20 של המאה ה־20',
+      countryOfOrigin: 'אנגליה',
+      ancestorBreeds: ['ספניאלי צעצוע מחצר המלך צ׳ארלס השני'],
+      founderOrHistoricalKeyFigures: 'רוזוול אלדרידג׳ האמריקאי, שהציע מ־1926 פרס בתערוכת קראפטס לכלבים בדמות הספניאלים שבציורי ואן דייק; מועדון הגזע נוסד ב־1928.',
+      originalUtilityAndFunction: 'כלב חיק וחברה של האצולה הבריטית.',
+      historicalContextNarrativeHe: 'במאה ה־19 הספניאלים של החצר קיבלו פנים שטוחות מאוד. אלדרידג׳ ביקש להחזיר את הדמות הישנה בעלת החרטום הארוך יותר, וכך נולד הקבליר – כלב חם וחברותי שבסיס הגנים הצר שלו הוא מקור רוב בעיות הבריאות שלו.',
+    },
+    drives: { preyDrive: 3, defenseDrive: 1, packDriveSocial: 5, playDrive: 3, handlerFocusBiddability: 4, environmentalSensitivity: 3, energyStaminaHoursDaily: 1, mentalStimulationRequirementHe: 'טיולי הרחה רגועים, טריקים ומשחקי חיפוש בבית.' },
+    behavior: {
+      separationAnxietyRisk: 'HIGH',
+      leashReactivityPredisposition: 'LOW',
+      resourceGuardingTendency: 'LOW',
+      vocalizationProfile: { tendency: 2, commonTriggersHe: ['בדידות', 'ציפורים ותנועה בגינה'] },
+      understimulationFalloutHe: 'יללות כשנשאר לבד, הצמדות מתמדת לבעלים ולעיסה.',
+      recommendedHandlingStyleHe: 'מתאים למתחילים: תגמול עדין, ובניית עצמאות הדרגתית כדי למנוע חרדת נטישה.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'מחלה מיקסומטוטית של המסתם המיטרלי', conditionNameEn: 'Myxomatous Mitral Valve Disease', pathologySummaryHe: 'ניוון של מסתם הלב השמאלי, שכיח מאוד בגזע וכבר בגיל צעיר; מתקדם לאי־ספיקת לב.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'האזנה ללב אצל קרדיולוג וטרינרי כל שנה מגיל שנה; ההורים ללא אוושה בגיל 5 לפי תוכנית הרבייה של הגזע.' },
+        { conditionNameHe: 'מום כיארי וסירינגומיאליה', conditionNameEn: 'Chiari-like Malformation and Syringomyelia', pathologySummaryHe: 'גולגולת קטנה מדי למוח: נוזל מצטבר בחוט השדרה וגורם לכאב, גירוד "באוויר" ליד הצוואר ורגישות למגע.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'MRI להורים לפני רבייה; בירור נוירולוגי בכל גירוד או כאב בלתי מוסבר בצוואר.' },
+        { conditionNameHe: 'תסמונת נפילות אפיזודיות', conditionNameEn: 'Episodic Falling Syndrome', pathologySummaryHe: 'התקפים של התכווצות שרירים במאמץ או בהתרגשות, שבהם הכלב נופל אך נשאר בהכרה.', severity: 'CHRONIC', recommendedScreeningProtocol: 'בדיקת DNA לגן BCAN להורים לפני רבייה.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: false, chestConformationNotesHe: 'כלב קטן – אין נטייה לתסובב קיבה.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה ל־MDR1, אבל לפני הרדמה חשוב לבדוק את הלב בגלל מחלת המסתם.' },
+      brachycephalicBoasGrade: 'MILD',
+      averageLongevityYears: { min: 9, max: 14 },
+    },
+    suitability: { living: 'APARTMENT_FRIENDLY', experience: 'NOVICE_FRIENDLY' },
+    popularity: { akcRank2024: 13, akcBreedNameEn: 'Cavalier King Charles Spaniel' },
+  },
+];

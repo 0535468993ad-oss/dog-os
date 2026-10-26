@@ -5,17 +5,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, IconButton, SegmentedControl } from '@/components/ui';
 import { colors, spacing } from '@/constants/theme';
 import { RAPID_ACTIONS_MESSAGE_HE } from '@/features/gamification/data/rules';
-import type { CompletionInput, CompletionOutcome, StepCheckInput, StepOutcome } from '@/features/gamification/types';
+import type { BalancedAccess, CompletionInput, CompletionOutcome, RepInput, RepOutcome, SessionMode, StepCheckInput, StepOutcome } from '@/features/gamification/types';
+import { minSecondsFor } from '@/features/gamification/utils/integrity';
 
 import { TRACK_LABELS_HE } from '../data/methodology';
 import { useSessionTimer } from '../hooks/useSessionTimer';
-import type { TemperamentTrait, TrainingCommand, TrainingRecommendation, TrainingTrack } from '../types';
+import type { RiskWarning, TemperamentTrait, TrainingCommand, TrainingRecommendation, TrainingTrack } from '../types';
 import { protocolFor } from '../utils/protocol';
+import { effectiveTrack } from '../utils/trackAccess';
 import { BalancedSafetyNotice } from './BalancedSafetyNotice';
 import { CommandProtocolView } from './CommandProtocolView';
 import { DogProfileBanner } from './DogProfileBanner';
 import { GearBadgeRow } from './GearBadgeRow';
 import { ScrollStoryCommandCard } from './ScrollStoryCommandCard';
+import { MasteryStars } from './MasteryStars';
 import { TrainingSessionPanel } from './TrainingSessionPanel';
 
 const TRACKS = (Object.keys(TRACK_LABELS_HE) as TrainingTrack[]).map((value) => ({ value, label: TRACK_LABELS_HE[value] }));
@@ -32,35 +35,62 @@ export interface CommandDogProfile {
 interface CommandDetailModalProps {
   command: TrainingCommand | null;
   dog: CommandDogProfile;
+  /** STREAK_RESCUE opens the 60-second touch drill. */
+  mode: SessionMode;
+  /** Mastery stars (0–3) for this command. */
+  stars: number;
+  onRep: (input: Omit<RepInput, 'now'>) => RepOutcome;
+  onStruggle: (commandId: string, sessionStartedAt: number | null) => void;
+  /** The owner's stored choice for this command (shown as force-free while the dog is locked). */
   track: TrainingTrack;
-  balancedAllowed: boolean;
-  balancedAcknowledged: boolean;
+  access: BalancedAccess;
+  /** This dog's warnings still to confirm before balanced content opens. */
+  pendingRisks: readonly RiskWarning[];
+  /** Why the balanced track is closed (the age floor), when it is. */
+  lockReasonHe: string | null;
   onClose: () => void;
   onTrackChange: (track: TrainingTrack) => void;
   onAcknowledgeBalanced: () => void;
   onChecklistStep: () => void;
   /** A step ticked during a live session: banks its XP for the session's confirmation. */
   onCheckStep: (input: Omit<StepCheckInput, 'now'>) => StepOutcome;
-  onComplete: (input: Omit<CompletionInput, 'now' | 'today'>) => CompletionOutcome;
+  onComplete: (input: Omit<CompletionInput, 'now' | 'today' | 'hour'>) => CompletionOutcome;
 }
 
 /** A command's full guide as a scroll story: dog banner, track switch, gear, steps, generalisation and a live session. */
 export function CommandDetailModal(props: CommandDetailModalProps) {
-  const { command, dog, track, balancedAllowed, balancedAcknowledged, onClose } = props;
-  const timer = useSessionTimer();
+  const { command, dog, track, access, onClose } = props;
+  const timer = useSessionTimer(minSecondsFor(props.mode));
   const [checked, setChecked] = useState<number[]>([]);
   const [bankedXp, setBankedXp] = useState(0);
   const [stepNotice, setStepNotice] = useState<string | null>(null);
-  const balancedLocked = track === 'BALANCED' && !balancedAllowed;
-  const protocolOpen = !balancedLocked && !(track === 'BALANCED' && !balancedAcknowledged);
-  const protocol = command ? protocolFor(command, track) : null;
+  const [lockTapped, setLockTapped] = useState(false);
+  // The track a live session started with: if access changes mid-session, the confirmation is refused
+  // rather than silently relabelled.
+  const [sessionTrack, setSessionTrack] = useState<TrainingTrack | null>(null);
+  // The age floor wins over any stored choice: a locked dog sees, runs and records force-free only.
+  const shownTrack = effectiveTrack(track, access);
+  const showLock = access === 'LOCKED' && (lockTapped || track === 'BALANCED');
+  const protocolOpen = shownTrack === 'FORCE_FREE' || access === 'GRANTED';
+  const protocol = command ? protocolFor(command, shownTrack) : null;
 
   /** Clears the checklist and ends any live session (closing, confirming or cancelling). */
   const resetSession = () => {
     setChecked([]);
     setBankedXp(0);
     setStepNotice(null);
+    setLockTapped(false);
+    setSessionTrack(null);
     timer.reset();
+  };
+
+  const changeTrack = (next: TrainingTrack) => {
+    if (next === 'BALANCED' && access === 'LOCKED') {
+      setLockTapped(true);
+      return;
+    }
+    setLockTapped(false);
+    props.onTrackChange(next);
   };
 
   const toggleStep = (index: number) => {
@@ -108,9 +138,15 @@ export function CommandDetailModal(props: CommandDetailModalProps) {
               intro={
                 <>
                   <AppText>{command.targetGoal}</AppText>
-                  <SegmentedControl segments={TRACKS} value={track} onChange={props.onTrackChange} accessibilityLabel={`שיטת האילוף ל${command.nameHe}`} />
+                  <SegmentedControl segments={TRACKS} value={shownTrack} onChange={changeTrack} accessibilityLabel={`שיטת האילוף ל${command.nameHe}`} />
+                  {showLock && props.lockReasonHe ? (
+                    <AppText color="warning" accessibilityRole="alert">
+                      {props.lockReasonHe}
+                    </AppText>
+                  ) : null}
                   {protocolOpen ? (
                     <>
+                      <MasteryStars stars={props.stars} />
                       <GearBadgeRow gear={protocol.gear} />
                       <AppText color="textSecondary">{protocol.summaryHe}</AppText>
                     </>
@@ -121,22 +157,26 @@ export function CommandDetailModal(props: CommandDetailModalProps) {
               checked={checked}
               onToggleStep={toggleStep}
             >
-              {balancedLocked ? (
-                <AppText color="warning">המסלול המאוזן לא מתאים לכלב הזה לפי פרופיל המזג והגיל. נשארים בחיזוק חיובי.</AppText>
-              ) : !protocolOpen ? (
-                <BalancedSafetyNotice onAcknowledge={props.onAcknowledgeBalanced} />
+              {!protocolOpen ? (
+                <BalancedSafetyNotice pending={props.pendingRisks} needsRules={access === 'NEEDS_RULES'} onAcknowledge={props.onAcknowledgeBalanced} />
               ) : (
                 <>
                   <CommandProtocolView protocol={protocol} />
                   <TrainingSessionPanel
+                    mode={props.mode}
+                    dogName={dog.name}
+                    onRep={props.onRep}
+                    onStruggle={() => props.onStruggle(command.id, timer.startedAt)}
                     command={command}
-                    track={track}
+                    track={sessionTrack ?? shownTrack}
+                    balancedAccess={access}
                     timer={timer}
                     bankedXp={bankedXp}
                     stepNotice={stepNotice}
                     onStart={() => {
                       // Ticks count from the start of the session, so the checklist starts clean.
                       resetSession();
+                      setSessionTrack(shownTrack);
                       timer.start();
                     }}
                     onSessionEnd={resetSession}

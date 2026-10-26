@@ -25,10 +25,13 @@ function trained(updatedAt: number): GameState {
     commandId: 'recall',
     xpReward: 50,
     track: 'FORCE_FREE',
+    balancedAccess: 'GRANTED',
     environment: 'HOME_QUIET',
     startedAt: NOON - 180_000,
     now: NOON,
     today: TODAY,
+    hour: 3,
+    mode: 'STANDARD',
   });
   return { ...outcome.state, updatedAt };
 }

@@ -5,6 +5,8 @@ import { enterAt } from '@/components/motion';
 import { AppText, Button, EmptyState, ErrorState, Screen, StaleDataNotice } from '@/components/ui';
 import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
+import { PersonaGreetingCard } from '@/features/persona/components/PersonaGreetingCard';
+import { HomeTrainingPulse } from '@/features/training/components/HomeTrainingPulse';
 import type { DogRow } from '@/lib/database.types';
 import { toUserMessage } from '@/utils/errors';
 
@@ -79,6 +81,8 @@ function Dashboard({ dogs, dog, stale, onRetry }: { dogs: DogRow[]; dog: DogRow;
       parallaxHeader={<DogHeroCard dogs={dogs} dog={dog} scrollY={scrollY} taskCount={tasks.length} />}
     >
       <StaleDataNotice visible={stale} onRetry={onRetry} />
+      <PersonaGreetingCard dogId={dog.id} dogName={dog.name} streakDays={data.training.streak} hour={new Date().getHours()} />
+      <HomeTrainingPulse dogId={dog.id} dogName={dog.name} />
       {alerts.length ? (
         <Animated.View entering={enterAt(0)}>
           <TrendsAlertCard alerts={alerts} />

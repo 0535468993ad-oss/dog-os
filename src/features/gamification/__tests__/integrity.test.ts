@@ -14,7 +14,7 @@ const MIN = 60_000;
 
 /** A completion that ran `seconds` long, finishing at `now`. */
 function input(now: number, seconds = 180, overrides: Partial<CompletionInput> = {}): CompletionInput {
-  return { commandId: 'sit', xpReward: 40, track: 'FORCE_FREE', environment: 'HOME_QUIET', startedAt: now - seconds * 1000, now, today: TODAY, ...overrides };
+  return { commandId: 'sit', xpReward: 40, track: 'FORCE_FREE', balancedAccess: 'GRANTED', environment: 'HOME_QUIET', startedAt: now - seconds * 1000, now, today: TODAY, hour: 3, mode: 'STANDARD', ...overrides };
 }
 
 /** Past sessions on the given days. */
@@ -159,13 +159,14 @@ describe('stored state', () => {
       preferences: { temperament: 'HIGH_AROUSAL_PREY', trackByCommand: { sit: 'BALANCED', down: 'SHOCK' } },
     });
     expect(parsed).toMatchObject({ totalXp: 0, sessions: [], badges: ['recall_god'], claimedRewards: ['whistle'] });
-    expect(parsed.preferences).toEqual({ temperament: 'HIGH_AROUSAL_PREY', trackByCommand: { sit: 'BALANCED' }, balancedAcknowledged: false });
+    expect(parsed.preferences).toEqual({ temperament: 'HIGH_AROUSAL_PREY', trackByCommand: { sit: 'BALANCED' }, balancedRulesAckVersion: null, acknowledgedRisks: {}, assessment: null });
   });
 
   it('reads the earlier training-only format (flat preferences)', () => {
     const parsed = parseGameState({ version: 1, totalXp: 120, temperament: 'STEADY', balancedAcknowledged: true, trophies: ['iron-shield'] });
     expect(parsed.totalXp).toBe(120);
-    expect(parsed.preferences).toMatchObject({ temperament: 'STEADY', balancedAcknowledged: true });
+    // The earlier boolean confirmed version 1 of the safety rules.
+    expect(parsed.preferences).toMatchObject({ temperament: 'STEADY', balancedRulesAckVersion: 1 });
     expect(parsed.badges).toEqual([]);
   });
 });

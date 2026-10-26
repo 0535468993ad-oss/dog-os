@@ -1,4 +1,4 @@
-import type { GearItem, TrainingCommand } from '../../types';
+import type { GearItem, TrainingCommandBase } from '../../types';
 import { GENERALIZATION_RULE_HE } from '../methodology';
 
 // Commands 1–3: sit, down, stay. Pure reward-based training: no physical force, no leash jerks. Mark
@@ -7,7 +7,7 @@ import { GENERALIZATION_RULE_HE } from '../methodology';
 const POUCH: GearItem = { nameHe: 'פאוץ׳ חטיפים על החגורה', noteHe: 'חטיפים קטנים ורכים, בגודל אפונה' };
 const MARKER: GearItem = { nameHe: 'קליקר או מילת מרקר ("כן!")' };
 
-export const FOUNDATION_COMMANDS: readonly TrainingCommand[] = [
+export const FOUNDATION_COMMANDS: readonly TrainingCommandBase[] = [
   {
     id: 'sit',
     order: 1,

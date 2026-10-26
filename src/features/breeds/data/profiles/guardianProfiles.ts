@@ -1,0 +1,118 @@
+import type { BreedProfile } from '../../types';
+import { FCI_GROUP_NAMES_HE } from '../fciGroups';
+
+// FCI group 2: the Rottweiler, the Doberman and the Cane Corso – guardians that need an experienced,
+// calm handler, early socialisation and reward-based structure.
+
+export const GUARDIAN_PROFILES: readonly BreedProfile[] = [
+  {
+    id: 'rottweiler',
+    names: { he: 'רוטווילר', en: 'Rottweiler', original: 'Rottweiler' },
+    tags: ['שמירה', 'מולוסר', 'עבודה'],
+    aliases: ['rottweiler', 'rottie', 'rott', 'רוטוויילר', 'רוטווילר', 'רוטי'],
+    fci: { group: 2, section: 2, standardNumber: 147, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    phenotype: { sizeCategory: 'LARGE', maleWeightKg: { min: 45, max: 55 }, femaleWeightKg: { min: 38, max: 46 }, maleHeightCm: { min: 61, max: 68 }, femaleHeightCm: { min: 56, max: 63 }, coatType: 'DOUBLE_COAT', sheddingLevel: 3, droolTendency: 3 },
+    genesis: {
+      centuryOfOrigin: 'שורשים מימי האימפריה הרומית; הגזע המודרני התגבש בתחילת המאה ה־20 (1907–1921)',
+      countryOfOrigin: 'גרמניה (העיר רוטוויל)',
+      ancestorBreeds: ['כלבי הובלת בקר מטיפוס מולוסר שליוו את הלגיונות הרומיים'],
+      founderOrHistoricalKeyFigures: 'קצבי העיר רוטוויל, שהשתמשו בכלב להובלת בקר ולשמירה ("כלב הקצבים"); מועדוני הגזע הראשונים נוסדו ב־1907 ואוחדו ב־1921 לאיגוד ADRK.',
+      originalUtilityAndFunction: 'הובלת בקר לשוק, שמירה על הסוחר ועל כספו, ומשיכת עגלות.',
+      historicalContextNarrativeHe: 'כשהרכבת החליפה את הובלת הבקר ברגל, הגזע כמעט נעלם. בתחילת המאה ה־20 הוא קם מחדש ככלב משטרה ושמירה, והאיגוד הגרמני ADRK קבע סטנדרט קפדני של יציבות עצבית לפני רבייה.',
+    },
+    drives: { preyDrive: 3, defenseDrive: 5, packDriveSocial: 3, playDrive: 3, handlerFocusBiddability: 4, environmentalSensitivity: 2, energyStaminaHoursDaily: 1.5, mentalStimulationRequirementHe: 'ציות יומי קצר, עבודת אף ומשיכת משקל קלה – עם הרבה תרגול רוגע ליד אורחים.' },
+    behavior: {
+      separationAnxietyRisk: 'MODERATE',
+      leashReactivityPredisposition: 'MODERATE',
+      resourceGuardingTendency: 'MODERATE',
+      vocalizationProfile: { tendency: 2, commonTriggersHe: ['אנשים זרים בשטח הבית', 'כלבים זרים מתקרבים'] },
+      understimulationFalloutHe: 'לעיסה הרסנית של חפצים גדולים, חפירה ושמירה מוגזמת על הבית.',
+      recommendedHandlingStyleHe: 'מדריך רגוע ועקבי, חברות מוקדמת ונרחבת ותגמול. עונש פיזי מגביר חשדנות ותוקפנות הגנתית.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'דיספלזיה של מפרק הירך והמרפק', conditionNameEn: 'Hip and Elbow Dysplasia', pathologySummaryHe: 'התפתחות לא תקינה של המפרק, נפוצה מאוד בגזע, שמובילה לכאב ולדלקת מפרקים.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'צילומי ירך ומרפק מוערכים להורים; שמירה על משקל רזה בגדילה.' },
+        { conditionNameHe: 'אוסטאוסרקומה (סרטן עצם)', conditionNameEn: 'Osteosarcoma', pathologySummaryHe: 'גידול עצם אגרסיבי, לרוב בגפיים, בכלבים בגיל העמידה.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'בדיקה וטרינרית וצילום בכל צליעה או נפיחות בעצם שנמשכות יותר מכמה ימים.' },
+        { conditionNameHe: 'היצרות תת־אאורטלית', conditionNameEn: 'Subaortic Stenosis', pathologySummaryHe: 'היצרות מולדת מתחת למסתם אבי העורקים שמכבידה על הלב, ועלולה לגרום לעילפון ולמוות פתאומי.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'האזנה ללב אצל קרדיולוג וטרינרי ואקו לב להורים לפני רבייה.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: true, chestConformationNotesHe: 'כלב כבד עם חזה עמוק – נטייה מוכרת לתסמונת הרחבה ותסובב קיבה. מפצלים ארוחות ונחים אחריהן.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה מוכרת ל־MDR1.' },
+      averageLongevityYears: { min: 8, max: 10 },
+    },
+    suitability: { living: 'NEEDS_YARD', experience: 'EXPERIENCED_ONLY' },
+    popularity: { akcRank2024: 8, akcBreedNameEn: 'Rottweiler' },
+  },
+  {
+    id: 'doberman',
+    names: { he: 'דוברמן', en: 'Dobermann', original: 'Dobermann' },
+    tags: ['שמירה', 'עבודה', 'ספורט'],
+    aliases: ['doberman', 'dobermann', 'dobie', 'doberman pinscher', 'דוברמן', 'דוברמן פינצ׳ר', 'דובי'],
+    fci: { group: 2, section: 1, standardNumber: 143, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    phenotype: { sizeCategory: 'LARGE', maleWeightKg: { min: 40, max: 45 }, femaleWeightKg: { min: 32, max: 35 }, maleHeightCm: { min: 68, max: 72 }, femaleHeightCm: { min: 63, max: 68 }, coatType: 'SHORT_SINGLE', sheddingLevel: 2, droolTendency: 1 },
+    genesis: {
+      centuryOfOrigin: 'סוף המאה ה־19 (בערך 1890)',
+      countryOfOrigin: 'גרמניה (אפולדה, תורינגיה)',
+      ancestorBreeds: ['פינצ׳ר גרמני', 'רוטווילר', 'בוסרון', 'מנצ׳סטר טרייר (לפי רוב ההשערות)'],
+      founderOrHistoricalKeyFigures: 'קרל פרידריך לואיס דוברמן, גובה מסים ולוכד כלבים עירוני באפולדה; אוטו גלר המשיך את הטיפוח וייסד ב־1899 את מועדון הגזע הראשון.',
+      originalUtilityAndFunction: 'כלב ליווי והגנה אישית לגובה המסים, ובהמשך כלב משטרה וצבא.',
+      historicalContextNarrativeHe: 'דוברמן רצה כלב חכם, מהיר ונאמן שיגן עליו בסבבי הגבייה. הגזע נבחר לחדות ולקשר הדוק עם המדריך, ובמלחמת העולם השנייה שירת בצבא האמריקאי בתפקידי סיור ושמירה.',
+    },
+    drives: { preyDrive: 4, defenseDrive: 5, packDriveSocial: 4, playDrive: 4, handlerFocusBiddability: 5, environmentalSensitivity: 4, energyStaminaHoursDaily: 2, mentalStimulationRequirementHe: 'ציות מדויק, עבודת אף ומשחקי חשיבה כל יום – הוא צמא לעבודה עם המדריך.' },
+    behavior: {
+      separationAnxietyRisk: 'HIGH',
+      leashReactivityPredisposition: 'MODERATE',
+      resourceGuardingTendency: 'LOW',
+      vocalizationProfile: { tendency: 3, commonTriggersHe: ['רעשים בלילה', 'אנשים זרים מתקרבים לבית'] },
+      understimulationFalloutHe: 'חרדה כשנשאר לבד, לעיסה הרסנית, הליכה הלוך ושוב ולעיתים ליקוק כפייתי של הגפיים.',
+      recommendedHandlingStyleHe: 'רגיש ותגובתי: תגמול, עקביות ושגרה צפויה. בניית עצמאות הדרגתית מגיל צעיר נגד חרדת נטישה.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'קרדיומיופתיה מורחבת', conditionNameEn: 'Dilated Cardiomyopathy', pathologySummaryHe: 'התרחבות והיחלשות של שריר הלב – שכיחה מאוד בגזע. עלולה לגרום להפרעות קצב ולמוות פתאומי עוד לפני שמופיעים סימנים.', severity: 'LIFE_THREATENING', recommendedScreeningProtocol: 'הולטר 24 שעות ואקו לב שנתיים מגיל 2–3 אצל קרדיולוג וטרינרי; בדיקות DNA לווריאנטים בגנים PDK4 ו־TTN.' },
+        { conditionNameHe: 'מחלת פון וילברנד מסוג 1', conditionNameEn: 'von Willebrand Disease Type 1', pathologySummaryHe: 'הפרעת קרישה תורשתית: דימום ממושך אחרי ניתוח, פציעה או עקירת שן.', severity: 'CHRONIC', recommendedScreeningProtocol: 'בדיקת DNA לגן VWF, ובדיקת זמן דימום לפני כל ניתוח מתוכנן.' },
+        { conditionNameHe: 'ספונדילומיאלופתיה צווארית (תסמונת וובלר)', conditionNameEn: 'Cervical Spondylomyelopathy (Wobbler Syndrome)', pathologySummaryHe: 'לחץ על חוט השדרה בצוואר: הליכה מתנדנדת בגפיים האחוריות וכאב צוואר.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'בירור נוירולוגי ו־MRI אצל וטרינר כשמופיעה הליכה לא יציבה.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: true, chestConformationNotesHe: 'חזה עמוק וצר – נטייה מוכרת לתסמונת הרחבה ותסובב קיבה.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה מוכרת ל־MDR1, אבל לפני הרדמה חשוב לבדוק את הלב (קרדיומיופתיה) ואת הקרישה (פון וילברנד).' },
+      averageLongevityYears: { min: 10, max: 12 },
+    },
+    suitability: { living: 'NEEDS_YARD', experience: 'EXPERIENCED_ONLY' },
+    popularity: { akcRank2024: 16, akcBreedNameEn: 'Doberman Pinscher' },
+  },
+  {
+    id: 'cane-corso',
+    names: { he: 'קאנה קורסו', en: 'Cane Corso', original: 'Cane Corso Italiano' },
+    tags: ['שמירה', 'מולוסר', 'כלב ענק'],
+    aliases: ['cane corso', 'corso', 'italian mastiff', 'קאנה קורסו', 'קנה קורסו', 'קורסו'],
+    fci: { group: 2, section: 2, standardNumber: 343, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    phenotype: { sizeCategory: 'GIANT', maleWeightKg: { min: 45, max: 50 }, femaleWeightKg: { min: 40, max: 45 }, maleHeightCm: { min: 64, max: 68 }, femaleHeightCm: { min: 60, max: 64 }, coatType: 'SHORT_SINGLE', sheddingLevel: 3, droolTendency: 3 },
+    genesis: {
+      centuryOfOrigin: 'שורשים מהמולוסרים הרומיים; שוקם במאה ה־20 (שנות ה־70 עד ה־90)',
+      countryOfOrigin: 'איטליה (דרום איטליה – אפוליה)',
+      ancestorBreeds: ['מולוסרים רומיים קדומים', 'כלבי משק ושמירה של דרום איטליה'],
+      founderOrHistoricalKeyFigures: 'ג׳ובאני בונאטי ניצולי, סטפנו גנדולפי ולוצ׳יאנו מלאוסי, שאיתרו את הכלבים האחרונים בשנות ה־70; אגודת חובבי הקאנה קורסו (SACC) נוסדה ב־1983.',
+      originalUtilityAndFunction: 'שמירה על משקים, הובלת בקר וציד חזירי בר.',
+      historicalContextNarrativeHe: 'עם המעבר לחקלאות מודרנית הגזע כמעט נכחד. חובבים איטלקיים שיקמו אותו מתוך כלבי המשק האחרונים בדרום, וההכרה של ה־FCI ניתנה רק בשנות האלפיים.',
+    },
+    drives: { preyDrive: 3, defenseDrive: 5, packDriveSocial: 3, playDrive: 3, handlerFocusBiddability: 3, environmentalSensitivity: 2, energyStaminaHoursDaily: 1.5, mentalStimulationRequirementHe: 'הליכות מובנות, עבודת אף ותרגילי ציות קצרים – ובעיקר חשיפה מבוקרת ונעימה לאנשים ולמקומות.' },
+    behavior: {
+      separationAnxietyRisk: 'MODERATE',
+      leashReactivityPredisposition: 'HIGH',
+      resourceGuardingTendency: 'MODERATE',
+      vocalizationProfile: { tendency: 2, commonTriggersHe: ['אנשים זרים בשטח', 'כלבים זרים'] },
+      understimulationFalloutHe: 'שמירה מוגזמת על הבית, הרס ומשיכה חזקה ברצועה – בכוח של כלב ענק.',
+      recommendedHandlingStyleHe: 'למדריכים מנוסים בלבד: חברות מוקדמת ומתמשכת, תגמול וגבולות עקביים. כוח פיזי מול כלב בגודל הזה מסוכן ולא יעיל.',
+    },
+    clinical: {
+      geneticVulnerabilities: [
+        { conditionNameHe: 'דיספלזיה של מפרק הירך והמרפק', conditionNameEn: 'Hip and Elbow Dysplasia', pathologySummaryHe: 'התפתחות לא תקינה של המפרק, מוחמרת בגדילה מהירה ובמשקל עודף.', severity: 'PROGRESSIVE', recommendedScreeningProtocol: 'צילומי ירך ומרפק מוערכים להורים; גדילה איטית ומבוקרת בגור.' },
+        { conditionNameHe: 'מומים בעפעפיים (אנטרופיון, אקטרופיון ו"עין דובדבן")', conditionNameEn: 'Eyelid Abnormalities (Entropion, Ectropion, Cherry Eye)', pathologySummaryHe: 'עפעף שמתקפל פנימה או החוצה, או בלוטה של העפעף השלישי שבולטת – גורמים לגירוי ולפצעים בקרנית.', severity: 'CHRONIC', recommendedScreeningProtocol: 'בדיקת עיניים אצל וטרינר בגיל הגורות ובכל אדמומיות או דמעת יתר.' },
+      ],
+      bloatGdvRisk: { hasHighPredisposition: true, chestConformationNotesHe: 'כלב ענק עם חזה עמוק ורחב – נטייה מוכרת לתסמונת הרחבה ותסובב קיבה.' },
+      anesthesiaMdr1Risk: { isMdr1Prone: false, precautionsHe: 'אין נטייה מוכרת ל־MDR1.' },
+      averageLongevityYears: { min: 9, max: 12 },
+    },
+    suitability: { living: 'NEEDS_YARD', experience: 'EXPERIENCED_ONLY' },
+    popularity: { akcRank2024: 14, akcBreedNameEn: 'Cane Corso' },
+  },
+];

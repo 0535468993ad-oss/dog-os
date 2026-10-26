@@ -1,4 +1,4 @@
-import type { GearItem, TrainingCommand } from '../../types';
+import type { GearItem, TrainingCommandBase } from '../../types';
 import { GENERALIZATION_RULE_HE } from '../methodology';
 
 // Commands 4, 6 and 7: recall, leave it, drop it – the commands that save lives (traffic, toxins,
@@ -7,7 +7,7 @@ import { GENERALIZATION_RULE_HE } from '../methodology';
 const POUCH: GearItem = { nameHe: 'פאוץ׳ חטיפים על החגורה', noteHe: 'חטיפים בעלי ערך גבוה במיוחד' };
 const MARKER: GearItem = { nameHe: 'קליקר או מילת מרקר ("כן!")' };
 
-export const SAFETY_COMMANDS: readonly TrainingCommand[] = [
+export const SAFETY_COMMANDS: readonly TrainingCommandBase[] = [
   {
     id: 'recall',
     order: 4,

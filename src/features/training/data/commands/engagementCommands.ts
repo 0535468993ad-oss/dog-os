@@ -1,4 +1,4 @@
-import type { GearItem, TrainingCommand } from '../../types';
+import type { GearItem, TrainingCommandBase } from '../../types';
 import { GENERALIZATION_RULE_HE } from '../methodology';
 
 // Commands 5, 8 and 9: place, heel, hand target – calm boundaries, loose-leash walking, and a reset
@@ -7,7 +7,7 @@ import { GENERALIZATION_RULE_HE } from '../methodology';
 const POUCH: GearItem = { nameHe: 'פאוץ׳ חטיפים על החגורה' };
 const MARKER: GearItem = { nameHe: 'קליקר או מילת מרקר ("כן!")' };
 
-export const ENGAGEMENT_COMMANDS: readonly TrainingCommand[] = [
+export const ENGAGEMENT_COMMANDS: readonly TrainingCommandBase[] = [
   {
     id: 'place',
     order: 5,

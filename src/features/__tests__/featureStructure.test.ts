@@ -17,7 +17,7 @@ const LEGACY_FEATURES = new Set(['auth', 'dashboard', 'dogs', 'health', 'journal
  * by design: its safety checks must work offline; breed-match keeps the lifestyle answers on the device.
  * ESLint already keeps the Supabase client out of them.
  */
-const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'breed-match', 'kitchen', 'nutrition', 'tools']);
+const NO_BACKEND_FEATURES = new Set(['ai-advisor', 'breed-match', 'breeds', 'kitchen', 'nutrition', 'tools']);
 
 const REQUIRED_DIRS = ['api', 'hooks', 'utils', 'components'] as const;
 

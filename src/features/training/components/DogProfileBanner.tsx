@@ -16,9 +16,9 @@ interface DogProfileBannerProps {
   recommendation: TrainingRecommendation | null;
 }
 
-/** The tip for this dog and command: the anxious-dog adjustment first, then the track's first principle. */
+/** The tip for this dog and command: the sensitive-dog adjustment first, then the track's first principle. */
 function tipFor(command: TrainingCommand, trait: TemperamentTrait | null, recommendation: TrainingRecommendation | null): string {
-  if (trait === 'ANXIOUS_SENSITIVE') return command.anxiousDogAdjustmentHe;
+  if (trait === 'ANXIOUS_SENSITIVE' || recommendation?.nerve === 'SENSITIVE_SOFT') return command.anxiousDogAdjustmentHe;
   return recommendation?.principlesHe[0] ?? 'בחרו בלשונית הפקודות איך הכלב מתנהג ביומיום, ותקבלו המלצה אישית.';
 }
 
@@ -34,7 +34,7 @@ export function DogProfileBanner({ command, dogName, breedLabel, breedId, trait,
         {recommendation ? (
           <Badge
             tone={recommendation.track === 'BALANCED' ? 'warning' : 'success'}
-            label={`מומלץ: ${TRACK_LABELS_HE[recommendation.track]}${recommendation.requiresProfessional ? ', עם מאלף' : ''}`}
+            label={`מומלץ: ${TRACK_LABELS_HE[recommendation.track]}${recommendation.track === 'BALANCED' && recommendation.requiresProfessional ? ', עם מאלף' : ''}`}
           />
         ) : null}
       </View>

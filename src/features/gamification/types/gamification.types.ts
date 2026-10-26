@@ -99,3 +99,63 @@ export interface GamificationState {
   unlockedBadges: string[];
   claimedRewards: string[];
 }
+
+export type QuestId = 'MORNING_PATROL' | 'IMPULSE_CONTROL' | 'STREAK_RESCUE';
+
+/** A time-of-day quest: [fromHour, toHour) local time, and the commands it pays a bonus on. */
+export interface QuestDefinition {
+  id: QuestId;
+  fromHour: number;
+  toHour: number;
+  titleHe: string;
+  commandIds: readonly string[];
+  bonusHe: string;
+}
+
+export type LootTier = 'COMMON' | 'RARE' | 'LEGENDARY';
+
+/** What a loot box paid out. xpAwarded can be below xpRolled when the daily cap is reached. */
+export type LootReward =
+  | { tier: 'COMMON'; xpRolled: number; xpAwarded: number; bones: number }
+  | { tier: 'RARE'; cardId: string; frameId: string }
+  | { tier: 'LEGENDARY'; kind: 'SHIELD' }
+  | { tier: 'LEGENDARY'; kind: 'TITLE'; titleId: string };
+
+/** An ethology fact unlocked by a rare drop. */
+export interface IntelCard {
+  id: string;
+  titleHe: string;
+  factHe: string;
+  sourceHe: string;
+}
+
+export type VitalityMeter = 'sharpness' | 'drive' | 'calm' | 'bond';
+
+/** The four game meters, 0–100, derived from the training log. */
+export interface Vitality {
+  meters: Record<VitalityMeter, number>;
+  overall: number;
+  weakest: VitalityMeter;
+  /** The command that would lift the weakest meter most. */
+  suggestedCommandId: string;
+}
+
+/** One row of the weekly league table. */
+export interface LeagueRow {
+  id: string;
+  nameHe: string;
+  xp: number;
+  isUser: boolean;
+}
+
+export type LeagueZone = 'PROMOTION' | 'SAFE' | 'DEMOTION';
+
+export interface LeagueStandings {
+  tier: number;
+  rows: LeagueRow[];
+  /** 1-based. */
+  userRank: number;
+  zone: LeagueZone;
+  /** Rivals who passed the user since the end of yesterday. */
+  overtakenBy: string[];
+}

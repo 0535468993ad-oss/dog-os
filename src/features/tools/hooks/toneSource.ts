@@ -7,6 +7,7 @@ import { File, Paths } from 'expo-file-system';
 export function toneUri(bytes: Uint8Array, name: string): string {
   const file = new File(Paths.cache, `${name}.wav`);
   file.create({ overwrite: true });
-  file.write(bytes);
+  // SDK 58 made File.write async; the URI is played right away, so the bytes must be on disk first.
+  file.writeSync(bytes);
   return file.uri;
 }

@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Button, Card } from '@/components/ui';
+import { BreedIntelBadge } from '@/features/breeds/components/BreedIntelBadge';
 import { SIZE_SHORT_LABELS } from '@/features/dogs/breeds';
 import { DogAvatar } from '@/features/dogs/components';
 import type { DogRow } from '@/lib/database.types';
@@ -29,6 +30,7 @@ export function DogProfileCard({ dog, isActive, onActivate, onEdit }: DogProfile
           <AppText variant="caption" color="textSecondary">
             {`${dog.breed} · ${formatAge(dog.birth_date)} · ${SIZE_SHORT_LABELS[dog.size]}${weight}`}
           </AppText>
+          <BreedIntelBadge breedId={dog.breed_id} />
         </View>
       </View>
       <View style={styles.actions}>

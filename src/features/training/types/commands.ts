@@ -1,5 +1,7 @@
 import type { SessionTrack } from '@/features/gamification/types';
 
+import type { BalancedGate, NerveProfile, PrimaryMotivator, RiskWarning } from './assessment';
+
 export type MasterCommandId = 'sit' | 'down' | 'stay' | 'recall' | 'place' | 'leave-it' | 'drop-it' | 'heel' | 'touch';
 
 /**
@@ -39,8 +41,15 @@ export interface TrainingRecommendation {
   titleHe: string;
   reasonsHe: string[];
   principlesHe: string[];
-  /** Whether the balanced track may be offered at all for this dog. */
-  balancedAllowed: boolean;
+  /** How the balanced track opens for this dog: only LOCKED cannot be opened by the owner. */
+  gate: BalancedGate;
+  /** The targeted warnings behind the gate, most restrictive first. */
+  warnings: readonly RiskWarning[];
   /** Tools are introduced only with a qualified trainer. */
   requiresProfessional: boolean;
+  nerve: NerveProfile;
+  /** null when only the one-tap trait is known. */
+  motivator: PrimaryMotivator | null;
+  /** Tips tailored to this dog (rewards, clarity, arousal). */
+  adjustmentsHe: string[];
 }

@@ -70,7 +70,7 @@ describe('awardXp', () => {
 describe('badges', () => {
   it('unlocks recall_god at 20 recall sessions, through a real session', () => {
     const before = at({ sessions: sessions(19, 'recall'), activeDays: [TODAY] });
-    const outcome = completeSession(before, { commandId: 'recall', xpReward: 50, track: 'FORCE_FREE', environment: 'HOME_QUIET', startedAt: NOW - 180_000, now: NOW, today: TODAY });
+    const outcome = completeSession(before, { commandId: 'recall', xpReward: 50, track: 'FORCE_FREE', balancedAccess: 'GRANTED', environment: 'HOME_QUIET', startedAt: NOW - 180_000, now: NOW, today: TODAY, hour: 3, mode: 'STANDARD' });
     expect(outcome.events).toContainEqual({ type: 'BADGE_UNLOCKED', badgeId: 'recall_god' });
     expect(outcome.state.badgeUnlockedAt.recall_god).toBe(new Date(NOW).toISOString());
   });
