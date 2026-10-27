@@ -59,7 +59,8 @@ export function StoryStep({ index, step, checked, onToggle, focusLine, onMeasure
         <Checkbox checked={checked} onChange={onToggle} label={`שלב ${index + 1}${step.titleHe ? `: ${step.titleHe}` : ''}`}>
           {step.titleHe ? <AppText variant="bodyStrong">{`${index + 1}. ${step.titleHe}`}</AppText> : null}
           <AppText>{step.titleHe ? step.textHe : `${index + 1}. ${step.textHe}`}</AppText>
-          {step.markerCue ? <AppText variant="caption" color="accentMint">{`"כן!" – ${step.markerCue}`}</AppText> : null}
+          {step.handlerMechanics ? <AppText variant="caption" color="textSecondary">{`ידיים, רצועה וגוף: ${step.handlerMechanics}`}</AppText> : null}
+          {step.markerCue ? <AppText variant="caption" color="accentMint">{`"${step.markerWord ?? 'כן!'}" – ${step.markerCue}`}</AppText> : null}
         </Checkbox>
       </View>
     </View>

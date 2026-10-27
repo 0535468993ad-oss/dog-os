@@ -4,12 +4,15 @@ import { COMMAND_XP } from '@/features/gamification/data/rules';
 
 import { TRAINING_COMMANDS } from '../data/commandsData';
 import { GENERALIZATION_RULE_HE } from '../data/methodology';
-import type { MasterCommandId, TrainingTrack } from '../types';
-import { protocolFor } from '../utils/protocol';
+import type { MasterCommandId, NerveProfile, TrainingTrack } from '../types';
+import { protocolFor, troubleshootingFor } from '../utils/protocol';
 
 const EXACT_RULE =
   'לאחר שהכלב מתרגל את הפקודה בסביבה הביתית השקטה וזה מצליח, יוצאים איתו בהדרגה לבלות ולתרגל בסביבה עם גירויים כדי להטמיע את ההתנהגות בכל תנאי.';
 const TRACKS: TrainingTrack[] = ['FORCE_FREE', 'BALANCED'];
+const NERVE_PROFILES: readonly NerveProfile[] = ['SENSITIVE_SOFT', 'BALANCED_STABLE', 'HARD_HIGH_DRIVE'];
+// What the force-free curriculum may never say: aversive tools, corrections, leash pressure, dominance framing.
+const R_PLUS_GUARD = /פרונג|קולר אלקטרוני|Slip Lead|תיקון|לחץ רצועה|אלפא|דומיננט/;
 
 /** A command that must exist. */
 function command(id: MasterCommandId) {
@@ -38,7 +41,12 @@ describe('training curriculum', () => {
     expect(GENERALIZATION_RULE_HE).toBe(EXACT_RULE);
     expect(entry.steps.map((step) => step.stepIndex)).toEqual(entry.steps.map((_, i) => i + 1));
     expect(entry.steps.every((step) => step.markerCue.length > 0)).toBe(true);
-    expect(entry.commonMistakes.length).toBeGreaterThanOrEqual(3);
+    expect(entry.balancedTroubleshooting.length).toBeGreaterThanOrEqual(3);
+    expect(entry.steps.every((step) => step.handlerMechanics.length >= 30)).toBe(true);
+    expect(entry.markers).toEqual({ terminal: 'כן!', continuation: 'טוב', releaseWord: 'חופשי' });
+    expect(entry.suitableForProfiles.length).toBeGreaterThan(0);
+    expect(entry.suitableForProfiles.every((profile) => NERVE_PROFILES.includes(profile))).toBe(true);
+    expect(entry.balancedTroubleshooting.every((tip) => tip.highlightFor.every((profile) => NERVE_PROFILES.includes(profile)))).toBe(true);
     expect(entry.xpReward).toBe(COMMAND_XP);
     expect(entry.anxiousDogAdjustmentHe.length).toBeGreaterThan(40);
     expect(entry.anxiousDogAdjustmentHe).not.toMatch(/פרונג|קולר אלקטרוני|Slip Lead|תיקון|לחץ רצועה|אלפא|דומיננט/);
@@ -47,8 +55,59 @@ describe('training curriculum', () => {
   });
 
   it('teaches only with reward: no force, leash jerks or aversive tools in the R+ curriculum', () => {
-    const text = TRAINING_COMMANDS.flatMap((entry) => [entry.targetGoal, ...entry.steps.map((step) => step.instructionHe), ...entry.gear.map((item) => item.nameHe)]).join(' ');
-    expect(text).not.toMatch(/פרונג|קולר אלקטרוני|Slip Lead|תיקון|לחץ רצועה|אלפא|דומיננט/);
+    const text = TRAINING_COMMANDS.flatMap((entry) => [
+      entry.targetGoal,
+      ...entry.steps.flatMap((step) => [step.instructionHe, step.handlerMechanics]),
+      ...entry.balancedTroubleshooting.flatMap((tip) => [tip.commonMistake, tip.correctionOrAdjustment]),
+      ...entry.gear.map((item) => item.nameHe),
+    ]).join(' ');
+    expect(text).not.toMatch(R_PLUS_GUARD);
+  });
+
+  it('keeps balanced escalations to known behaviours, without tools, and none for drop it or touch', () => {
+    const escalations = TRAINING_COMMANDS.flatMap((entry) => entry.balancedTroubleshooting.flatMap((tip) => (tip.balancedEscalation ? [tip.balancedEscalation] : [])));
+    expect(escalations.length).toBeGreaterThanOrEqual(6);
+    for (const text of escalations) {
+      expect(text).toMatch(/שמכיר|מכיר את/);
+      expect(text).not.toMatch(/פרונג|אלקטרוני|Slip Lead|אלפא|דומיננט/i);
+    }
+    for (const id of ['drop-it', 'touch'] as const) expect(command(id).balancedTroubleshooting.some((tip) => tip.balancedEscalation)).toBe(false);
+  });
+
+  it('tags troubleshooting for every nerve profile, including sensitive and driven dogs on heel and recall', () => {
+    const tagged = new Set(TRAINING_COMMANDS.flatMap((entry) => entry.balancedTroubleshooting.flatMap((tip) => tip.highlightFor)));
+    expect([...tagged].sort()).toEqual([...NERVE_PROFILES].sort());
+    for (const id of ['heel', 'recall'] as const) {
+      const profiles = command(id).balancedTroubleshooting.flatMap((tip) => tip.highlightFor);
+      expect(profiles).toEqual(expect.arrayContaining(['SENSITIVE_SOFT', 'HARD_HIGH_DRIVE']));
+    }
+  });
+
+  it('marks in-position steps with the continuation marker, so a hold is never released by "כן!"', () => {
+    const continuation = TRAINING_COMMANDS.flatMap((entry) => entry.steps.filter((step) => step.marker === 'CONTINUATION').map((step) => `${entry.id}:${step.stepIndex}`));
+    expect(continuation).toEqual(['sit:4', 'down:2', 'down:4', 'stay:1', 'stay:2', 'stay:3', 'stay:4', 'recall:3', 'place:3', 'place:4', 'heel:2']);
+    // A cue that says the dog is "still" in position can only be marked with "טוב".
+    for (const entry of TRAINING_COMMANDS) {
+      for (const step of entry.steps) if (/עדיין|נשאר|שוכב רגוע|בכל צעד/.test(step.markerCue)) expect(`${entry.id}:${step.stepIndex}:${step.marker}`).toMatch(/CONTINUATION$/);
+    }
+    expect(protocolFor(command('stay'), 'FORCE_FREE').steps.map((step) => step.markerWord)).toEqual(['טוב', 'טוב', 'טוב', 'טוב']);
+    expect(protocolFor(command('sit'), 'FORCE_FREE').steps.map((step) => step.markerWord)).toEqual(['כן!', 'כן!', 'כן!', 'טוב']);
+  });
+
+  it('times the reward at 1–1.5 seconds everywhere', () => {
+    const text = JSON.stringify(TRAINING_COMMANDS) + protocolFor(command('sit'), 'FORCE_FREE').summaryHe;
+    expect(text).not.toMatch(/1–2 שניות|1–2 s/);
+    expect(text).toMatch(/1–1\.5 שניות/);
+  });
+
+  it("orders troubleshooting by the dog's profile and hides escalations unless balanced is open for a non-sensitive dog", () => {
+    const tips = command('heel').balancedTroubleshooting;
+    const driven = troubleshootingFor(tips, 'HARD_HIGH_DRIVE', true);
+    expect(driven.map((tip) => tip.highlighted)).toEqual([true, true, false, false]);
+    expect(driven.some((tip) => tip.balancedEscalation)).toBe(true);
+    expect(troubleshootingFor(tips, 'HARD_HIGH_DRIVE', false).some((tip) => tip.balancedEscalation)).toBe(false);
+    expect(troubleshootingFor(tips, 'SENSITIVE_SOFT', true).some((tip) => tip.balancedEscalation)).toBe(false);
+    expect(troubleshootingFor(tips, null, true).map((tip) => tip.commonMistake)).toEqual(tips.map((tip) => tip.commonMistake));
   });
 
   it('ends both tracks with the generalisation step', () => {

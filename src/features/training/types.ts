@@ -3,4 +3,4 @@
 export * from './types/assessment';
 export * from './types/catalog';
 export * from './types/commands';
-export * from './types/training.types';
+export * from './types/command.types';

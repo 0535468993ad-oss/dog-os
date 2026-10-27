@@ -1,6 +1,13 @@
-import type { TemperamentTrait, TrainingTrack } from '../types';
+import type { CommandMarkers, TemperamentTrait, TrainingTrack } from '../types';
 
-// The two training tracks, their safety rules and the generalisation rule every protocol ends with.
+// The two training tracks, their safety rules, the marker vocabulary and the generalisation rule every protocol ends with.
+
+/** One marker vocabulary for all nine commands, so the dog learns once what each word promises. */
+export const MARKERS_HE: CommandMarkers = {
+  terminal: 'כן!',
+  continuation: 'טוב',
+  releaseWord: 'חופשי',
+};
 
 /** Appended, word for word, as the last step of every command in both tracks. */
 export const GENERALIZATION_RULE_HE =

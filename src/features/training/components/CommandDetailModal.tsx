@@ -14,6 +14,7 @@ import type { RiskWarning, TemperamentTrait, TrainingCommand, TrainingRecommenda
 import { protocolFor } from '../utils/protocol';
 import { effectiveTrack } from '../utils/trackAccess';
 import { BalancedSafetyNotice } from './BalancedSafetyNotice';
+import { CommandFocusCard } from './CommandFocusCard';
 import { CommandProtocolView } from './CommandProtocolView';
 import { DogProfileBanner } from './DogProfileBanner';
 import { GearBadgeRow } from './GearBadgeRow';
@@ -73,6 +74,7 @@ export function CommandDetailModal(props: CommandDetailModalProps) {
   const showLock = access === 'LOCKED' && (lockTapped || track === 'BALANCED');
   const protocolOpen = shownTrack === 'FORCE_FREE' || access === 'GRANTED';
   const protocol = command ? protocolFor(command, shownTrack) : null;
+  const nerve = dog.recommendation?.nerve ?? null;
 
   /** Clears the checklist and ends any live session (closing, confirming or cancelling). */
   const resetSession = () => {
@@ -147,6 +149,7 @@ export function CommandDetailModal(props: CommandDetailModalProps) {
                   {protocolOpen ? (
                     <>
                       <MasteryStars stars={props.stars} />
+                      <CommandFocusCard markers={command.markers} suitableForProfiles={command.suitableForProfiles} dogName={dog.name} nerve={nerve} />
                       <GearBadgeRow gear={protocol.gear} />
                       <AppText color="textSecondary">{protocol.summaryHe}</AppText>
                     </>
@@ -161,7 +164,7 @@ export function CommandDetailModal(props: CommandDetailModalProps) {
                 <BalancedSafetyNotice pending={props.pendingRisks} needsRules={access === 'NEEDS_RULES'} onAcknowledge={props.onAcknowledgeBalanced} />
               ) : (
                 <>
-                  <CommandProtocolView protocol={protocol} />
+                  <CommandProtocolView protocol={protocol} dogName={dog.name} nerve={nerve} balancedOpen={shownTrack === 'BALANCED' && access === 'GRANTED'} />
                   <TrainingSessionPanel
                     mode={props.mode}
                     dogName={dog.name}
