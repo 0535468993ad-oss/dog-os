@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { useUser } from '@/features/auth/AuthProvider';
 import { useHealth, useVetKnowledge } from '@/features/health/hooks';
-import { useJournal } from '@/features/journal/hooks';
+import { useRecentJournal } from '@/features/journal/hooks/useJournal';
 import { useAiSharing } from '@/features/legal/hooks/consents';
 import type { AiSharing } from '@/features/legal/types';
 import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
@@ -33,7 +33,7 @@ export function useDashboardData(dog: DogRow) {
   const sharing = useAiSharing(user.id);
   const health = useHealth(dog.id);
   const training = useTrainingSummary(dog.id);
-  const journal = useJournal(dog.id);
+  const journal = useRecentJournal(dog.id);
   const vet = useVetKnowledge();
   const ai = useAiInsights(dog.id, sharing);
   const [refreshing, setRefreshing] = useState(false);

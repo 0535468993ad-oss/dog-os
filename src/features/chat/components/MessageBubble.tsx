@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui';
@@ -8,8 +9,8 @@ import { formatTime } from '@/utils/date';
 
 import { bubbleStyles } from './bubbleStyles';
 
-/** One chat message, read by screen readers as "who, time: text". */
-export function MessageBubble({ message }: { message: ChatHistoryRow }) {
+/** One chat message, read by screen readers as "who, time: text". Memoized: typing in the composer re-renders the list. */
+export const MessageBubble = memo(function MessageBubble({ message }: { message: ChatHistoryRow }) {
   const mine = message.role === 'user';
   return (
     <View
@@ -33,7 +34,7 @@ export function MessageBubble({ message }: { message: ChatHistoryRow }) {
       </AppText>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   userText: {

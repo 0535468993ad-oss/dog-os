@@ -2,11 +2,30 @@ import type { ChatHistoryRow } from '@/lib/database.types';
 import { supabase, unwrap } from '@/lib/supabase';
 import { readFunctionError, reportError } from '@/utils/errors';
 
+import { olderThanFilter, type ChatCursor } from '../utils/chatCursor';
 import { ChatError } from '../utils/chatErrors';
 
+/** Messages per page: the newest window on open, and each "load older" step. */
+export const CHAT_PAGE_SIZE = 50;
+
+/** One conversation's rows: a dog's, or the general one (dog_id null). */
+function conversation(dogId: string | null) {
+  const query = supabase.from('chat_history').select('*');
+  return dogId ? query.eq('dog_id', dogId) : query.is('dog_id', null);
+}
+
+/** The newest page of a conversation, oldest first. */
 export async function fetchChat(dogId: string | null): Promise<ChatHistoryRow[]> {
-  const query = supabase.from('chat_history').select('*').order('created_at', { ascending: true }).limit(200);
-  return unwrap(await (dogId ? query.eq('dog_id', dogId) : query.is('dog_id', null)));
+  const rows = unwrap(await conversation(dogId).order('created_at', { ascending: false }).order('id', { ascending: false }).limit(CHAT_PAGE_SIZE));
+  return rows.reverse();
+}
+
+/** The page just before a cursor (keyset on created_at, id), oldest first. */
+export async function fetchChatBefore(dogId: string | null, cursor: ChatCursor): Promise<ChatHistoryRow[]> {
+  const rows = unwrap(
+    await conversation(dogId).or(olderThanFilter(cursor)).order('created_at', { ascending: false }).order('id', { ascending: false }).limit(CHAT_PAGE_SIZE),
+  );
+  return rows.reverse();
 }
 
 function isChatRow(value: unknown): value is ChatHistoryRow {

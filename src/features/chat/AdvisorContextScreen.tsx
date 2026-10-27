@@ -8,7 +8,7 @@ import { cacheState } from '@/lib/queryView';
 import { SIZE_LABELS } from '@/features/dogs/breeds';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
-import { useJournal } from '@/features/journal/hooks';
+import { useRecentJournal } from '@/features/journal/hooks/useJournal';
 import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
 import { colors, spacing } from '@/constants/theme';
 import { formatAge, todayIso } from '@/utils/date';
@@ -28,7 +28,7 @@ export function AdvisorContextScreen() {
   const { activeDog, isLoading: dogsLoading } = useActiveDog();
   const dogId = activeDog?.id ?? null;
   const health = useHealth(dogId);
-  const journal = useJournal(dogId);
+  const journal = useRecentJournal(dogId);
   const training = useTrainingSummary(dogId);
 
   if (dogsLoading || health.isLoading || journal.isLoading || training.isLoading) return <LoadingState />;

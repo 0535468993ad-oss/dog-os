@@ -2,6 +2,7 @@ import type { DogRow, DogSize, ProfileRow } from '@/lib/database.types';
 import { supabase, unwrap } from '@/lib/supabase';
 import { reportError } from '@/utils/errors';
 
+import { createPhotoUrlBatcher } from './logic/photoUrlBatcher';
 import { assertPhotoAllowed } from './photoFile';
 
 export const PHOTO_BUCKET = 'dog-photos';
@@ -134,7 +135,10 @@ export async function saveDog(
   return { dog, photoFailed };
 }
 
+/** Signs every avatar path asked for in one window with a single storage call (an N-avatar list makes one request). */
+const signPhotoPaths = createPhotoUrlBatcher(async (paths) => unwrap(await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(paths, 60 * 60)));
+
+/** A signed URL for a dog photo, valid for an hour. */
 export async function getPhotoUrl(path: string): Promise<string> {
-  const { signedUrl } = unwrap(await supabase.storage.from(PHOTO_BUCKET).createSignedUrl(path, 60 * 60));
-  return signedUrl;
+  return signPhotoPaths(path);
 }

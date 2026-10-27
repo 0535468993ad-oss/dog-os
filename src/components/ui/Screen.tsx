@@ -26,7 +26,8 @@ interface ScreenProps {
   scrollY?: SharedValue<number>;
 }
 
-const MAX_CONTENT_WIDTH = 720;
+/** The content column's width cap; screens that scroll their own list (scroll={false}) reuse it. */
+export const MAX_CONTENT_WIDTH = 720;
 
 export function Screen({ children, scroll = true, refreshing, onRefresh, edges = ['top'], contentStyle, footer, parallaxHeader, scrollY }: ScreenProps) {
   const parallax = useParallaxHeader(scrollY);

@@ -1,7 +1,7 @@
 import { SIZE_SHORT_LABELS } from '@/features/dogs/breeds';
 import type { HealthData } from '@/features/health/api';
 import type { ModuleProgress, TrainingModule } from '@/features/training/types';
-import { JOURNAL_CATEGORY_LABELS, MOOD_LABELS } from '@/features/journal/labels';
+import { JOURNAL_CATEGORY_LABELS, MOOD_LABELS } from '@/features/journal/data/labels';
 import type { DogRow, JournalEntryRow } from '@/lib/database.types';
 import { colors } from '@/constants/theme';
 import { formatAge, formatDate, todayIso } from '@/utils/date';

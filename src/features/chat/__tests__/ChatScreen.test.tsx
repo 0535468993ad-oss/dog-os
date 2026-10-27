@@ -1,6 +1,6 @@
 // Characterization of the advisor screen's send paths: typed and chip sends, the on-device emergency
 // intercept (send anyway / close restores the draft), a failed send restoring the draft, the consent gate
-// and the sending guard.
+// and the sending guard, plus the "load older messages" control.
 import { render, screen, userEvent } from '@testing-library/react-native';
 
 import { makeDog } from '@/test/fixtures';
@@ -8,7 +8,8 @@ import { makeDog } from '@/test/fixtures';
 import { ChatScreen } from '../ChatScreen';
 
 const mockDog = makeDog({ name: 'ג׳קסון' });
-const mockState = { sharing: 'allowed' as 'allowed' | 'opted_out' | 'unknown', isSending: false, failNext: false };
+const mockState = { sharing: 'allowed' as 'allowed' | 'opted_out' | 'unknown', isSending: false, failNext: false, hasOlder: false };
+const mockLoadOlder = jest.fn();
 const mockSend = jest.fn((message: string, onFailed: (text: string) => void) => {
   if (mockState.failNext) onFailed(message);
 });
@@ -28,6 +29,9 @@ jest.mock('../hooks/useChatConversation', () => ({
     error: null,
     isSending: mockState.isSending,
     isClearing: false,
+    hasOlder: mockState.hasOlder,
+    isLoadingOlder: false,
+    loadOlder: mockLoadOlder,
     sendMessage: mockSend,
     clearConversation: jest.fn(),
   }),
@@ -44,7 +48,18 @@ async function renderChat() {
 describe('ChatScreen send paths', () => {
   beforeEach(() => {
     mockSend.mockClear();
-    Object.assign(mockState, { sharing: 'allowed', isSending: false, failNext: false });
+    mockLoadOlder.mockClear();
+    Object.assign(mockState, { sharing: 'allowed', isSending: false, failNext: false, hasOlder: false });
+  });
+
+  it('offers older messages only when the server has more, and loads them on press', async () => {
+    const view = await render(<ChatScreen />);
+    expect(screen.queryByRole('button', { name: 'טעינת הודעות קודמות' })).toBeNull();
+    mockState.hasOlder = true;
+    await view.rerender(<ChatScreen />);
+    const user = userEvent.setup();
+    await user.press(screen.getByRole('button', { name: 'טעינת הודעות קודמות' }));
+    expect(mockLoadOlder).toHaveBeenCalledTimes(1);
   });
 
   it('sends a typed message and clears the composer', async () => {

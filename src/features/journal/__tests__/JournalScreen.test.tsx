@@ -1,6 +1,6 @@
 // Characterization of the journal: an empty note is refused, an added entry clears the form, a failed
-// delete is announced, and the empty / failed list states.
-import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
+// delete is announced, the empty / failed list states, and the next page loading at the end of the list.
+import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
 
 import { makeDog, makeJournal } from '@/test/fixtures';
 import type { JournalEntryRow } from '@/lib/database.types';
@@ -10,14 +10,23 @@ import { JournalScreen } from '../JournalScreen';
 
 const mockAdd = jest.fn(async () => undefined);
 const mockRemove = jest.fn();
-const mockJournal: { data: JournalEntryRow[] | undefined; error: Error | null } = { data: [], error: null };
+const mockFetchNextPage = jest.fn(async () => undefined);
+const mockJournal: { data: JournalEntryRow[] | undefined; error: Error | null; hasNextPage: boolean } = { data: [], error: null, hasNextPage: false };
 const mockDog = makeDog();
 
 jest.mock('expo-router', () => ({ Stack: { Screen: () => null } }));
 jest.mock('@react-native-community/datetimepicker', () => ({ __esModule: true, default: () => null, DateTimePickerAndroid: { open: jest.fn() } }));
 jest.mock('@/features/dogs/hooks', () => ({ useActiveDog: () => ({ activeDog: mockDog, isLoading: false }) }));
-jest.mock('../hooks', () => ({
-  useJournal: () => ({ isLoading: false, data: mockJournal.data, error: mockJournal.error, refetch: jest.fn() }),
+jest.mock('../hooks/useJournal', () => ({
+  useJournalFeed: () => ({
+    isLoading: false,
+    data: mockJournal.data,
+    error: mockJournal.error,
+    refetch: jest.fn(),
+    hasNextPage: mockJournal.hasNextPage,
+    isFetchingNextPage: false,
+    fetchNextPage: mockFetchNextPage,
+  }),
   useJournalMutations: () => ({ add: { mutateAsync: mockAdd, isPending: false }, remove: { mutate: mockRemove } }),
 }));
 
@@ -26,6 +35,17 @@ describe('JournalScreen', () => {
     jest.clearAllMocks();
     mockJournal.data = [makeJournal({ mood: 'good' })];
     mockJournal.error = null;
+    mockJournal.hasNextPage = false;
+  });
+
+  it('loads the next page when the list reaches its end, and only while one exists', async () => {
+    const view = await render(<JournalScreen />);
+    await fireEvent(screen.getByLabelText('רשומות היומן'), 'endReached');
+    expect(mockFetchNextPage).not.toHaveBeenCalled();
+    mockJournal.hasNextPage = true;
+    await view.rerender(<JournalScreen />);
+    await fireEvent(screen.getByLabelText('רשומות היומן'), 'endReached');
+    expect(mockFetchNextPage).toHaveBeenCalledTimes(1);
   });
 
   it('refuses an empty note', async () => {

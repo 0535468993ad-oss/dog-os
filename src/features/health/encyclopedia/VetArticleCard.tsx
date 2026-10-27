@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
@@ -8,7 +9,8 @@ import type { VetArticle } from '../api';
 import { URGENCY, VET_CATEGORY_LABELS } from '../labels';
 
 /** Encyclopedia entry summary: title, urgency badge (text + icon) and category; opens the full article. */
-export function VetArticleCard({ article }: { article: VetArticle }) {
+// Memoized: the encyclopedia re-renders its whole filtered list on every search keystroke.
+export const VetArticleCard = memo(function VetArticleCard({ article }: { article: VetArticle }) {
   const urgency = article.urgency ? URGENCY[article.urgency] : null;
   return (
     <Card
@@ -27,7 +29,7 @@ export function VetArticleCard({ article }: { article: VetArticle }) {
       <Badge label={VET_CATEGORY_LABELS[article.category]} tone="info" />
     </Card>
   );
-}
+});
 
 const styles = StyleSheet.create({
   row: {

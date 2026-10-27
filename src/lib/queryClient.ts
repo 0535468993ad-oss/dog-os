@@ -48,9 +48,14 @@ export const queryKeys = {
   knowledgeBase: ['knowledge-base'] as const,
   knowledgeBookmarks: (userId: string) => ['knowledge-bookmarks', userId] as const,
   chat: (dogId: string | null) => ['chat', dogId ?? 'general'] as const,
+  /** Whether older chat messages exist beyond the cached ones (set by each page fetch). */
+  chatHasOlder: (dogId: string | null) => ['chat', dogId ?? 'general', 'hasOlder'] as const,
   health: (dogId: string) => ['health', dogId] as const,
   vetKnowledge: ['vet-knowledge'] as const,
+  /** Prefix of every journal query for a dog: invalidate it after a write. */
   journal: (dogId: string) => ['journal', dogId] as const,
+  journalFeed: (dogId: string) => ['journal', dogId, 'feed'] as const,
+  journalRecent: (dogId: string, limit: number) => ['journal', dogId, 'recent', limit] as const,
   /** Prefix of every dog's cached AI insights. */
   allInsights: ['insights'] as const,
   insights: (dogId: string, date: string) => ['insights', dogId, date] as const,

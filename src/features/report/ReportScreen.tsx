@@ -6,7 +6,8 @@ import { AppText, Button, Card, Disclaimer, EmptyState, ErrorState, LoadingState
 import { cacheState } from '@/lib/queryView';
 import { useActiveDog } from '@/features/dogs/hooks';
 import { useHealth } from '@/features/health/hooks';
-import { useJournal } from '@/features/journal/hooks';
+import { useRecentJournal } from '@/features/journal/hooks/useJournal';
+import { REPORT_JOURNAL_LIMIT } from '@/features/journal/utils/journalPaging';
 import { useTrainingSummary } from '@/features/training/hooks/useTrainingSummary';
 import { formatAge } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
@@ -18,7 +19,7 @@ export function ReportScreen() {
   const { activeDog, isLoading } = useActiveDog();
   const health = useHealth(activeDog?.id ?? null);
   const training = useTrainingSummary(activeDog?.id ?? null);
-  const journal = useJournal(activeDog?.id ?? null);
+  const journal = useRecentJournal(activeDog?.id ?? null, REPORT_JOURNAL_LIMIT);
   const [exporting, setExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

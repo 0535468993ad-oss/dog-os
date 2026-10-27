@@ -88,5 +88,7 @@ export function useDogPhotoUrl(path: string | null) {
     queryFn: () => getPhotoUrl(path!),
     enabled: !!path,
     staleTime: 50 * 60 * 1000, // signed URLs last an hour
+    // Dropped before the hour is up, so an avatar that re-mounts later never shows an expired URL from the cache.
+    gcTime: 55 * 60 * 1000,
   });
 }

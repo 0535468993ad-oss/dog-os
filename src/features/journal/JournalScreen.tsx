@@ -1,130 +1,104 @@
 import { Stack } from 'expo-router';
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, View, type ListRenderItem } from 'react-native';
 
-import { AppText, Badge, Button, Card, ChipGroup, DateField, EmptyState, ErrorState, IconButton, LoadingState, Screen, SectionHeader, StaleDataNotice, TextField } from '@/components/ui';
-import { cacheState } from '@/lib/queryView';
-import { useActiveDog } from '@/features/dogs/hooks';
-import type { DogRow, JournalCategory, JournalMood } from '@/lib/database.types';
+import { AppText, EmptyState, ErrorState, LoadingState, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
+import { MAX_CONTENT_WIDTH } from '@/components/ui/Screen';
 import { spacing } from '@/constants/theme';
-import { formatDate, todayIso } from '@/utils/date';
+import { useActiveDog } from '@/features/dogs/hooks';
+import type { DogRow } from '@/lib/database.types';
+import { cacheState } from '@/lib/queryView';
 import { toUserMessage } from '@/utils/errors';
 
-import { useJournal, useJournalMutations } from './hooks';
-import { JOURNAL_CATEGORY_LABELS, MOOD_LABELS } from './labels';
+import { JournalEntryCard } from './components/JournalEntryCard';
+import { JournalForm } from './components/JournalForm';
+import { useJournalFeed, useJournalMutations } from './hooks/useJournal';
+import type { JournalEntryRow } from './types';
 
+/** The journal: a form for today's entry above the dog's entries, paged from the server as the list scrolls. */
 export function JournalScreen() {
   const { activeDog, isLoading } = useActiveDog();
   return (
-    <Screen edges={['bottom']}>
+    <Screen edges={['bottom']} scroll={false}>
       <Stack.Screen options={{ title: 'יומן' }} />
       {isLoading ? <LoadingState /> : activeDog ? <Journal dog={activeDog} /> : <EmptyState icon="paw-outline" title="אין כלב פעיל" />}
     </Screen>
   );
 }
 
+const entryKey = (entry: JournalEntryRow) => entry.id;
+
 function Journal({ dog }: { dog: DogRow }) {
-  const journal = useJournal(dog.id);
+  const feed = useJournalFeed(dog.id);
   const { add, remove } = useJournalMutations(dog.id);
-  const [note, setNote] = useState('');
-  const [category, setCategory] = useState<JournalCategory>('behavior');
-  const [mood, setMood] = useState<JournalMood | null>(null);
-  const [entryDate, setEntryDate] = useState<string>(todayIso());
-  const [error, setError] = useState<string | null>(null);
   const [listError, setListError] = useState<string | null>(null);
+  const deleteEntry = remove.mutate;
 
-  const removeEntry = (id: string) => {
-    setListError(null);
-    remove.mutate(id, { onError: (e) => setListError(toUserMessage(e, 'מחיקת הרשומה נכשלה. נסו שוב.')) });
-  };
+  // Stable, so the memoized entry cards skip re-rendering when the list re-renders.
+  const removeEntry = useCallback(
+    (id: string) => {
+      setListError(null);
+      deleteEntry(id, { onError: (e) => setListError(toUserMessage(e, 'מחיקת הרשומה נכשלה. נסו שוב.')) });
+    },
+    [deleteEntry],
+  );
+  const renderEntry = useCallback<ListRenderItem<JournalEntryRow>>(({ item }) => <JournalEntryCard entry={item} onDelete={removeEntry} />, [removeEntry]);
 
-  const submit = async () => {
-    if (!note.trim()) {
-      setError('כתבו מה קרה היום.');
-      return;
-    }
-    setError(null);
-    try {
-      await add.mutateAsync({ dogId: dog.id, note: note.trim(), category, mood, entryDate });
-      setNote('');
-      setMood(null);
-    } catch (e) {
-      setError(toUserMessage(e));
-    }
-  };
+  const { hasNextPage, isFetchingNextPage, fetchNextPage } = feed;
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const view = cacheState(feed.error, feed.data !== undefined);
+  const retry = () => void feed.refetch();
 
   return (
-    <>
-      <AppText color="textSecondary">{`רשמו התנהגויות, תסמינים והצלחות של ${dog.name}. היועץ החכם משתמש ברשומות האחרונות כדי להתאים את ההמלצות.`}</AppText>
-      <Card>
-        <ChipGroup
-          options={(Object.keys(JOURNAL_CATEGORY_LABELS) as JournalCategory[]).map((value) => ({ value, label: JOURNAL_CATEGORY_LABELS[value] }))}
-          value={category}
-          onChange={setCategory}
-          accessibilityLabel="קטגוריה"
-        />
-        <TextField label="מה קרה?" value={note} onChangeText={setNote} multiline maxLength={2000} error={error} placeholder="למשל: נבח על כלב ברחוב פחות מאתמול" />
-        <View style={styles.group}>
-          <AppText variant="label" color="textSecondary">
-            איך היה היום? (רשות)
-          </AppText>
-          <ChipGroup
-            options={(Object.keys(MOOD_LABELS) as JournalMood[]).map((value) => ({ value, label: MOOD_LABELS[value] }))}
-            value={mood}
-            onChange={setMood}
-            accessibilityLabel="מצב רוח"
-          />
-        </View>
-        <DateField label="תאריך" value={entryDate} onChange={setEntryDate} maximumDate={todayIso()} />
-        <Button title="הוספה ליומן" onPress={submit} loading={add.isPending} />
-      </Card>
-
-      <SectionHeader title="רשומות" />
-      {listError ? (
-        <AppText color="dangerText" accessibilityRole="alert">
-          {listError}
-        </AppText>
-      ) : null}
-      <StaleDataNotice visible={cacheState(journal.error, journal.data !== undefined) === 'stale'} onRetry={() => void journal.refetch()} />
-      {journal.isLoading ? (
-        <LoadingState />
-      ) : cacheState(journal.error, journal.data !== undefined) === 'failed' ? (
-        <ErrorState message={toUserMessage(journal.error)} onRetry={() => void journal.refetch()} />
-      ) : journal.data?.length ? (
-        journal.data.map((entry) => (
-          <Card key={entry.id}>
-            <View style={styles.row}>
-              <View style={styles.badges}>
-                <Badge label={JOURNAL_CATEGORY_LABELS[entry.category]} tone="primary" />
-                {entry.mood ? <Badge label={MOOD_LABELS[entry.mood]} /> : null}
-              </View>
-              <IconButton icon="trash-outline" accessibilityLabel={`מחיקת הרשומה מ${formatDate(entry.entry_date)}`} onPress={() => removeEntry(entry.id)} color="textSecondary" />
-            </View>
-            <AppText variant="caption" color="textSecondary">
-              {formatDate(entry.entry_date)}
+    <FlatList
+      data={view === 'failed' ? [] : (feed.data ?? [])}
+      keyExtractor={entryKey}
+      renderItem={renderEntry}
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.5}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={styles.content}
+      accessibilityLabel="רשומות היומן"
+      ListHeaderComponent={
+        <View style={styles.header}>
+          <AppText color="textSecondary">{`רשמו התנהגויות, תסמינים והצלחות של ${dog.name}. היועץ החכם משתמש ברשומות האחרונות כדי להתאים את ההמלצות.`}</AppText>
+          <JournalForm dogId={dog.id} onAdd={add.mutateAsync} adding={add.isPending} />
+          <SectionHeader title="רשומות" />
+          {listError ? (
+            <AppText color="dangerText" accessibilityRole="alert">
+              {listError}
             </AppText>
-            <AppText>{entry.note}</AppText>
-          </Card>
-        ))
-      ) : (
-        <EmptyState icon="book-outline" title="היומן ריק" body="רשומה אחת ביום עושה הבדל גדול בהבנת הדפוסים." />
-      )}
-    </>
+          ) : null}
+          <StaleDataNotice visible={view === 'stale'} onRetry={retry} />
+        </View>
+      }
+      ListEmptyComponent={
+        feed.isLoading ? (
+          <LoadingState />
+        ) : view === 'failed' ? (
+          <ErrorState message={toUserMessage(feed.error)} onRetry={retry} />
+        ) : (
+          <EmptyState icon="book-outline" title="היומן ריק" body="רשומה אחת ביום עושה הבדל גדול בהבנת הדפוסים." />
+        )
+      }
+      ListFooterComponent={isFetchingNextPage ? <LoadingState /> : undefined}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  group: {
-    gap: spacing.xs,
+  content: {
+    padding: spacing.md,
+    paddingBottom: spacing.xxl,
+    gap: spacing.md,
+    width: '100%',
+    maxWidth: MAX_CONTENT_WIDTH,
+    alignSelf: 'center',
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  badges: {
-    flexDirection: 'row',
-    gap: spacing.xs,
-    flex: 1,
+  header: {
+    gap: spacing.md,
   },
 });

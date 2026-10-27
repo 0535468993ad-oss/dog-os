@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import { FlatList, ScrollView, StyleSheet, View, type ListRenderItem } from 'react-native';
 
-import { ErrorState, LoadingState, Screen, StaleDataNotice } from '@/components/ui';
+import { Button, ErrorState, LoadingState, Screen, StaleDataNotice } from '@/components/ui';
 import { EmergencyAlertPanel } from '@/features/ai-advisor/components/EmergencyAlertPanel';
 import { useEmergencyIntercept } from '@/features/ai-advisor/hooks/useEmergencyIntercept';
 import { useUser } from '@/features/auth/AuthProvider';
@@ -23,6 +23,10 @@ import { TypingIndicator } from './components/TypingIndicator';
 import { promptChips } from './utils/promptChips';
 import { useChatConversation } from './hooks/useChatConversation';
 
+// Stable list callbacks: with memoized bubbles, typing in the composer no longer re-renders the conversation.
+const messageKey = (item: ChatHistoryRow) => item.id;
+const renderMessage: ListRenderItem<ChatHistoryRow> = ({ item }) => <MessageBubble message={item} />;
+
 /** AI advisor tab: composes the conversation, composer and controls for the active dog. */
 export function ChatScreen() {
   const user = useUser();
@@ -32,7 +36,15 @@ export function ChatScreen() {
   const [draft, setDraft] = useState('');
   const [confirmClear, setConfirmClear] = useState(false);
   const listRef = useRef<FlatList<ChatHistoryRow>>(null);
+  const lastShownId = useRef<string | null>(null);
   const emergency = useEmergencyIntercept();
+  const newestId = chat.messages.at(-1)?.id ?? null;
+  // Scrolls to the end only when the newest message changes (a send or a reply), not when older pages load.
+  const followNewest = useCallback(() => {
+    if (newestId === lastShownId.current) return;
+    lastShownId.current = newestId;
+    listRef.current?.scrollToEnd({ animated: true });
+  }, [newestId]);
 
   // Sends the draft (or a prompt chip's question); a failed send puts the text back in the composer.
   // The on-device emergency guardrail runs first: an emergency gets fixed first-aid steps at once, not the model.
@@ -104,13 +116,18 @@ export function ChatScreen() {
         <FlatList
           ref={listRef}
           data={chat.messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={messageKey}
           contentContainerStyle={styles.list}
-          onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
+          // Older pages are prepended: keep the reader where they were instead of jumping.
+          maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
+          onContentSizeChange={followNewest}
           accessibilityLabel="היסטוריית השיחה"
+          ListHeaderComponent={
+            chat.hasOlder ? <Button title="טעינת הודעות קודמות" variant="ghost" icon="time-outline" compact onPress={chat.loadOlder} loading={chat.isLoadingOlder} /> : undefined
+          }
           ListEmptyComponent={<ChatEmptyState dogName={dogName} />}
           ListFooterComponent={chat.isSending ? <TypingIndicator /> : undefined}
-          renderItem={({ item }) => <MessageBubble message={item} />}
+          renderItem={renderMessage}
         />
       )}
     </Screen>
