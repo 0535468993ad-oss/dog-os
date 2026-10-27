@@ -178,4 +178,12 @@ describe('breedNoteFor', () => {
     expect(breedNoteFor(null)).toBeNull();
     expect(recommendTraining({ ...JACKSON, trait: 'STEADY' }).reasonsHe).toContain(note);
   });
+
+  it('flags breeds profiled in the 75-breed catalog by their drive ratings, never scent hounds', () => {
+    expect(breedNoteFor('dutch-shepherd')).toBe(breedNoteFor('german-shepherd'));
+    expect(breedNoteFor('australian-cattle-dog')).toBe(breedNoteFor('german-shepherd'));
+    // Profiled now (FCI 6), but the flag is limited to FCI 1–2 working breeds.
+    expect(breedNoteFor('beagle')).toBeNull();
+    expect(breedNoteFor('collie')).toBeNull();
+  });
 });

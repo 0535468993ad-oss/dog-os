@@ -1,11 +1,17 @@
 // Breed search: Hebrew, English, abbreviations and transliterations, typo tolerance, facet filters
 // and sorting – and the comparator built on the same catalog.
+import { BREED_PROFILES } from '../data/breedsSeedData';
 import { compareBreeds } from '../services/breedComparatorService';
 import { matchesFilters, scoreBreed, searchBreeds } from '../services/breedSearchService';
 import { findBreedProfile } from '../utils/breedTraits';
 import { boundedLevenshtein, normalizeText } from '../utils/textNormalize';
 
 const top = (query: string) => searchBreeds(query)[0]?.id;
+
+// The filter and sort logic is tested on a fixed slice – the twelve foundational profiles – so the expectations
+// don't move every time the catalog grows. Search itself runs over the full catalog.
+const FOUNDATIONAL = BREED_PROFILES.slice(0, 12);
+const ids = (query: string, filters: Parameters<typeof searchBreeds>[1] = {}) => searchBreeds(query, filters, 'RELEVANCE', FOUNDATIONAL).map((p) => p.id);
 
 describe('normalizeText', () => {
   it('folds case, geresh, Hebrew points, final letters and punctuation', () => {
@@ -44,6 +50,23 @@ describe('searchBreeds', () => {
     expect(top(query)).toBe(id);
   });
 
+  it.each([
+    ['כלב כנעני', 'canaan-dog'],
+    ['פיטבול', 'pit-bull'],
+    ['pitbull', 'pit-bull'],
+    ['ביגל', 'beagle'],
+    ['תחש', 'dachshund'],
+    ['dachshund', 'dachshund'],
+    ['שיצו', 'shih-tzu'],
+    ['בורדר קולי', 'border-collie'],
+    ['סלוקי', 'saluki'],
+    ['לברדור', 'labrador'],
+    ['רועה הולנדי', 'dutch-shepherd'],
+    ['malamute', 'alaskan-malamute'],
+  ])('finds the expanded catalog: "%s" → %s', (query, id) => {
+    expect(top(query)).toBe(id);
+  });
+
   it('tolerates typos', () => {
     expect(top('rottwiler')).toBe('rottweiler');
     expect(top('huskey')).toBe('husky');
@@ -52,7 +75,7 @@ describe('searchBreeds', () => {
 
   it('returns nothing for an unrelated query and everything for an empty one', () => {
     expect(searchBreeds('xyzzyqq')).toEqual([]);
-    expect(searchBreeds('')).toHaveLength(12);
+    expect(searchBreeds('')).toHaveLength(75);
   });
 
   it('ranks an exact name above a partial match', () => {
@@ -65,29 +88,29 @@ describe('searchBreeds', () => {
 
 describe('filters and sorting', () => {
   it('filters by living, experience, size and shedding', () => {
-    const apartmentNovice = searchBreeds('', { living: 'APARTMENT_FRIENDLY', experience: 'NOVICE_FRIENDLY' }).map((p) => p.id);
-    expect(apartmentNovice.sort()).toEqual(['cavalier', 'french-bulldog', 'golden-retriever']);
-    expect(searchBreeds('', { sizes: ['TOY', 'SMALL'] }).map((p) => p.id).sort()).toEqual(['cavalier', 'french-bulldog', 'jack-russell']);
-    expect(searchBreeds('', { maxShedding: 2 }).map((p) => p.id).sort()).toEqual(['doberman', 'french-bulldog']);
-    expect(searchBreeds('', { nonShedding: true })).toEqual([]);
+    expect(FOUNDATIONAL.map((p) => p.id)).toContain('jack-russell');
+    expect(ids('', { living: 'APARTMENT_FRIENDLY', experience: 'NOVICE_FRIENDLY' }).sort()).toEqual(['cavalier', 'french-bulldog', 'golden-retriever']);
+    expect(ids('', { sizes: ['TOY', 'SMALL'] }).sort()).toEqual(['cavalier', 'french-bulldog', 'jack-russell']);
+    expect(ids('', { maxShedding: 2 }).sort()).toEqual(['doberman', 'french-bulldog']);
+    expect(ids('', { nonShedding: true })).toEqual([]);
   });
 
   it('filters by medical risk: bloat and brachycephaly', () => {
-    expect(searchBreeds('', { gdvRisk: true }).map((p) => p.id).sort()).toEqual(['cane-corso', 'doberman', 'german-shepherd', 'rottweiler']);
-    expect(searchBreeds('', { brachycephalic: true }).map((p) => p.id).sort()).toEqual(['cavalier', 'french-bulldog']);
+    expect(ids('', { gdvRisk: true }).sort()).toEqual(['cane-corso', 'doberman', 'german-shepherd', 'rottweiler']);
+    expect(ids('', { brachycephalic: true }).sort()).toEqual(['cavalier', 'french-bulldog']);
   });
 
   it('combines a query with filters', () => {
     const profile = findBreedProfile('german-shepherd');
     if (!profile) throw new Error('missing profile');
     expect(matchesFilters(profile, { living: 'APARTMENT_FRIENDLY' })).toBe(false);
-    expect(searchBreeds('רועה', { gdvRisk: true }).map((p) => p.id)).toEqual(['german-shepherd']);
+    expect(ids('רועה', { gdvRisk: true })).toEqual(['german-shepherd']);
   });
 
   it('sorts by energy, popularity and longevity', () => {
-    expect(searchBreeds('', {}, 'ENERGY')[0]?.id).toBe('belgian-malinois');
-    expect(searchBreeds('', {}, 'POPULARITY').slice(0, 3).map((p) => p.id)).toEqual(['french-bulldog', 'golden-retriever', 'german-shepherd']);
-    expect(searchBreeds('', {}, 'LONGEVITY')[0]?.id).toBe('jack-russell');
+    expect(searchBreeds('', {}, 'ENERGY', FOUNDATIONAL)[0]?.id).toBe('belgian-malinois');
+    expect(searchBreeds('', {}, 'POPULARITY', FOUNDATIONAL).slice(0, 3).map((p) => p.id)).toEqual(['french-bulldog', 'golden-retriever', 'german-shepherd']);
+    expect(searchBreeds('', {}, 'LONGEVITY', FOUNDATIONAL)[0]?.id).toBe('jack-russell');
   });
 });
 

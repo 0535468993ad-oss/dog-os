@@ -13,7 +13,7 @@ const BULL_LAW = 'גזעי בול נמצאים ברשימות הגבלה במד�
 export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   {
     id: 'amstaff', names: { he: 'אמסטף', en: 'American Staffordshire Terrier', original: 'American Staffordshire Terrier' }, tags: ['בול', 'טרייר', 'משפחה פעילה'], aliases: ['amstaff', 'am staff', 'staffordshire', 'אמסטף', 'אמסטאף', 'סטפורדשייר'],
-    fci: { group: 3, section: 3, groupNameHe: FCI_GROUP_NAMES_HE[3] },
+    fci: { group: 3, section: 3, standardNumber: 286, groupNameHe: FCI_GROUP_NAMES_HE[3] },
     phenotype: { sizeCategory: 'MEDIUM', maleWeightKg: { min: 25, max: 32 }, femaleWeightKg: { min: 20, max: 27 }, maleHeightCm: { min: 46, max: 48 }, femaleHeightCm: { min: 43, max: 46 }, coatType: 'SHORT_SINGLE', sheddingLevel: 2, droolTendency: 1 },
     genesis: { centuryOfOrigin: 'המאה ה־19 עד ה־20 (הכרה ב־AKC ב־1936)', countryOfOrigin: 'ארצות הברית', ancestorBreeds: ['בולדוג אנגלי מהטיפוס הישן', 'טריירים אנגליים'], founderOrHistoricalKeyFigures: 'מגדלים אמריקאים שהפרידו את הקו מכלבי הבול שהגיעו מאנגליה; ה־AKC הכיר בו ב־1936 בשם "סטפורדשייר טרייר", והשם שונה ב־1972.', originalUtilityAndFunction: 'כלב משק וחברה; לצערנו הגזע שימש בעבר גם בקרבות כלבים.', historicalContextNarrativeHe: `האמסטף נבחר בארצות הברית לכלב גדול וכבד יותר מקרובו הבריטי, ומאז ההכרה הרשמית הרבייה כוונה לכלב יציב וחברותי עם אנשים. ${BULL_LAW}` },
     drives: { preyDrive: 4, defenseDrive: 3, packDriveSocial: 4, playDrive: 5, handlerFocusBiddability: 4, environmentalSensitivity: 2, energyStaminaHoursDaily: 1.5, mentalStimulationRequirementHe: 'משחקי משיכה עם כללים, עבודת אף וטריקים – ובניית רוגע ליד כלבים אחרים.' },
@@ -33,7 +33,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'bull-terrier', names: { he: 'בול טרייר', en: 'Bull Terrier', original: 'Bull Terrier' }, tags: ['בול', 'טרייר'], aliases: ['bull terrier', 'bully', 'בול טרייר', 'בולטרייר'],
-    fci: { group: 3, section: 3, groupNameHe: FCI_GROUP_NAMES_HE[3] },
+    fci: { group: 3, section: 3, standardNumber: 11, groupNameHe: FCI_GROUP_NAMES_HE[3] },
     phenotype: { sizeCategory: 'MEDIUM', maleWeightKg: { min: 22, max: 32 }, femaleWeightKg: { min: 18, max: 27 }, maleHeightCm: { min: 50, max: 56 }, femaleHeightCm: { min: 45, max: 53 }, coatType: 'SHORT_SINGLE', sheddingLevel: 2, droolTendency: 1 },
     genesis: { centuryOfOrigin: 'אמצע המאה ה־19', countryOfOrigin: 'אנגליה', ancestorBreeds: ['בולדוג אנגלי', 'אינגליש טרייר לבן (נכחד)', 'דלמטי'], founderOrHistoricalKeyFigures: 'ג׳יימס הינקס מבירמינגהם, שפיתח בשנות ה־60 של המאה ה־19 את הבול טרייר הלבן ("הג׳נטלמן הלבן").', originalUtilityAndFunction: 'במקור כלב קרבות, ובהמשך כלב חברה ותצוגה.', historicalContextNarrativeHe: `הינקס רצה כלב בול נקי ומרשים יותר, והראש בצורת ביצה התפתח בהמשך הטיפוח. הגזע ידוע בהומור ובעקשנות שלו. ${BULL_LAW}` },
     drives: { preyDrive: 4, defenseDrive: 3, packDriveSocial: 4, playDrive: 5, handlerFocusBiddability: 2, environmentalSensitivity: 3, energyStaminaHoursDaily: 1.5, mentalStimulationRequirementHe: 'משחקים קצרים ומגוונים, צעצועי לעיסה ועבודת אף – אימונים קצרים כי הסבלנות שלו קצרה.' },
@@ -43,7 +43,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'boxer', names: { he: 'בוקסר', en: 'Boxer', original: 'Deutscher Boxer' }, tags: ['משפחה', 'עבודה', 'מולוסר'], aliases: ['boxer', 'בוקסר', 'בוקסרית'],
-    fci: { group: 2, section: 2, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    fci: { group: 2, section: 2, standardNumber: 144, groupNameHe: FCI_GROUP_NAMES_HE[2] },
     phenotype: { sizeCategory: 'LARGE', maleWeightKg: { min: 30, max: 35 }, femaleWeightKg: { min: 25, max: 30 }, maleHeightCm: { min: 57, max: 63 }, femaleHeightCm: { min: 53, max: 59 }, coatType: 'SHORT_SINGLE', sheddingLevel: 2, droolTendency: 3 },
     genesis: { centuryOfOrigin: 'סוף המאה ה־19 (1895)', countryOfOrigin: 'גרמניה (מינכן)', ancestorBreeds: ['בולנבייסר (כלב ציד גרמני שנכחד)', 'בולדוג אנגלי'], founderOrHistoricalKeyFigures: 'פרידריך רוברט, אלרד קניג ור. הפנר, שייסדו במינכן ב־1895 את מועדון הבוקסר הראשון.', originalUtilityAndFunction: 'עזר לציד ולשמירה, ובהמשך כלב צבא, משטרה ומשפחה.', historicalContextNarrativeHe: 'הבוקסר שמר מהבולנבייסר על לסת חזקה ועל אומץ, וקיבל אופי שובב וחברותי. הוא היה מהגזעים הראשונים שהוכשרו בגרמניה כלכלבי משטרה.' },
     drives: { preyDrive: 3, defenseDrive: 4, packDriveSocial: 4, playDrive: 5, handlerFocusBiddability: 4, environmentalSensitivity: 2, energyStaminaHoursDaily: 2, mentalStimulationRequirementHe: 'משחק, אימוני ציות קצרים ועבודה על רגיעה – נשאר "גור" עד גיל מבוגר.' },
@@ -63,7 +63,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'giant-schnauzer', names: { he: 'שנאוצר ענק', en: 'Giant Schnauzer', original: 'Riesenschnauzer' }, tags: ['עבודה', 'שמירה', 'משטרה'], aliases: ['giant schnauzer', 'riesenschnauzer', 'שנאוצר ענק', 'ריזן'],
-    fci: { group: 2, section: 1, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    fci: { group: 2, section: 1, standardNumber: 181, groupNameHe: FCI_GROUP_NAMES_HE[2] },
     phenotype: { sizeCategory: 'LARGE', maleWeightKg: { min: 35, max: 47 }, femaleWeightKg: { min: 35, max: 47 }, maleHeightCm: { min: 65, max: 70 }, femaleHeightCm: { min: 60, max: 65 }, coatType: 'WIRE', sheddingLevel: 2, droolTendency: 1 },
     genesis: { centuryOfOrigin: 'המאה ה־19', countryOfOrigin: 'גרמניה (בוואריה)', ancestorBreeds: ['שנאוצר סטנדרטי', 'כלבי בקר גדולים', 'דני ענק (לפי השערות)'], founderOrHistoricalKeyFigures: 'רועי בקר ובעלי מבשלות בדרום גרמניה; הגזע הוכר ככלב שירות למשטרה הגרמנית ב־1925.', originalUtilityAndFunction: 'הובלת בקר ושמירה על חצרות, ובהמשך כלב משטרה.', historicalContextNarrativeHe: 'כשהובלת הבקר ברגל נעלמה, השנאוצר הענק עבר לשמירה על מבשלות ומפעלים, ומשם לעבודת משטרה. הוא שומר על אופי עבודה חזק ודורש תעסוקה יומית.' },
     drives: { preyDrive: 4, defenseDrive: 4, packDriveSocial: 3, playDrive: 4, handlerFocusBiddability: 4, environmentalSensitivity: 3, energyStaminaHoursDaily: 2, mentalStimulationRequirementHe: 'ציות מדויק, עבודת אף וספורט כלבים כל יום.' },
@@ -73,7 +73,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'caucasian-shepherd', names: { he: 'רועה קווקזי', en: 'Caucasian Shepherd Dog', original: 'Kavkazskaïa Ovtcharka' }, tags: ['שומר עדר', 'כלב ענק', 'שמירה'], aliases: ['caucasian', 'caucasian shepherd', 'ovcharka', 'קווקזי', 'רועה קווקזי', 'אובצ׳רקה'],
-    fci: { group: 2, section: 2, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    fci: { group: 2, section: 2, standardNumber: 328, groupNameHe: FCI_GROUP_NAMES_HE[2] },
     phenotype: { sizeCategory: 'GIANT', maleWeightKg: { min: 50, max: 75 }, femaleWeightKg: { min: 45, max: 65 }, maleHeightCm: { min: 68, max: 75 }, femaleHeightCm: { min: 64, max: 70 }, coatType: 'DOUBLE_COAT', sheddingLevel: 4, droolTendency: 2 },
     genesis: { centuryOfOrigin: 'שורשים עתיקים; הסטנדרט המודרני נקבע בברית המועצות במאה ה־20', countryOfOrigin: 'אזור הקווקז (גאורגיה, ארמניה, אזרבייג׳ן, צפון הקווקז)', ancestorBreeds: ['כלבי שמירה על עדרים מאזור הקווקז'], founderOrHistoricalKeyFigures: 'רועי הקווקז לאורך מאות שנים; בברית המועצות הגזע תוקנן וגויס לשמירה על מתקנים.', originalUtilityAndFunction: 'שמירה עצמאית על עדרים מזאבים, דובים וגנבים.', historicalContextNarrativeHe: 'שומר עדר נבחר להחליט בעצמו ולהגן בלי פקודה. זה מה שהופך אותו לשומר יוצא דופן – ולכלב שלא מתאים לרוב המשפחות.' },
     drives: { preyDrive: 2, defenseDrive: 5, packDriveSocial: 2, playDrive: 2, handlerFocusBiddability: 2, environmentalSensitivity: 2, energyStaminaHoursDaily: 1, mentalStimulationRequirementHe: 'טריטוריה מגודרת לסייר בה, הליכות מובנות וחשיפה מבוקרת לאנשים – לא "משחקי ציות".' },
@@ -113,7 +113,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'great-dane', names: { he: 'דני ענק', en: 'Great Dane', original: 'Deutsche Dogge' }, tags: ['כלב ענק', 'משפחה'], aliases: ['great dane', 'dane', 'deutsche dogge', 'דני', 'דני ענק', 'גרייט דיין'],
-    fci: { group: 2, section: 2, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    fci: { group: 2, section: 2, standardNumber: 235, groupNameHe: FCI_GROUP_NAMES_HE[2] },
     phenotype: { sizeCategory: 'GIANT', maleWeightKg: { min: 54, max: 90 }, femaleWeightKg: { min: 45, max: 59 }, maleHeightCm: { min: 80, max: 90 }, femaleHeightCm: { min: 72, max: 84 }, coatType: 'SHORT_SINGLE', sheddingLevel: 3, droolTendency: 3 },
     genesis: { centuryOfOrigin: 'המאה ה־19 (1876 הוכרז ככלב הלאומי של גרמניה)', countryOfOrigin: 'גרמניה', ancestorBreeds: ['כלבי ציד חזירים גרמניים', 'מסטיפים', 'וולפהאונד אירי (לפי השערות)'], founderOrHistoricalKeyFigures: 'אצילים גרמנים שהחזיקו כלבי ציד לחזירי בר; מועדון הגזע הגרמני נוסד ב־1888.', originalUtilityAndFunction: 'ציד חזירי בר, ובהמשך כלב שמירה ויוקרה.', historicalContextNarrativeHe: 'השם "דני" הוא טעות היסטורית – הגזע גרמני. הוא הפך מכלב ציד אגרסיבי לענק עדין וחברותי, אבל הגוף העצום מגיע עם תוחלת חיים קצרה.' },
     drives: { preyDrive: 3, defenseDrive: 3, packDriveSocial: 4, playDrive: 3, handlerFocusBiddability: 3, environmentalSensitivity: 3, energyStaminaHoursDaily: 1, mentalStimulationRequirementHe: 'הליכות מתונות (בלי ריצות ארוכות עד סוף הגדילה), משחקי חיפוש ולימוד נימוסים.' },
@@ -123,7 +123,7 @@ export const WORKING_GUARDIAN_PROFILES: readonly BreedProfile[] = [
   },
   {
     id: 'newfoundland', names: { he: 'ניופאונדלנד', en: 'Newfoundland', original: 'Newfoundland' }, tags: ['כלב ענק', 'משפחה', 'כלב מים'], aliases: ['newfoundland', 'newfie', 'ניופאונדלנד', 'ניופי'],
-    fci: { group: 2, section: 2, groupNameHe: FCI_GROUP_NAMES_HE[2] },
+    fci: { group: 2, section: 2, standardNumber: 50, groupNameHe: FCI_GROUP_NAMES_HE[2] },
     phenotype: { sizeCategory: 'GIANT', maleWeightKg: { min: 64, max: 70 }, femaleWeightKg: { min: 50, max: 55 }, maleHeightCm: { min: 69, max: 74 }, femaleHeightCm: { min: 63, max: 68 }, coatType: 'DOUBLE_COAT', sheddingLevel: 5, droolTendency: 5 },
     genesis: { centuryOfOrigin: 'המאה ה־18', countryOfOrigin: 'קנדה (האי ניופאונדלנד)', ancestorBreeds: ['כלבי הדייגים של ניופאונדלנד', 'כלבים אירופיים שהגיעו עם הדייגים'], founderOrHistoricalKeyFigures: 'דייגי האי ניופאונדלנד; הגזע תוקנן באנגליה במאה ה־19.', originalUtilityAndFunction: 'משיכת רשתות דיג, סחיבת ציוד והצלה מטביעה.', historicalContextNarrativeHe: 'כפות עם קרום שחייה ופרווה דוחה מים הפכו אותו לכלב הצלה מהים. הוא רגוע וסבלני במיוחד עם ילדים.' },
     drives: { preyDrive: 1, defenseDrive: 2, packDriveSocial: 5, playDrive: 3, handlerFocusBiddability: 4, environmentalSensitivity: 2, energyStaminaHoursDaily: 1, mentalStimulationRequirementHe: 'שחייה, הליכות רגועות בשעות קרירות ומשחקי השבה.' },

@@ -4,18 +4,20 @@ import { render, screen, userEvent } from '@testing-library/react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import { BreedIntelBadge } from '../components/BreedIntelBadge';
+import { BREED_PROFILES } from '../data/breedsSeedData';
 import { BreedDetailScreen } from '../screens/BreedDetailScreen';
 import { BreedExplorerScreen } from '../screens/BreedExplorerScreen';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() }, useLocalSearchParams: jest.fn() }));
 
 const params = useLocalSearchParams as jest.Mock;
+const gdvCount = BREED_PROFILES.filter((profile) => profile.clinical.bloatGdvRisk.hasHighPredisposition).length;
 
 describe('BreedExplorerScreen', () => {
   it('searches in Hebrew and opens a breed', async () => {
     const user = userEvent.setup();
     await render(<BreedExplorerScreen />);
-    expect(screen.getByText('12 גזעים')).toBeOnTheScreen();
+    expect(screen.getByText(`${BREED_PROFILES.length} גזעים`)).toBeOnTheScreen();
     await user.type(screen.getByLabelText('חיפוש גזע'), 'שפרד');
     expect(screen.getByText('1 גזעים')).toBeOnTheScreen();
     await user.press(screen.getByRole('button', { name: /^רועה גרמני, German Shepherd Dog/ }));
@@ -26,7 +28,8 @@ describe('BreedExplorerScreen', () => {
     const user = userEvent.setup();
     await render(<BreedExplorerScreen />);
     await user.press(screen.getByRole('checkbox', { name: 'סיכון לתסובב קיבה' }));
-    expect(screen.getByText('4 גזעים')).toBeOnTheScreen();
+    expect(screen.getByText(`${gdvCount} גזעים`)).toBeOnTheScreen();
+    // The poodle profile (toy/miniature) has no bloat predisposition, so the combination matches nothing.
     await user.type(screen.getByLabelText('חיפוש גזע'), 'פודל');
     expect(screen.getByText('לא נמצא גזע')).toBeOnTheScreen();
   });
@@ -68,7 +71,8 @@ describe('BreedIntelBadge', () => {
     await render(<BreedIntelBadge breedId="doberman" />);
     await user.press(screen.getByRole('link', { name: 'כרטיס מודיעין גזע: דוברמן' }));
     expect(router.push).toHaveBeenCalledWith({ pathname: '/breeds/[breedId]', params: { breedId: 'doberman' } });
-    await render(<BreedIntelBadge breedId="beagle" />);
+    // A picker breed with no profile of its own (see breedsSeedData.test.ts).
+    await render(<BreedIntelBadge breedId="standard-poodle" />);
     expect(screen.queryByRole('link')).toBeNull();
   });
 });
