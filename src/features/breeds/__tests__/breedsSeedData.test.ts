@@ -42,10 +42,15 @@ describe('breed catalog', () => {
       expect(rating).toBeGreaterThanOrEqual(1);
       expect(rating).toBeLessThanOrEqual(5);
     }
-    expect(fci.groupNameHe).toBe(FCI_GROUP_NAMES_HE[fci.group]);
-    expect(fci.standardNumber).toBeGreaterThan(0);
     expect(clinical.geneticVulnerabilities.length).toBeGreaterThanOrEqual(2);
-    expect(profile.popularity.akcRank2024).toBeGreaterThan(0);
+    // The type allows unrecognised or unranked breeds; all twelve foundational breeds are both.
+    expect(fci).not.toBeNull();
+    expect(profile.popularity).toBeDefined();
+    if (fci) {
+      expect(fci.groupNameHe).toBe(FCI_GROUP_NAMES_HE[fci.group]);
+      expect(fci.standardNumber).toBeGreaterThan(0);
+    }
+    if (profile.popularity) expect(profile.popularity.akcRank2024).toBeGreaterThan(0);
   });
 
   it('names the documented founders', () => {
