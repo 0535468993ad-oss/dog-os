@@ -11,6 +11,7 @@ export const palette = {
   heroNavy: '#0F1B34',
   glass: 'rgba(17, 24, 39, 0.75)',
   glassBorder: 'rgba(255, 255, 255, 0.08)',
+  barGlass: 'rgba(15, 21, 34, 0.88)', // tab bar fill: labels keep ≥ 4.5:1 even over pure white content
 
   gray50: '#F9FAFB',
   gray300: '#D1D5DB',
@@ -42,6 +43,8 @@ export const colors = {
   surface: palette.navy900,
   /** Translucent glass fill for GlassCard; only over the canvas, where it composites to `surface`. */
   surfaceGlass: palette.glass,
+  /** Translucent tab bar fill over the blur; content of any brightness may scroll beneath it. */
+  surfaceBar: palette.barGlass,
   surfaceAlt: palette.navy850,
   heroNavy: palette.heroNavy,
 
@@ -108,6 +111,9 @@ export type ColorToken = keyof typeof colors;
 /** Default blur strength for glass surfaces (expo-blur intensity, 1–100). */
 export const blurIntensity = 40;
 
+/** Blur strength for system bars (the tab bar), heavier than cards so content beneath stays abstract. */
+export const barBlurIntensity = 80;
+
 export const spacing = {
   xxs: 2,
   xs: 4,
@@ -148,6 +154,9 @@ export const typography: Record<TypographyVariant, TextStyle> = {
   caption: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18 },
   label: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 20 },
 };
+
+// iOS HIG tab bar label: 10 pt medium. Not part of the AppText scale; font scaling stays uncapped.
+export const tabBarLabel: TextStyle = { fontFamily: fonts.medium, fontSize: 10, lineHeight: 12 };
 
 // Elevation on a dark canvas: black shadows need more opacity than navy-tinted ones did on light.
 export const shadow = {

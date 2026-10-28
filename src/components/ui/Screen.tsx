@@ -6,6 +6,7 @@ import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { colors, spacing } from '@/constants/theme';
 
 import { useParallaxHeader } from '../motion';
+import { useTabBarInset } from './glass/useTabBarInset';
 
 interface ScreenProps {
   children: ReactNode;
@@ -31,10 +32,17 @@ export const MAX_CONTENT_WIDTH = 720;
 
 export function Screen({ children, scroll = true, refreshing, onRefresh, edges = ['top'], contentStyle, footer, parallaxHeader, scrollY }: ScreenProps) {
   const parallax = useParallaxHeader(scrollY);
+  // Tab screens sit under the floating tab bar (0 elsewhere). Scrolling content flows beneath it and gets
+  // extra end padding; fixed layouts and footers (the chat composer) are lifted above it instead.
+  const tabBarInset = useTabBarInset();
+  const liftAboveBar = !scroll || footer != null;
+  const scrollUnderBar = tabBarInset > 0 && !liftAboveBar;
 
   const body = scroll ? (
     <Animated.ScrollView
-      contentContainerStyle={[styles.content, contentStyle]}
+      testID="screen-scroll"
+      contentContainerStyle={[styles.content, contentStyle, scrollUnderBar && { paddingBottom: spacing.xxl + tabBarInset }]}
+      scrollIndicatorInsets={scrollUnderBar ? { bottom: tabBarInset } : undefined}
       keyboardShouldPersistTaps="handled"
       onScroll={parallaxHeader ? parallax.onScroll : undefined}
       scrollEventThrottle={16}
@@ -57,10 +65,12 @@ export function Screen({ children, scroll = true, refreshing, onRefresh, edges =
 
   return (
     <SafeAreaView style={styles.root} edges={edges}>
-      <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {body}
-        {footer}
-      </KeyboardAvoidingView>
+      <View testID="screen-bar-inset" style={[styles.fill, liftAboveBar && tabBarInset > 0 && { paddingBottom: tabBarInset }]}>
+        <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          {body}
+          {footer}
+        </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 }

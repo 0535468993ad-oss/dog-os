@@ -121,10 +121,31 @@ describe('palette guard rails', () => {
   });
 
   it('keeps every opaque swatch a #RRGGBB value the contrast math can check', () => {
-    const translucent = new Set<string>([palette.glass, palette.glassBorder, colors.overlay]);
+    const translucent = new Set<string>([palette.glass, palette.glassBorder, palette.barGlass, colors.overlay]);
     for (const value of Object.values(colors)) {
       if (!translucent.has(value)) expect(value).toMatch(HEX);
     }
+  });
+
+  // The tab bar floats over scrolling content, so its labels are checked over the brightest possible
+  // backdrop (a white photo) as well as the canvas, with the bar fill composited on top.
+  it.each([
+    ['pure white content', '#FFFFFF'],
+    ['the canvas', colors.background],
+  ])('keeps tab bar labels at 4.5:1 over %s', (_, backdrop) => {
+    const match = /^rgba\((\d+), (\d+), (\d+), ([\d.]+)\)$/.exec(colors.surfaceBar);
+    if (!match) throw new Error(`surfaceBar is not rgba(): ${colors.surfaceBar}`);
+    const [, r, g, b, a] = match.map(Number);
+    const fill = [r, g, b];
+    const alpha = a ?? 1;
+    const composite =
+      '#' +
+      [1, 3, 5]
+        .map((i, c) => Math.round(alpha * (fill[c] ?? 0) + (1 - alpha) * parseInt(backdrop.slice(i, i + 2), 16)))
+        .map((v) => v.toString(16).padStart(2, '0'))
+        .join('');
+    expect(contrastRatio(colors.textSecondary, composite)).toBeGreaterThanOrEqual(AA.text);
+    expect(contrastRatio(colors.primaryBright, composite)).toBeGreaterThanOrEqual(AA.text);
   });
 
   it('computes the reference ratios from the WCAG definition', () => {
