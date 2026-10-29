@@ -10,9 +10,9 @@ import { TIER_LABELS } from '../utils/labels';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
-// Accent text on its own tint: mint 10.8:1, orange 7.0:1, red 4.7:1 (asserted in the theme test).
+// Accent text on its own tint: emerald 10.8:1, orange 7.0:1, red 4.7:1 (asserted in the theme test).
 const TIER_STYLE: Record<SafetyTier, { accent: ColorToken; tint: ColorToken; icon: IconName }> = {
-  SAFE: { accent: 'accentMint', tint: 'successMuted', icon: 'checkmark-circle' },
+  SAFE: { accent: 'success', tint: 'successMuted', icon: 'checkmark-circle' },
   CAUTION: { accent: 'accentOrange', tint: 'warningMuted', icon: 'alert-circle' },
   TOXIC: { accent: 'accentRed', tint: 'dangerMuted', icon: 'close-circle' },
 };

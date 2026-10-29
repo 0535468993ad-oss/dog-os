@@ -42,7 +42,7 @@ export function DogProfileBanner({ command, dogName, breedLabel, breedId, trait,
         {tipFor(command, trait, recommendation)}
       </AppText>
       {breedNote ? (
-        <AppText variant="caption" color="accentCyan">
+        <AppText variant="caption" color="accentBronze">
           {breedNote}
         </AppText>
       ) : null}

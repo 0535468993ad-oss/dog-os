@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: radius.pill,
-    backgroundColor: colors.accentMint,
+    backgroundColor: colors.accentGold,
     zIndex: 10,
-    ...glow(colors.accentMint),
+    ...glow(colors.accentGold),
   },
   text: {
     ...tabularNums,

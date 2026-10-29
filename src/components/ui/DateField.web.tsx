@@ -62,7 +62,7 @@ export const inputStyle = {
   color: colors.textPrimary,
   backgroundColor: colors.surfaceAlt,
   colorScheme: 'dark',
-  accentColor: colors.accentCyan,
+  accentColor: colors.primary,
   borderWidth: 1.5,
   borderStyle: 'solid',
   borderRadius: radius.md,

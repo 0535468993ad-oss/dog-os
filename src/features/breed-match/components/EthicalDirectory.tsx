@@ -45,7 +45,7 @@ export function EthicalDirectory() {
         <BulletList items={ADOPTION_BASKET_HE} />
         {REGIONS.map((region) => (
           <View key={region} style={styles.region}>
-            <AppText variant="subheading" color="accentCyan">
+            <AppText variant="subheading" color="accentBronze">
               {REGION_LABELS_HE[region]}
             </AppText>
             {RESCUE_ORGANIZATIONS.filter((organization) => organization.region === region).map((organization) => (

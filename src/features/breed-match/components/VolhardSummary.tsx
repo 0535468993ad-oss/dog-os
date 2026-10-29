@@ -14,7 +14,7 @@ export function VolhardSummary({ result, onReview, onReset }: { result: VolhardR
   return (
     <View style={styles.root}>
       <GlassCard>
-        <AppText variant="caption" color="accentCyan">{`פרופיל ${profile.id}${result.mixed ? ' · מעורב' : ''}`}</AppText>
+        <AppText variant="caption" color="accentBronze">{`פרופיל ${profile.id}${result.mixed ? ' · מעורב' : ''}`}</AppText>
         <AppText variant="heading" accessibilityRole="header">
           {profile.titleHe}
         </AppText>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   fillTop: {
-    backgroundColor: colors.accentCyan,
+    backgroundColor: colors.accentBronze,
   },
   barCount: {
     width: 20,

@@ -42,10 +42,10 @@ export function WeightCard({ dogId, weights }: { dogId: string; weights: WeightL
         {latest ? <AppText variant="heading" style={tabularNums}>{`${latest.weight_kg} ק״ג`}</AppText> : <AppText color="textSecondary">עדיין אין שקילות.</AppText>}
         <WeightChart weights={weights} />
         <View style={styles.form}>
-          <View style={styles.field}>
+          <View style={styles.weightField}>
             <TextField label="משקל (ק״ג)" value={weight} onChangeText={setWeight} inputMode="decimal" keyboardType="decimal-pad" placeholder="12.4" error={error} />
           </View>
-          <View style={styles.field}>
+          <View style={styles.dateField}>
             <DateField label="תאריך" value={weighedOn} onChange={setWeighedOn} maximumDate={todayIso()} />
           </View>
         </View>
@@ -61,9 +61,14 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     flexWrap: 'wrap',
   },
-  // Each field keeps a usable width and wraps as a whole onto its own line, instead of squeezing the date.
-  field: {
+  // The date gets twice the share: a full Hebrew date ("29 באוקטובר 2026") needs ~190pt with its icon,
+  // the weight only a few digits. Below that width the date wraps onto its own line as a whole.
+  weightField: {
     flexGrow: 1,
-    flexBasis: 150,
+    flexBasis: 100,
+  },
+  dateField: {
+    flexGrow: 2,
+    flexBasis: 200,
   },
 });

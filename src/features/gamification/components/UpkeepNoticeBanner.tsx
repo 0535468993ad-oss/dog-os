@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.accentMint,
+    borderColor: colors.accentGold,
     backgroundColor: colors.successMuted,
   },
 });

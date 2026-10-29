@@ -32,7 +32,7 @@ export function RankRoadmap({ currentLevel }: { currentLevel: number }) {
               <AppText variant="caption">{rank.perkDescriptionHe}</AppText>
               {rank.unlockedReward.availability === 'COMING_SOON' ? <Badge label="בקרוב" tone="neutral" icon="time-outline" /> : null}
             </View>
-            {reached ? <Ionicons name="checkmark-circle" size={22} color={colors.accentMint} accessible={false} /> : <Ionicons name="lock-closed-outline" size={20} color={colors.textMuted} accessible={false} />}
+            {reached ? <Ionicons name="checkmark-circle" size={22} color={colors.accentGold} accessible={false} /> : <Ionicons name="lock-closed-outline" size={20} color={colors.textMuted} accessible={false} />}
           </View>
         );
       })}
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   current: {
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   level: {
     width: 40,

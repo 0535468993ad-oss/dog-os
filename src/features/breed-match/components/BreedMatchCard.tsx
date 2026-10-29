@@ -9,7 +9,7 @@ import type { BreedMatch } from '../types';
 import { formatILS } from '../utils/costs';
 import { SIZE_LABELS_HE, TIER_LABELS_HE, TIER_TONES } from '../utils/labels';
 
-const PERCENT_COLOR = { OPTIMAL: 'accentMint', GOOD_WITH_ADJUSTMENTS: 'accentOrange', HIGH_RISK_MISMATCH: 'dangerText' } as const;
+const PERCENT_COLOR = { OPTIMAL: 'success', GOOD_WITH_ADJUSTMENTS: 'accentOrange', HIGH_RISK_MISMATCH: 'dangerText' } as const;
 
 /** One ranked breed: score, tier, the first red flag, and a tap through to the dossier. */
 export function BreedMatchCard({ match, onOpen }: { match: BreedMatch; onOpen: () => void }) {

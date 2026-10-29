@@ -43,7 +43,7 @@ export function ProductImage({ product, size = 64 }: { product: FoodProduct; siz
   }
   return (
     <View style={[styles.box, styles.tile, box]} accessible={false}>
-      <Ionicons name={CATEGORY_ICON[product.category]} size={size * 0.34} color={colors.accentCyan} accessible={false} />
+      <Ionicons name={CATEGORY_ICON[product.category]} size={size * 0.34} color={colors.accentBronze} accessible={false} />
       <AppText variant="label" color="textSecondary">
         {initials(product.brand)}
       </AppText>

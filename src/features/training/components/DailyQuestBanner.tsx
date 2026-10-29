@@ -23,11 +23,11 @@ export function DailyQuestBanner({ hour, xpToday, rescueBannerHe, onOpenCommand,
   return (
     <View style={[styles.root, rescue && styles.rescue]} accessibilityRole={rescue ? 'alert' : 'summary'}>
       <View style={styles.title}>
-        <Ionicons name={rescue ? 'flash' : 'compass-outline'} size={18} color={rescue ? colors.warning : colors.accentCyan} accessible={false} />
+        <Ionicons name={rescue ? 'flash' : 'compass-outline'} size={18} color={rescue ? colors.warning : colors.accentBronze} accessible={false} />
         <AppText variant="bodyStrong" style={styles.flex}>
           {quest.titleHe}
         </AppText>
-        <AppText variant="caption" color={rescue ? 'warning' : 'accentMint'}>
+        <AppText variant="caption" color={rescue ? 'warning' : 'accentGold'}>
           {quest.bonusHe}
         </AppText>
       </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
     backgroundColor: colors.surface,
   },
   rescue: {

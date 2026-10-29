@@ -19,7 +19,7 @@ export function AdultAdoptionGuide() {
         </AppText>
         {DECOMPRESSION_STAGES.map((stage) => (
           <View key={stage.id} style={styles.stage}>
-            <AppText variant="bodyStrong" color="accentMint">
+            <AppText variant="bodyStrong" color="accentGold">
               {stage.titleHe}
             </AppText>
             <AppText color="textSecondary">{stage.bodyHe}</AppText>

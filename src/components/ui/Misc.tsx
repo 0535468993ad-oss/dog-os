@@ -6,10 +6,11 @@ import { colors, fonts, radius, spacing } from '@/constants/theme';
 
 import { AppText } from './AppText';
 
+/** A group heading: bold and bright so it outranks the optional action (e.g. "+ הוספה") beside it. */
 export function SectionHeader({ title, action }: { title: string; action?: ReactNode }) {
   return (
     <View style={styles.sectionHeader}>
-      <AppText variant="section" color="textLabel" accessibilityRole="header" style={styles.flex}>
+      <AppText variant="section" color="textPrimary" accessibilityRole="header" style={styles.flex}>
         {title}
       </AppText>
       {action}
@@ -17,16 +18,18 @@ export function SectionHeader({ title, action }: { title: string; action?: React
   );
 }
 
+/** A labelled progress track; an empty one still shows a dim stub so it doesn't read as a dead line. */
 export function ProgressBar({ value, label }: { value: number; label: string }) {
   const pct = Math.round(Math.min(1, Math.max(0, value)) * 100);
   return (
     <View
       style={styles.track}
+      accessible
       accessibilityRole="progressbar"
       accessibilityLabel={label}
       accessibilityValue={{ min: 0, max: 100, now: pct, text: `${pct}%` }}
     >
-      <View style={[styles.fill, { width: `${pct}%` }]} />
+      {pct > 0 ? <View style={[styles.fill, { width: `${pct}%` }]} /> : <View style={styles.emptyStub} testID="progress-empty" />}
     </View>
   );
 }
@@ -71,6 +74,7 @@ export function Divider({ inset = 0 }: { inset?: number }) {
   return <View style={[styles.divider, inset > 0 && { marginStart: inset }]} testID="divider" accessible={false} />;
 }
 
+/** A bulleted list read as a list by screen readers. */
 export function BulletList({ items }: { items: readonly string[] }) {
   return (
     <View style={styles.bullets} accessibilityRole="list">
@@ -97,8 +101,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   track: {
-    height: 10,
+    height: 8,
     borderRadius: radius.pill,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
     backgroundColor: colors.surfaceAlt,
     overflow: 'hidden',
   },
@@ -106,6 +112,13 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: radius.pill,
     backgroundColor: colors.primary,
+  },
+  // Not progress: a short amber-tinted cap at the start edge, so an empty track still reads as a track.
+  emptyStub: {
+    width: 8,
+    height: '100%',
+    borderRadius: radius.pill,
+    backgroundColor: colors.primaryMuted,
   },
   badge: {
     flexDirection: 'row',
@@ -128,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   bullets: {
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
   bulletRow: {
     flexDirection: 'row',

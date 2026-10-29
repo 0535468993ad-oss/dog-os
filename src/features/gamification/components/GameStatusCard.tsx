@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, GlassCard, ProgressBar } from '@/components/ui';
@@ -8,6 +7,7 @@ import { DAILY_XP_CAP } from '../data/rules';
 import type { GameState } from '../types';
 import { activeDays, multiplierFor, nextRankGap, rankFor, streakFor } from '../utils/progression';
 import { hasReward } from '../utils/view';
+import { StreakBadge } from './StreakBadge';
 
 interface GameStatusCardProps {
   state: GameState;
@@ -35,7 +35,7 @@ export function GameStatusCard({ state, today, dogName, onOpenVault }: GameStatu
           <AppText variant="caption" color={rank.themeColor}>{`דרגה ${rank.level} מתוך 10`}</AppText>
           <AppText variant="heading" accessibilityRole="header">{`${dogName} · ${rank.titleHe}`}</AppText>
         </View>
-        <AppText variant="title" color="accentMint">{`${state.totalXp} XP`}</AppText>
+        <AppText variant="title" color="accentGold">{`${state.totalXp} XP`}</AppText>
       </View>
       <ProgressBar value={ratio} label={gap ? `התקדמות לדרגה ${gap.rank.level}` : 'הדרגה העליונה'} />
       <AppText variant="caption" color="textSecondary">
@@ -45,13 +45,7 @@ export function GameStatusCard({ state, today, dogName, onOpenVault }: GameStatu
             ? `ל"${gap.rank.titleHe}": עוד ${gap.xpNeeded} XP ועוד ${gap.daysNeeded} ימי אימון נפרדים`
             : `ל"${gap.rank.titleHe}": עוד ${gap.xpNeeded} XP`}
       </AppText>
-      <View style={styles.row} accessible accessibilityLabel={`רצף של ${streak} ימים, מכפיל ${multiplier}`}>
-        <Ionicons name="flame" size={22} color={streak >= 3 ? colors.accentOrange : colors.textMuted} accessible={false} />
-        <AppText variant="bodyStrong">{`רצף: ${streak} ${streak === 1 ? 'יום' : 'ימים'}`}</AppText>
-        <AppText variant="caption" color={multiplier > 1 ? 'accentOrange' : 'textSecondary'}>
-          {multiplier > 1 ? `מכפיל ×${multiplier}` : 'מכפיל ×1.2 מ־3 ימים, ×1.5 מ־7'}
-        </AppText>
-      </View>
+      <StreakBadge streak={streak} multiplier={multiplier} />
       <AppText variant="caption" color="textSecondary">{`היום: ${todayXp} מתוך ${DAILY_XP_CAP} XP`}</AppText>
       {onOpenVault ? <Button title="ארון הגביעים והפרסים" variant="tonal" compact icon="trophy-outline" onPress={onOpenVault} /> : null}
     </GlassCard>
@@ -69,7 +63,7 @@ const styles = StyleSheet.create({
   },
   tactical: {
     borderWidth: 2,
-    borderColor: colors.accentCyan,
-    ...glow(colors.accentCyan),
+    borderColor: colors.accentBronze,
+    ...glow(colors.accentBronze),
   },
 });

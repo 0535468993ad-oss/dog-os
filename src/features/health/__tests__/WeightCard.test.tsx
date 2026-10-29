@@ -1,4 +1,4 @@
-// Weight card: the weight/date pair wraps as whole fields, the latest weight uses tabular digits, and saving
+// Weight card: the date gets the wider share so a full Hebrew date never truncates, the pair wraps as whole fields, the latest weight uses tabular digits, and saving
 // validates before it writes.
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
@@ -21,12 +21,12 @@ describe('WeightCard', () => {
     expect(flat(screen.getByText('12.4 ק״ג')).fontVariant).toEqual(['tabular-nums']);
   });
 
-  it('lets each field keep a usable width so the pair wraps whole on narrow screens', async () => {
+  it('gives the date field the wider share, so a full Hebrew date fits beside the weight', async () => {
     await render(<WeightCard dogId="dog-1" weights={[]} />);
     const dateButton = screen.getByRole('button', { name: /^תאריך:/ });
     // Field wrapper → DateField root → trigger: the wrapper is two levels up.
     const wrapper = dateButton.parent?.parent;
-    expect(wrapper && flat(wrapper)).toMatchObject({ flexGrow: 1, flexBasis: 150 });
+    expect(wrapper && flat(wrapper)).toMatchObject({ flexGrow: 2, flexBasis: 200 });
   });
 
   it('rejects an out-of-range weight without saving', async () => {

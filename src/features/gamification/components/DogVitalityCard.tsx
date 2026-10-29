@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, ProgressBar } from '@/components/ui';
-import { spacing } from '@/constants/theme';
+import { spacing, tabularNums } from '@/constants/theme';
 
 import type { Vitality, VitalityMeter } from '../types';
 
@@ -31,15 +31,15 @@ export function DogVitalityCard({ dogName, vitality, commentHe, suggestedCommand
         <AppText>{commentHe}</AppText>
         {ORDER.map((meter) => (
           <View key={meter} style={styles.meter}>
-            <View style={styles.row}>
-              <AppText variant="caption">{METER_LABELS_HE[meter]}</AppText>
-              <AppText variant="caption" color="textSecondary">{`${vitality.meters[meter]}%`}</AppText>
+            <AppText variant="caption" style={styles.meterLabel}>{METER_LABELS_HE[meter]}</AppText>
+            <View style={styles.flex}>
+              <ProgressBar value={vitality.meters[meter] / 100} label={`${METER_LABELS_HE[meter]}: ${vitality.meters[meter]}%`} />
             </View>
-            <ProgressBar value={vitality.meters[meter] / 100} label={`${METER_LABELS_HE[meter]}: ${vitality.meters[meter]}%`} />
+            <AppText variant="caption" color="textSecondary" style={[styles.meterValue, tabularNums]}>{`${vitality.meters[meter]}%`}</AppText>
           </View>
         ))}
         <Button title={`הזנק אימון מותאם: ${suggestedCommandNameHe}`} icon="flash-outline" onPress={onLaunch} />
-        <AppText variant="caption" color="textSecondary">
+        <AppText variant="caption" color="textSecondary" style={styles.disclaimer}>
           מדדי משחק שמחושבים מיומן האימונים בלבד – לא מדד בריאותי.
         </AppText>
       </View>
@@ -51,11 +51,22 @@ const styles = StyleSheet.create({
   root: {
     gap: spacing.sm,
   },
+  // One line per meter (label, bar, value) keeps the four meters compact.
   meter: {
-    gap: spacing.xs,
-  },
-  row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  meterLabel: {
+    minWidth: 76,
+  },
+  meterValue: {
+    minWidth: 36,
+  },
+  flex: {
+    flex: 1,
+  },
+  disclaimer: {
+    marginTop: spacing.xs,
   },
 });

@@ -20,7 +20,7 @@ export function CommandProtocolView({ protocol, dogName, nerve, balancedOpen }: 
   return (
     <View style={styles.root}>
       <View style={styles.generalize} accessibilityRole="text">
-        <AppText variant="label" color="accentCyan">
+        <AppText variant="label" color="accentBronze">
           מהבית לעולם
         </AppText>
         <AppText>{protocol.generalizationHe}</AppText>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   caution: {
     padding: spacing.sm,

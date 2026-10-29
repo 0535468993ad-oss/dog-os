@@ -42,7 +42,7 @@ export function CommandSkillTree({ commands, starsFor, bossId, onOpen }: Command
             const boss = id === bossId;
             return (
               <View key={id} style={styles.nodeWrap}>
-                {index > 0 ? <View style={[styles.connector, lit && styles.connectorLit, lit && glow(colors.accentCyan)]} /> : null}
+                {index > 0 ? <View style={[styles.connector, lit && styles.connectorLit, lit && glow(colors.accentBronze)]} /> : null}
                 <PressableScale
                   onPress={() => onOpen(id)}
                   style={[styles.node, stars > 0 && styles.nodeDone, boss && styles.nodeBoss]}
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.borderStrong,
   },
   connectorLit: {
-    backgroundColor: colors.accentCyan,
+    backgroundColor: colors.accentBronze,
   },
   node: {
     alignSelf: 'stretch',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   nodeDone: {
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   nodeBoss: {
     borderColor: colors.accentOrange,

@@ -31,7 +31,7 @@ export const TAB_SCREEN_OPTIONS: BottomTabNavigationOptions = {
   headerShown: false,
   // primaryBright, not primary: it stays at 4.5:1 over bright content showing through the bar.
   tabBarActiveTintColor: colors.primaryBright,
-  tabBarInactiveTintColor: colors.textSecondary,
+  tabBarInactiveTintColor: colors.tabInactive,
   tabBarStyle: { position: 'absolute', backgroundColor: 'transparent', borderTopWidth: 0, elevation: 0 },
   tabBarBackground: () => <GlassBarBackground />,
   tabBarLabelStyle: tabBarLabel,
@@ -45,7 +45,7 @@ export function tabOptions(tab: TabSpec): BottomTabNavigationOptions {
     // HIG: the selected tab shows the filled glyph, so state reads by shape as well as color.
     tabBarIcon: ({ focused, color, size }) => (
       // Decorative: the tab's accessible name comes from its title.
-      <Ionicons name={focused ? tab.activeIcon : tab.icon} size={size} color={typeof color === 'string' ? color : colors.textSecondary} accessible={false} />
+      <Ionicons name={focused ? tab.activeIcon : tab.icon} size={size} color={typeof color === 'string' ? color : colors.tabInactive} accessible={false} />
     ),
   };
 }

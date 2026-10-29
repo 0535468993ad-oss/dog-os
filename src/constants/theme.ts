@@ -1,7 +1,7 @@
 // Obsidian brand design system – the single source of truth for color, blur, spacing, radius, type and
-// elevation. Obsidian canvas, dark glass cards, Tactical Amber as the brand, Emerald Sage for health and
-// Warm Indigo for AI. Every text and control pairing the UI relies on is asserted (WCAG 2.1 AA) in
-// src/constants/__tests__/theme.test.ts.
+// elevation. Obsidian canvas, dark glass cards, Tactical Amber as the brand with gold and metallic bronze
+// accents, Emerald Sage for health and Warm Indigo for AI. No cool cyan or mint: every accent stays warm.
+// Every text and control pairing the UI relies on is asserted (WCAG 2.1 AA) in src/constants/__tests__/theme.test.ts.
 import type { TextStyle, ViewStyle } from 'react-native';
 
 /** Raw swatches. Components use the semantic `colors` below, never these directly. */
@@ -30,8 +30,10 @@ export const palette = {
   emerald500: '#10B981',
   emerald400: '#34D399',
   emeraldTint: '#0A2A20',
-  cyan: '#00E5FF',
-  cyanTint: '#062A33',
+  gold300: '#FCD34D', // XP and rewards
+  bronze300: '#D9A86C', // metallic accent: active indicators, quest borders
+  champagne: '#F3E3C3', // focus ring: light enough to read next to amber fills
+  slateTint: '#1A2130', // info and disclaimer fill
   orange: '#FB923C',
   orangeTint: '#2B1B07',
   red500: '#EF4444',
@@ -61,15 +63,17 @@ export const colors = {
   textPrimary: palette.gray50, // headers and primary labels
   textSecondary: palette.gray400, // secondary text on every surface
   textMuted: palette.gray500, // non-critical icons and disabled states only, never body text
-  /** Section labels ("הכלבים שלי", "כלים"): quieter than the screen title, still ≥ 4.5:1. */
+  /** Quiet labels and metadata: quieter than body text, still ≥ 4.5:1. */
   textLabel: palette.slate400,
+  /** Inactive tab bar icons and labels: bright enough to find at a glance over the bar glass. */
+  tabInactive: palette.gray300,
   textOnDark: palette.gray50,
   textOnDarkSecondary: palette.gray300,
 
-  // Accents
-  accentCyan: palette.cyan, // status toggles, active indicators, focus
+  // Accents (warm only)
+  accentBronze: palette.bronze300, // status toggles, active indicators, quest borders
   accentOrange: palette.orange, // kitchen and feeding calls to action
-  accentMint: palette.emerald400, // safe food, confirmations
+  accentGold: palette.gold300, // XP, rewards and completed steps
   accentRed: palette.red500, // toxic warnings, emergency alerts
   /** Text and icons on any accent fill: dark text keeps every accent ≥ 5:1. */
   onAccent: palette.obsidian950,
@@ -103,7 +107,7 @@ export const colors = {
 
   border: palette.glassBorder, // decorative separators only (below 3:1 by design)
   borderStrong: palette.gray500, // input and control boundaries: ≥ 3:1 on every surface
-  focus: palette.cyan, // cyan, so the ring stays visible around amber fills
+  focus: palette.champagne, // near-white, so the ring stays visible around amber fills
 
   danger: palette.red500, // error boundaries and text
   dangerText: palette.red400,
@@ -112,8 +116,8 @@ export const colors = {
   successMuted: palette.emeraldTint,
   warning: palette.orange,
   warningMuted: palette.orangeTint,
-  info: palette.cyan,
-  infoMuted: palette.cyanTint,
+  info: palette.slate300,
+  infoMuted: palette.slateTint,
 
   // League podium places
   medalGold: palette.amber400,
@@ -136,7 +140,7 @@ export const tints = {
   ai: 'rgba(129, 140, 248, 0.12)',
   alert: 'rgba(251, 146, 60, 0.12)',
   danger: 'rgba(239, 68, 68, 0.12)',
-  info: 'rgba(0, 229, 255, 0.12)',
+  info: 'rgba(142, 155, 174, 0.12)',
   neutral: 'rgba(255, 255, 255, 0.06)',
   primaryHighlight: 'rgba(245, 158, 11, 0.14)',
   primaryHighlightBorder: 'rgba(245, 158, 11, 0.4)',
@@ -184,17 +188,18 @@ export const fonts = {
 export type TypographyVariant = 'display' | 'title' | 'heading' | 'subheading' | 'body' | 'bodyStrong' | 'caption' | 'label' | 'section';
 
 // A ~1.25 modular scale. Headings use bold/semibold so hierarchy reads from weight and size together.
-// `title` is the screen hero title; `section` labels a group below it without competing with it.
+// `title` is the screen hero title; `section` heads a group below it: bold and bright, so it outranks the
+// group's own action buttons. Body and caption get Hebrew-friendly leading (~1.6) for multi-line copy.
 export const typography: Record<TypographyVariant, TextStyle> = {
   display: { fontFamily: fonts.bold, fontSize: 32, lineHeight: 40 },
   title: { fontFamily: fonts.extrabold, fontSize: 28, lineHeight: 36, letterSpacing: -0.5 },
   heading: { fontFamily: fonts.semibold, fontSize: 19, lineHeight: 26 },
   subheading: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 22 },
-  body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 24 },
-  bodyStrong: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 24 },
-  caption: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 18 },
+  body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 26 },
+  bodyStrong: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 26 },
+  caption: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 20 },
   label: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 20 },
-  section: { fontFamily: fonts.semibold, fontSize: 13, lineHeight: 18 },
+  section: { fontFamily: fonts.bold, fontSize: 18, lineHeight: 26 },
 };
 
 /** Fixed-width digits for metrics (weight, XP, places), so changing numbers don't shift their row. */

@@ -1,13 +1,17 @@
 // The commands tab end to end: rank card, command cards (category, difficulty, XP), the detail modal
 // with its checklist haptic, the balanced safety gate, and the locked live-session confirm button.
+// Also the temperament card's collapsed explanation.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { render, screen, userEvent, within } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 
+import { makeAnswers } from '@/test/fixtures';
 import { addDays, todayIso } from '@/utils/date';
 
 import { CommandsTab } from '../components/CommandsTab';
+import { TemperamentCard } from '../components/TemperamentCard';
+import { recommendFromAssessment } from '../utils/temperamentEngine';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
 jest.mock('expo-haptics', () => ({
@@ -134,3 +138,26 @@ async function renderTab() {
   await screen.findByText('ג׳קסון · קשב בסיסי');
   return user;
 }
+
+describe('TemperamentCard', () => {
+  const base = recommendFromAssessment(makeAnswers(), 36, null);
+  const recommendation = { ...base, reasonsHe: ['סיבה 1', 'סיבה 2', 'סיבה 3'], principlesHe: ['עיקרון 1'], adjustmentsHe: ['התאמה 1'] };
+
+  it('shows the first two reasons and reveals the full explanation on demand', async () => {
+    const user = userEvent.setup();
+    await render(<TemperamentCard dogName="ג׳קסון" trait={null} recommendation={recommendation} assessed onChange={jest.fn()} onOpenAssessment={jest.fn()} />);
+
+    expect(screen.getByText('סיבה 2')).toBeOnTheScreen();
+    expect(screen.queryByText('סיבה 3')).toBeNull();
+    expect(screen.queryByText('עיקרון 1')).toBeNull();
+
+    await user.press(screen.getByRole('button', { name: 'להסבר המלא' }));
+    expect(screen.getByText('סיבה 3')).toBeOnTheScreen();
+    expect(screen.getByText('עיקרון 1')).toBeOnTheScreen();
+    expect(screen.getByText('התאמה 1')).toBeOnTheScreen();
+
+    await user.press(screen.getByRole('button', { name: 'הצגת פחות' }));
+    expect(screen.queryByText('סיבה 3')).toBeNull();
+  });
+});
+

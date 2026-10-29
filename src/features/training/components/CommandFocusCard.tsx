@@ -25,7 +25,7 @@ export function CommandFocusCard({ markers, suitableForProfiles, dogName, nerve 
   const priority = nerve !== null && suitableForProfiles.includes(nerve);
   return (
     <View style={styles.root}>
-      <AppText variant="label" color="accentCyan">
+      <AppText variant="label" color="accentBronze">
         מילות המרקר
       </AppText>
       {rows.map((row) => (
@@ -35,8 +35,8 @@ export function CommandFocusCard({ markers, suitableForProfiles, dogName, nerve 
       ))}
       {priority && nerve ? (
         <View style={styles.priority}>
-          <Ionicons name="star" size={14} color={colors.accentMint} accessible={false} />
-          <AppText variant="caption" color="accentMint" style={styles.flex}>
+          <Ionicons name="star" size={14} color={colors.accentGold} accessible={false} />
+          <AppText variant="caption" color="accentGold" style={styles.flex}>
             {`פקודה מומלצת במיוחד ל${dogName} – פרופיל ${NERVE_LABELS_HE[nerve]}`}
           </AppText>
         </View>

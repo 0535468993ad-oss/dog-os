@@ -34,13 +34,13 @@ export function LevelUpCelebrationModal({ rank, dogName, onClose, onOpenVault }:
               <CelebrationParticles />
               <Ionicons name="trophy" size={56} color={colors.accentOrange} accessible={false} />
             </View>
-            <AppText variant="caption" color="accentCyan" center>{`עליתם לדרגה ${rank.level}`}</AppText>
-            <AppText variant="display" center accessibilityRole="header" style={textGlow(colors.accentCyan)}>
+            <AppText variant="caption" color="accentBronze" center>{`עליתם לדרגה ${rank.level}`}</AppText>
+            <AppText variant="display" center accessibilityRole="header" style={textGlow(colors.accentBronze)}>
               {rank.titleHe}
             </AppText>
             <AppText color="textSecondary" center>{dogName}</AppText>
             <GlassCard>
-              <AppText variant="label" color="accentMint">
+              <AppText variant="label" color="accentGold">
                 {rank.unlockedReward.availability === 'AVAILABLE' ? 'הפרס שנפתח' : 'בקרוב בדרגה הזו'}
               </AppText>
               <AppText variant="subheading">{rank.unlockedReward.titleHe}</AppText>

@@ -37,7 +37,7 @@ export function RecipeCard({ plan }: { plan: ReadyPlan }) {
       </AppText>
       {plan.instructionsHe.map((step, index) => (
         <View key={step} style={styles.step}>
-          <AppText variant="label" color="accentCyan" style={styles.stepNumber}>{`${index + 1}.`}</AppText>
+          <AppText variant="label" color="accentBronze" style={styles.stepNumber}>{`${index + 1}.`}</AppText>
           <AppText style={styles.flex}>{step}</AppText>
         </View>
       ))}

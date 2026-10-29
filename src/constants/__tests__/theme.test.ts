@@ -40,24 +40,29 @@ const TEXT_PAIRS: Pair[] = [
   ['warning', 'warningMuted', 'warning badges'],
   ['info', 'infoMuted', 'info badges, disclaimers'],
   ['secondary', 'secondaryMuted', 'secondary-tone content'],
-  ['accentMint', 'surface', 'safe-food labels'],
-  ['accentMint', 'surfaceAlt', 'marker cues on the focused story step'],
-  ['accentMint', 'background', 'marker cues on unfocused story steps'],
+  ['accentGold', 'surface', 'XP rewards and quest bonuses'],
+  ['accentGold', 'surfaceAlt', 'marker cues on the focused story step'],
+  ['accentGold', 'background', 'marker cues on unfocused story steps'],
   ['accentRed', 'surface', 'toxic-food labels'],
   ['accentOrange', 'surface', 'kitchen calls to action as text'],
-  ['accentCyan', 'surface', 'active indicators as text'],
+  ['accentBronze', 'surface', 'active indicators as text'],
   ['warning', 'surface', 'breed-match warning headings'],
   ['success', 'surface', 'breed-match "best home" labels'],
-  ['accentMint', 'successMuted', 'safe-food badge'],
+  ['success', 'successMuted', 'safe-food badge'],
+  ['accentGold', 'surfaceSunken', 'XP labels on recessed tracks'],
   ['accentOrange', 'warningMuted', 'caution-food badge'],
   ['accentRed', 'dangerMuted', 'toxic-food badge'],
   ['textPrimary', 'successMuted', 'safe-food badge details'],
   ['textPrimary', 'warningMuted', 'caution-food badge details'],
   ['textPrimary', 'dangerMuted', 'toxic-food badge details'],
-  ['onAccent', 'accentMint', 'text on mint fills'],
+  ['onAccent', 'accentGold', 'text on gold fills (XP banner)'],
   ['onAccent', 'accentRed', 'text on red fills'],
   ['onAccent', 'accentOrange', 'text on orange fills'],
-  ['onAccent', 'accentCyan', 'text on cyan fills'],
+  ['onAccent', 'accentBronze', 'text on bronze fills'],
+  ['onAccent', 'alert', 'seasonal alert badges'],
+  ['onAccent', 'health', 'vet reminder badges'],
+  ['textPrimary', 'dangerMuted', 'danger-tone cards'],
+  ['tabInactive', 'background', 'inactive tab labels on the canvas'],
   ['textLabel', 'background', 'section labels on the canvas'],
   ['textLabel', 'surface', 'section labels on cards'],
   ['primaryBright', 'surface', 'amber text and active segment labels'],
@@ -88,7 +93,10 @@ const NON_TEXT_PAIRS: Pair[] = [
   ['borderStrong', 'surfaceSunken', 'segmented track boundary'],
   ['primary', 'surfaceSunken', 'selected segment fill on its track'],
   ['ai', 'surface', 'AI icons'],
-  ['accentCyan', 'surfaceAlt', 'calendar icon in the recessed date field'],
+  ['primaryBright', 'surfaceAlt', 'calendar icon in the recessed date field'],
+  ['accentBronze', 'surface', 'quest banner border'],
+  ['primary', 'surface', 'primary-tone card accent bar'],
+  ['info', 'surface', 'info-tone card accent bar'],
   ['focus', 'surfaceAlt', 'focused field boundary on the recessed surface'],
   ['danger', 'surfaceAlt', 'field error boundary on the recessed surface'],
   ['primary', 'surface', 'amber avatar ring on cards'],
@@ -106,7 +114,7 @@ const TINT_PAIRS: TintPair[] = [
   ['aiBright', 'ai', AA.large, 'indigo icon squircles'],
   ['alert', 'alert', AA.large, 'orange icon squircles'],
   ['dangerText', 'danger', AA.large, 'red icon squircles'],
-  ['info', 'info', AA.large, 'cyan icon squircles'],
+  ['info', 'info', AA.large, 'slate icon squircles'],
   ['textSecondary', 'neutral', AA.large, 'neutral icon squircles'],
   ['healthText', 'health', AA.text, 'health category on chip badges'],
   ['alertText', 'alert', AA.text, 'toxicity category on chip badges'],
@@ -174,9 +182,20 @@ describe('palette guard rails', () => {
       healthText: '#34D399',
       ai: '#818CF8',
       accentRed: '#EF4444',
-      accentCyan: '#00E5FF',
+      accentBronze: '#D9A86C',
+      accentGold: '#FCD34D',
+      focus: '#F3E3C3',
+      info: '#CBD5E1',
     });
     expect(tints.primaryHighlight).toBe('rgba(245, 158, 11, 0.14)');
+  });
+
+  it('keeps every accent warm: no cyan or mint outside the health roles', () => {
+    const coolAccents = ['#00E5FF', '#06B6D4', '#22D3EE', '#34D399', '#10B981'];
+    const healthRoles = new Set<ColorToken>(['health', 'healthBright', 'healthText', 'secondary', 'success']);
+    for (const [token, value] of Object.entries(colors) as [ColorToken, string][]) {
+      if (!healthRoles.has(token)) expect([token, coolAccents.includes(value.toUpperCase())]).toEqual([token, false]);
+    }
   });
 
   it('has no sky-blue left in the color roles', () => {
@@ -220,7 +239,7 @@ describe('palette guard rails', () => {
         .map((i, c) => Math.round(alpha * (fill[c] ?? 0) + (1 - alpha) * parseInt(backdrop.slice(i, i + 2), 16)))
         .map((v) => v.toString(16).padStart(2, '0'))
         .join('');
-    expect(contrastRatio(colors.textSecondary, composite)).toBeGreaterThanOrEqual(AA.text);
+    expect(contrastRatio(colors.tabInactive, composite)).toBeGreaterThanOrEqual(AA.text);
     expect(contrastRatio(colors.primaryBright, composite)).toBeGreaterThanOrEqual(AA.text);
   });
 

@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
     start: 0,
     end: 0,
     borderRadius: DOT / 2,
-    backgroundColor: colors.accentCyan,
+    backgroundColor: colors.accentBronze,
   },
 });

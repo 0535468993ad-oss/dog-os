@@ -51,7 +51,7 @@ export function RewardToolsPanel({ rewards, certificate, onClaim }: RewardToolsP
           </AppText>
           {reward.status === 'CLAIMABLE' ? <Button title="קבלת הפרס" icon="gift-outline" onPress={() => onClaim(reward.id)} /> : null}
           {reward.status === 'CLAIMED' && reward.rewardType === 'PROFILE_SKIN' ? (
-            <AppText variant="caption" color="accentCyan">
+            <AppText variant="caption" color="accentBronze">
               המסגרת מופעלת על כרטיס הדרגה.
             </AppText>
           ) : null}

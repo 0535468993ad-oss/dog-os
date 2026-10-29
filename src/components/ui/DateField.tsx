@@ -64,10 +64,11 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
         accessibilityHint="פותח בחירת תאריך"
         style={({ pressed }) => [styles.trigger, error ? styles.triggerError : null, pressed && styles.pressed]}
       >
-        <AppText color={value ? 'textPrimary' : 'textSecondary'} style={styles.text} numberOfLines={1}>
+        {/* No line cap: a long Hebrew date ("29 באוקטובר 2026") wraps at large text sizes instead of truncating. */}
+        <AppText color={value ? 'textPrimary' : 'textSecondary'} style={styles.text}>
           {value ? formatDate(value) : 'בחרו תאריך'}
         </AppText>
-        <Ionicons name="calendar-outline" size={20} color={colors.accentCyan} accessible={false} />
+        <Ionicons name="calendar-outline" size={20} color={colors.primaryBright} accessible={false} />
       </Pressable>
       {error ? (
         <AppText variant="caption" color="dangerText" accessibilityRole="alert">
@@ -94,7 +95,7 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
                 maximumDate={max}
                 onChange={(_event, date) => date && setDraft(date)}
                 themeVariant="dark"
-                accentColor={colors.accentCyan}
+                accentColor={colors.primary}
               />
               <View style={styles.actions}>
                 <Button title="ביטול" variant="secondary" onPress={() => setIosOpen(false)} />

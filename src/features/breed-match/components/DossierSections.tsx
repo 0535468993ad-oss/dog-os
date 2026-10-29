@@ -53,7 +53,7 @@ export function CostSection({ cost, priceRange, isRescue }: { cost: MonthlyCost;
       ))}
       <View style={styles.costRow} accessible accessibilityLabel={`סך הכול בחודש: ${formatILS(cost.totalILS)}`}>
         <AppText variant="bodyStrong">סך הכול בחודש</AppText>
-        <AppText variant="bodyStrong" color="accentCyan">
+        <AppText variant="bodyStrong" color="accentBronze">
           {formatILS(cost.totalILS)}
         </AppText>
       </View>
@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
     borderColor: colors.borderStrong,
   },
   dotOn: {
-    backgroundColor: colors.accentCyan,
-    borderColor: colors.accentCyan,
+    backgroundColor: colors.accentBronze,
+    borderColor: colors.accentBronze,
   },
   costRow: {
     flexDirection: 'row',

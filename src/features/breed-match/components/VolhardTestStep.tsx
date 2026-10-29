@@ -26,7 +26,7 @@ export function VolhardTestStep({ test, index, total, selected, onScore, onBack 
       <AppText variant="heading" accessibilityRole="header">
         {test.nameHe}
       </AppText>
-      <AppText variant="caption" color="accentCyan">
+      <AppText variant="caption" color="accentBronze">
         {test.measuresHe}
       </AppText>
       <AppText>{test.instructionsHe}</AppText>
@@ -52,7 +52,7 @@ export function VolhardTestStep({ test, index, total, selected, onScore, onBack 
               accessibilityLabel={`${score}: ${text}`}
               style={[styles.option, isSelected && styles.optionSelected]}
             >
-              <AppText variant="bodyStrong" color={isSelected ? 'accentCyan' : 'textSecondary'} style={styles.score}>
+              <AppText variant="bodyStrong" color={isSelected ? 'accentBronze' : 'textSecondary'} style={styles.score}>
                 {score}
               </AppText>
               <AppText style={styles.flex}>{text}</AppText>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   optionSelected: {
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   score: {
     width: 20,

@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText, SectionHeader } from '@/components/ui';
-import { colors, radius, shadow, spacing } from '@/constants/theme';
+import { colors, MIN_TOUCH_AREA, radius, shadow, spacing } from '@/constants/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -34,14 +34,14 @@ export function QuickActions() {
   );
 }
 
-/** One shortcut tile with UI-thread press feedback. */
+/** One compact shortcut tile (icon beside label) with UI-thread press feedback. */
 function QuickAction({ icon, label, href }: { icon: IconName; label: string; href: Href }) {
   return (
     <PressableScale onPress={() => router.push(href)} accessibilityRole="button" accessibilityLabel={label} style={styles.tile}>
       <View style={styles.iconBadge}>
-        <Ionicons name={icon} size={24} color={colors.primary} accessible={false} />
+        <Ionicons name={icon} size={18} color={colors.primary} accessible={false} />
       </View>
-      <AppText variant="label" center>
+      <AppText variant="label" style={styles.label}>
         {label}
       </AppText>
     </PressableScale>
@@ -50,7 +50,7 @@ function QuickAction({ icon, label, href }: { icon: IconName; label: string; hre
 
 const styles = StyleSheet.create({
   section: {
-    gap: spacing.md,
+    gap: spacing.sm + 4,
   },
   grid: {
     flexDirection: 'row',
@@ -60,20 +60,25 @@ const styles = StyleSheet.create({
   tile: {
     flexGrow: 1,
     flexBasis: 140,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.sm,
+    minHeight: MIN_TOUCH_AREA + 8,
+    paddingVertical: spacing.xs + 2,
+    paddingHorizontal: spacing.sm + 2,
     backgroundColor: colors.surface,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
-    ...shadow.card,
+    ...shadow.sm,
+  },
+  label: {
+    flex: 1,
   },
   iconBadge: {
-    width: 48,
-    height: 48,
-    borderRadius: radius.md,
+    width: 32,
+    height: 32,
+    borderRadius: radius.sm,
     backgroundColor: colors.primarySoft,
     alignItems: 'center',
     justifyContent: 'center',

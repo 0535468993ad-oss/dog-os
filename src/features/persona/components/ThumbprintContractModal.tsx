@@ -120,7 +120,7 @@ export function ThumbprintContractModal({ visible, dogId, dogName, onClose }: Th
                   cx={RING / 2}
                   cy={RING / 2}
                   r={(RING - STROKE) / 2}
-                  stroke={signedAt ? colors.accentMint : colors.accentCyan}
+                  stroke={signedAt ? colors.accentGold : colors.accentBronze}
                   strokeWidth={STROKE}
                   fill="none"
                   strokeDasharray={CIRCUMFERENCE}
@@ -129,7 +129,7 @@ export function ThumbprintContractModal({ visible, dogId, dogName, onClose }: Th
                   strokeLinecap="round"
                 />
               </Svg>
-              <Ionicons name={signedAt ? 'checkmark-done' : 'finger-print'} size={48} color={signedAt ? colors.accentMint : colors.textPrimary} accessible={false} />
+              <Ionicons name={signedAt ? 'checkmark-done' : 'finger-print'} size={48} color={signedAt ? colors.accentGold : colors.textPrimary} accessible={false} />
             </Pressable>
             <AppText variant="caption" color="textSecondary" center accessibilityLiveRegion="polite">
               {signedAt ? `נחתם ב־${new Date(signedAt).toLocaleDateString('he-IL')}` : 'החזיקו את האגודל שלוש שניות. זו התחייבות – לא נקראת טביעת אצבע.'}

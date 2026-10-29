@@ -22,20 +22,27 @@ interface CardProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const TONES: Record<CardTone, { bg: string; border: string }> = {
-  default: { bg: colors.surface, border: colors.border },
-  primary: { bg: colors.primarySoft, border: colors.primaryMuted },
-  secondary: { bg: colors.secondaryMuted, border: colors.secondaryMuted },
-  danger: { bg: colors.dangerMuted, border: colors.danger },
-  warning: { bg: colors.warningMuted, border: colors.warningMuted },
-  success: { bg: colors.successMuted, border: colors.successMuted },
-  info: { bg: colors.infoMuted, border: colors.infoMuted },
+// Tones keep the clean obsidian surface and carry their color in a start-edge accent bar (right in RTL)
+// instead of a full tinted fill. Only danger keeps a tinted fill, so emergencies still stand out.
+const TONES: Record<CardTone, { bg: string; accent: string | null }> = {
+  default: { bg: colors.surface, accent: null },
+  primary: { bg: colors.surface, accent: colors.primary },
+  secondary: { bg: colors.surface, accent: colors.secondary },
+  danger: { bg: colors.dangerMuted, accent: colors.danger },
+  warning: { bg: colors.surface, accent: colors.warning },
+  success: { bg: colors.surface, accent: colors.success },
+  info: { bg: colors.surface, accent: colors.info },
 };
+
+/** The fill and accent-bar style for a card tone. */
+function cardToneStyle(tone: CardTone): ViewStyle {
+  const { bg, accent } = TONES[tone];
+  return accent ? { backgroundColor: bg, borderColor: colors.border, borderStartWidth: 3, borderStartColor: accent } : { backgroundColor: bg, borderColor: colors.border };
+}
 
 /** Rounded surface for grouped content; pressable (with spring feedback) when onPress is set. */
 export function Card({ children, onPress, accessibilityLabel, accessibilityHint, tone = 'default', elevated, style }: CardProps) {
-  const toneStyle = { backgroundColor: TONES[tone].bg, borderColor: TONES[tone].border };
-  const cardStyle = [styles.card, elevated && styles.elevated, toneStyle, style];
+  const cardStyle = [styles.card, elevated && styles.elevated, cardToneStyle(tone), style];
 
   if (!onPress) {
     return (

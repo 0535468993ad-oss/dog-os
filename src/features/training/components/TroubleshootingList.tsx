@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   highlighted: {
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   badge: {
     flexDirection: 'row',

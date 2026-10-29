@@ -28,7 +28,7 @@ export function CertificateGenerator(data: CertificateData) {
   return (
     <View style={styles.root}>
       <View style={styles.frame} accessible accessibilityLabel={`${title}: ${data.dogName}${data.breed ? `, ${data.breed}` : ''}, ${hebrewDate(data.completedOn)}`}>
-        <AppText variant="title" color="accentCyan" center>
+        <AppText variant="title" color="accentBronze" center>
           {title}
         </AppText>
         <AppText variant="display" center>
@@ -39,7 +39,7 @@ export function CertificateGenerator(data: CertificateData) {
             {data.breed}
           </AppText>
         ) : null}
-        <AppText variant="caption" color="accentMint" center>{`דרגה: ${data.rankTitleHe} · ${hebrewDate(data.completedOn)}`}</AppText>
+        <AppText variant="caption" color="accentGold" center>{`דרגה: ${data.rankTitleHe} · ${hebrewDate(data.completedOn)}`}</AppText>
       </View>
       <Button title="שמירה ושיתוף כ־PDF" icon="download-outline" onPress={() => void exportPdf()} loading={busy} fullWidth />
     </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     borderRadius: radius.lg,
     borderWidth: 3,
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
     backgroundColor: colors.surface,
   },
 });

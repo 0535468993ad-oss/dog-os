@@ -1,10 +1,14 @@
-// Obsidian brand polish on shared UI: the recessed segmented track, the quiet section label and inset dividers.
+// Obsidian brand polish on shared UI: the recessed segmented track, bold section headers, inset dividers,
+// accent-bar card tones and empty progress tracks.
 import { render, screen } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA } from '@/constants/theme';
+import { colors, fonts, MIN_TOUCH_AREA } from '@/constants/theme';
 
-import { Divider, SectionHeader } from '../Misc';
+import { AppText } from '../AppText';
+import { Button } from '../Button';
+import { Card } from '../Card';
+import { Divider, ProgressBar, SectionHeader } from '../Misc';
 import { SegmentedControl } from '../SegmentedControl';
 
 const flat = (element: { props: { style?: unknown } }) => StyleSheet.flatten(element.props.style as never) as Record<string, unknown>;
@@ -31,9 +35,11 @@ describe('SegmentedControl', () => {
 });
 
 describe('SectionHeader', () => {
-  it('labels a group in the quiet 13px section style, below the screen title', async () => {
-    await render(<SectionHeader title="כלים" />);
-    expect(flat(screen.getByRole('header', { name: 'כלים' }))).toMatchObject({ fontSize: 13, color: colors.textLabel });
+  it('heads a group in bold, bright 18px type that outranks its action button', async () => {
+    await render(<SectionHeader title="חיסונים" action={<Button title="+ הוספה" variant="ghost" compact onPress={jest.fn()} />} />);
+    const header = flat(screen.getByRole('header', { name: 'חיסונים' }));
+    expect(header).toMatchObject({ fontSize: 18, fontFamily: fonts.bold, color: colors.textPrimary });
+    expect(Number(header.fontSize)).toBeGreaterThan(Number(flat(screen.getByText('+ הוספה')).fontSize));
   });
 });
 
@@ -44,5 +50,42 @@ describe('Divider', () => {
 
     await render(<Divider inset={46} />);
     expect(flat(screen.getByTestId('divider')).marginStart).toBe(46);
+  });
+});
+
+describe('Card tones', () => {
+  it('keeps toned cards on the clean obsidian surface with a start-edge accent bar', async () => {
+    await render(
+      <Card tone="primary" accessibilityLabel="תובנות">
+        <AppText>תוכן</AppText>
+      </Card>,
+    );
+    expect(flat(screen.getByLabelText('תובנות'))).toMatchObject({ backgroundColor: colors.surface, borderStartWidth: 3, borderStartColor: colors.primary });
+  });
+
+  it('leaves the default card without an accent bar and keeps danger tinted', async () => {
+    await render(
+      <>
+        <Card accessibilityLabel="רגיל">
+          <AppText>א</AppText>
+        </Card>
+        <Card tone="danger" accessibilityLabel="חירום">
+          <AppText>ב</AppText>
+        </Card>
+      </>,
+    );
+    expect(flat(screen.getByLabelText('רגיל')).borderStartWidth).toBeUndefined();
+    expect(flat(screen.getByLabelText('חירום')).backgroundColor).toBe(colors.dangerMuted);
+  });
+});
+
+describe('ProgressBar', () => {
+  it('shows a dim stub on an empty track and a real fill otherwise', async () => {
+    await render(<ProgressBar value={0} label="חדות מוחית: 0%" />);
+    expect(screen.getByRole('progressbar', { name: 'חדות מוחית: 0%' }).props.accessibilityValue).toMatchObject({ now: 0 });
+    expect(flat(screen.getByTestId('progress-empty')).backgroundColor).toBe(colors.primaryMuted);
+
+    await render(<ProgressBar value={0.4} label="עוצמת קשר: 40%" />);
+    expect(screen.queryByTestId('progress-empty')).toBeNull();
   });
 });

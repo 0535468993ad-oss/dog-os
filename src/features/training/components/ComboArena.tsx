@@ -39,14 +39,14 @@ export function ComboArena({ reps, combo, praise, onRep, onStuck }: ComboArenaPr
     <View style={styles.root}>
       <View style={styles.row}>
         <Animated.View style={[styles.combo, fever && styles.fever, popStyle]}>
-          <AppText variant="title" color={fever ? 'accentOrange' : 'accentCyan'} accessibilityLabel={`קומבו ${comboMultiplier(combo)}`}>
+          <AppText variant="title" color={fever ? 'accentOrange' : 'accentBronze'} accessibilityLabel={`קומבו ${comboMultiplier(combo)}`}>
             {comboLabel(combo)}
           </AppText>
         </Animated.View>
         <AppText variant="caption" color="textSecondary">{`${reps} חזרות · ${combo} ברצף`}</AppText>
       </View>
       {praise ? (
-        <AppText variant="bodyStrong" color="accentMint" accessibilityLiveRegion="polite">
+        <AppText variant="bodyStrong" color="accentGold" accessibilityLiveRegion="polite">
           {praise}
         </AppText>
       ) : null}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.accentCyan,
+    borderColor: colors.accentBronze,
   },
   fever: {
     borderColor: colors.accentOrange,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.lg,
-    backgroundColor: colors.accentMint,
+    backgroundColor: colors.accentGold,
   },
   repText: {
     color: colors.onAccent,

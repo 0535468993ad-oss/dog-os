@@ -20,7 +20,7 @@ const ICONS: Record<TrendKind, IconName> = {
   vaccination: 'medkit-outline',
 };
 
-// Badge fills are the vivid accents with navy text (4.7:1 / 5.0:1); icons sit on the tint in the deep shade.
+// Badge fills are the vivid accents with obsidian text (onAccent); icons sit on the tint in the bright shade.
 const TONES: Record<TrendTone, { fill: string; tint: string; icon: string }> = {
   alert: { fill: colors.alert, tint: colors.alertMuted, icon: colors.alertText },
   health: { fill: colors.health, tint: colors.healthMuted, icon: colors.healthText },
@@ -54,7 +54,7 @@ function TrendAlertRow({ alert }: { alert: TrendAlert }) {
   const content = (
     <>
       <View style={[styles.icon, { backgroundColor: tone.tint }]}>
-        <Ionicons name={ICONS[alert.kind]} size={20} color={tone.icon} accessible={false} />
+        <Ionicons name={ICONS[alert.kind]} size={18} color={tone.icon} accessible={false} />
       </View>
       <View style={[styles.flex, styles.text]}>
         <View style={[styles.badge, { backgroundColor: tone.fill }]}>
@@ -105,15 +105,16 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm + 2,
+    gap: spacing.sm,
     minHeight: MIN_TOUCH_AREA,
     paddingVertical: spacing.xs,
     borderRadius: radius.md,
   },
+  // Same size and gap as the header icon, so badges and titles line up under "בריאות ומגמות".
   icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 32,
+    height: 32,
+    borderRadius: radius.sm,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'flex-start',
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xxs,
   },
   badgeText: {
-    color: colors.textPrimary,
+    color: colors.onAccent,
     fontFamily: fonts.semibold,
   },
 });

@@ -3,21 +3,25 @@ import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, ProgressBar } from '@/components/ui';
-import { colors, radius, spacing, type ColorToken } from '@/constants/theme';
+import { colors, glow, radius, spacing, tabularNums, type ColorToken } from '@/constants/theme';
 
 import { BADGE_TIER_LABELS_HE } from '../data/badgesData';
 import type { Badge, BadgeTier } from '../types';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
+// Metallic medal tones (contrast asserted in theme.test.ts); diamond is brilliant white.
 const TIER_COLOR: Readonly<Record<BadgeTier, ColorToken>> = {
-  BRONZE: 'accentOrange',
-  SILVER: 'textOnDarkSecondary',
-  GOLD: 'warning',
-  DIAMOND: 'accentCyan',
+  BRONZE: 'medalBronze',
+  SILVER: 'medalSilver',
+  GOLD: 'medalGold',
+  DIAMOND: 'textPrimary',
 };
 
-/** Trophy badges with tier, lock state and progress; the toxin badge offers its review step. */
+/**
+ * Trophy badges with tier, lock state and progress; the toxin badge offers its review step. Unlocked badges
+ * get a metallic border and glow in their tier tone; locked ones show what is left to earn.
+ */
 export function BadgeGrid({ badges, onReviewToxins }: { badges: readonly Badge[]; onReviewToxins: () => void }) {
   return (
     <View style={styles.grid}>
@@ -27,7 +31,8 @@ export function BadgeGrid({ badges, onReviewToxins }: { badges: readonly Badge[]
         return (
           <View
             key={badge.id}
-            style={[styles.tile, badge.isUnlocked && { borderColor: colors[tone] }]}
+            style={[styles.tile, badge.isUnlocked && [styles.unlocked, { borderColor: colors[tone] }, glow(colors[tone])]]}
+            testID={`badge-${badge.id}`}
             accessible={badge.id !== 'toxin_shield'}
             accessibilityLabel={`${badge.titleHe}, ${BADGE_TIER_LABELS_HE[badge.tier]}: ${badge.isUnlocked ? 'הושג' : `${current} מתוך ${target}`}. ${badge.descriptionHe}`}
           >
@@ -41,7 +46,19 @@ export function BadgeGrid({ badges, onReviewToxins }: { badges: readonly Badge[]
             <AppText variant="caption" color="textSecondary" center>
               {badge.descriptionHe}
             </AppText>
-            {!badge.isUnlocked ? <ProgressBar value={current / target} label={`התקדמות ב${badge.titleHe}`} /> : null}
+            {badge.isUnlocked ? (
+              <View style={styles.earned}>
+                <Ionicons name="checkmark-circle" size={14} color={colors[tone]} accessible={false} />
+                <AppText variant="caption" color={tone}>
+                  הושג
+                </AppText>
+              </View>
+            ) : (
+              <>
+                <ProgressBar value={current / target} label={`התקדמות ב${badge.titleHe}`} />
+                <AppText variant="caption" color="textSecondary" style={tabularNums}>{`${current} / ${target}`}</AppText>
+              </>
+            )}
             {badge.id === 'toxin_shield' && !badge.isUnlocked ? (
               <Button title="סקירת המזונות הרעילים" variant="tonal" compact icon="nutrition-outline" onPress={onReviewToxins} />
             ) : null}
@@ -68,5 +85,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.surface,
+  },
+  unlocked: {
+    borderWidth: 2,
+  },
+  earned: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xxs,
   },
 });

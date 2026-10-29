@@ -4,7 +4,7 @@ import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay
 
 import { colors, radius } from '@/constants/theme';
 
-const PALETTE = [colors.accentCyan, colors.accentMint, colors.accentOrange, colors.aiBright];
+const PALETTE = [colors.accentBronze, colors.accentGold, colors.accentOrange, colors.aiBright];
 const COUNT = 18;
 
 /** Deterministic spread so the burst looks the same every time (and tests are stable). */
@@ -12,7 +12,7 @@ const PARTICLES = Array.from({ length: COUNT }, (_, i) => ({
   angle: (i / COUNT) * Math.PI * 2,
   distance: 90 + ((i * 37) % 70),
   delay: (i % 6) * 40,
-  color: PALETTE[i % PALETTE.length] ?? colors.accentCyan,
+  color: PALETTE[i % PALETTE.length] ?? colors.accentBronze,
   size: 6 + (i % 3) * 3,
 }));
 

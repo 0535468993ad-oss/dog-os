@@ -21,10 +21,10 @@ type RankSeed = Omit<RankTier, 'unlockedReward' | 'bonusReward' | 'maxXp'>;
 
 const SEEDS: readonly RankSeed[] = [
   { level: 1, titleHe: 'קשב בסיסי', minXp: 0, minActiveDays: 0, themeColor: 'textSecondary', perkDescriptionHe: 'פקודות היסוד ומדריכי החירום – הבסיס לכל השאר.' },
-  { level: 2, titleHe: 'מיקוד ומשמעת', minXp: 100, minActiveDays: 0, themeColor: 'accentMint', perkDescriptionHe: 'שגרה יומית: יומן הרגלים והאכלה.' },
-  { level: 3, titleHe: 'יציבות בשטח', minXp: 250, minActiveDays: 0, themeColor: 'accentMint', perkDescriptionHe: 'מעבדת ההרגלה לרעשים – זיקוקים, רעמים ואזעקות.' },
-  { level: 4, titleHe: 'תקשורת בהירה', minXp: 500, minActiveDays: 3, themeColor: 'accentCyan', perkDescriptionHe: 'מצב יועץ תזונה מתקדם (בהכנה).' },
-  { level: 5, titleHe: 'שליטה בהסחות', minXp: 800, minActiveDays: 5, themeColor: 'accentCyan', perkDescriptionHe: 'תעודת יסודות להדפסה, ושובר לחטיפי אימון (בהכנה).' },
+  { level: 2, titleHe: 'מיקוד ומשמעת', minXp: 100, minActiveDays: 0, themeColor: 'accentGold', perkDescriptionHe: 'שגרה יומית: יומן הרגלים והאכלה.' },
+  { level: 3, titleHe: 'יציבות בשטח', minXp: 250, minActiveDays: 0, themeColor: 'accentGold', perkDescriptionHe: 'מעבדת ההרגלה לרעשים – זיקוקים, רעמים ואזעקות.' },
+  { level: 4, titleHe: 'תקשורת בהירה', minXp: 500, minActiveDays: 3, themeColor: 'accentBronze', perkDescriptionHe: 'מצב יועץ תזונה מתקדם (בהכנה).' },
+  { level: 5, titleHe: 'שליטה בהסחות', minXp: 800, minActiveDays: 5, themeColor: 'accentBronze', perkDescriptionHe: 'תעודת יסודות להדפסה, ושובר לחטיפי אימון (בהכנה).' },
   { level: 6, titleHe: 'דרייב מבוקר', minXp: 1200, minActiveDays: 8, themeColor: 'primary', perkDescriptionHe: 'משרוקית בתדר גבוה לאות קריאה עקבי.' },
   { level: 7, titleHe: 'משמעת מתקדמת', minXp: 1700, minActiveDays: 12, themeColor: 'accentOrange', perkDescriptionHe: 'מסגרת פרופיל טקטית זוהרת.' },
   { level: 8, titleHe: 'עבודה חופשית', minXp: 2300, minActiveDays: 16, themeColor: 'accentOrange', perkDescriptionHe: 'מצב מנתח התנהגות (בהכנה).' },

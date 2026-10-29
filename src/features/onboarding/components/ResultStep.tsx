@@ -67,7 +67,7 @@ export function ResultStep({ dogName, recommendation, selected, onSelect, saving
         </AppText>
       ) : null}
       {selected !== recommendation.track ? (
-        <AppText variant="caption" color="accentCyan">
+        <AppText variant="caption" color="accentBronze">
           בחרתם מסלול אחר מההמלצה – זו החלטה שלכם, ואפשר לשנות אותה בכל רגע, גם לכל פקודה בנפרד.
         </AppText>
       ) : null}

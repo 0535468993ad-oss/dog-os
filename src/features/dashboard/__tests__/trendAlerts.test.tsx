@@ -1,13 +1,22 @@
+// Home cards: trend alerts (logic and card), the compact quick-access tiles and the hero without its corner glow.
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { router } from 'expo-router';
+import { StyleSheet } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 
-import { makeVaccination } from '@/test/fixtures';
+import { colors } from '@/constants/theme';
+import { makeDog, makeVaccination } from '@/test/fixtures';
 
+import { DogHeroCard } from '../components/DogHeroCard';
+import { QuickActions } from '../components/QuickActions';
 import { TrendsAlertCard } from '../components/TrendsAlertCard';
 import { taskSummary } from '../logic/dailyTasks';
 import { buildTrendAlerts } from '../logic/trendAlerts';
 
 jest.mock('expo-router', () => ({ router: { push: jest.fn() } }));
+jest.mock('@/features/dogs/components', () => ({ DogSwitcher: () => null }));
+
+const flat = (element: { props: { style?: unknown } }) => StyleSheet.flatten(element.props.style as never) as Record<string, unknown>;
 
 const push = router.push as jest.Mock;
 
@@ -71,3 +80,45 @@ describe('TrendsAlertCard', () => {
     expect(push).toHaveBeenCalledWith('/health');
   });
 });
+
+describe('TrendsAlertCard layout', () => {
+  it('puts dark text on the vivid badge fill', async () => {
+    await render(<TrendsAlertCard alerts={buildTrendAlerts('2026-10-19', [])} />);
+    expect(flat(screen.getByText('התראה עונתית')).color).toBe(colors.onAccent);
+  });
+});
+
+describe('QuickActions', () => {
+  beforeEach(() => push.mockClear());
+
+  it('renders compact row tiles (icon beside label) that still meet the touch target', async () => {
+    await render(<QuickActions />);
+    const tile = flat(screen.getByRole('button', { name: 'יומן' }));
+    expect(tile).toMatchObject({ flexDirection: 'row', alignItems: 'center' });
+    expect(Number(tile.minHeight)).toBeGreaterThanOrEqual(44);
+
+    await userEvent.press(screen.getByRole('button', { name: 'דוח לווטרינר' }));
+    expect(push).toHaveBeenCalledWith('/report');
+  });
+});
+
+/** Mounts the hero with a real shared value, as the dashboard does. */
+function HeroHarness() {
+  const scrollY = useSharedValue(0);
+  const dog = makeDog({ name: 'ג׳קסון' });
+  return <DogHeroCard dogs={[dog]} dog={dog} scrollY={scrollY} taskCount={2} />;
+}
+
+describe('DogHeroCard', () => {
+  it('drops the corner glow for a hairline amber edge', async () => {
+    await render(<HeroHarness />);
+    // Label → "today" pill → card.
+    const card = screen.getByText('2 משימות להיום').parent?.parent;
+    expect(card && flat(card)).toMatchObject({ borderWidth: 1, borderColor: colors.primaryMuted });
+    const children = card?.children ?? [];
+    for (const child of children) {
+      if (typeof child !== 'string') expect(flat(child).position).not.toBe('absolute');
+    }
+  });
+});
+

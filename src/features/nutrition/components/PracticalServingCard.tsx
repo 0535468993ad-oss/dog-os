@@ -23,10 +23,10 @@ export function PracticalServingCard({ dogName, product, serving, budget, labelK
 
       {serving.status === 'ready' ? (
         <>
-          <AppText variant="display" color="accentCyan" style={styles.glowCyan}>
+          <AppText variant="display" color="accentBronze" style={styles.glowBronze}>
             {serving.headlineHe}
           </AppText>
-          <AppText variant="bodyStrong" color="accentMint" style={styles.glowMint}>
+          <AppText variant="bodyStrong" color="accentGold" style={styles.glowGold}>
             {serving.detailHe}
           </AppText>
           <AppText variant="caption" color="textSecondary">{`${budget.bowlKcal} קק״ל לקערה, אחרי ש־${budget.treatSharePercent}% נשמרו לאימונים`}</AppText>
@@ -60,7 +60,7 @@ export function PracticalServingCard({ dogName, product, serving, budget, labelK
       {serving.status === 'supplement' ? (
         <View style={styles.block}>
           <AppText>{serving.labelDosingHe}</AppText>
-          {serving.omega3TargetHe ? <AppText variant="caption" color="accentMint">{serving.omega3TargetHe}</AppText> : null}
+          {serving.omega3TargetHe ? <AppText variant="caption" color="accentGold">{serving.omega3TargetHe}</AppText> : null}
         </View>
       ) : null}
 
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
   block: {
     gap: spacing.sm,
   },
-  glowCyan: {
-    ...textGlow(colors.accentCyan),
+  glowBronze: {
+    ...textGlow(colors.accentBronze),
   },
-  glowMint: {
-    ...textGlow(colors.accentMint),
+  glowGold: {
+    ...textGlow(colors.accentGold),
   },
 });

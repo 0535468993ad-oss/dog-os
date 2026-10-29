@@ -19,13 +19,11 @@ interface DogHeroCardProps {
   taskCount: number;
 }
 
-/** Deep-navy hero for the active dog: switcher, a "today" highlight, and scroll-driven depth. */
+/** Obsidian hero for the active dog: switcher, a "today" highlight, and scroll-driven depth. */
 export function DogHeroCard({ dogs, dog, scrollY, taskCount }: DogHeroCardProps) {
   const scrollStyle = useHeroScrollStyle(scrollY);
   return (
     <Animated.View style={[styles.card, scrollStyle]}>
-      {/* Decorative accent glow in the corner; hidden from screen readers. */}
-      <View style={styles.glow} accessible={false} importantForAccessibility="no-hide-descendants" />
       <DogSwitcher dogs={dogs} activeDog={dog} onDark />
       <View style={styles.today}>
         <Ionicons name={taskCount ? 'list' : 'checkmark-done'} size={16} color={colors.primaryBright} accessible={false} />
@@ -43,18 +41,11 @@ const styles = StyleSheet.create({
     borderRadius: radius.xl,
     padding: spacing.lg,
     gap: spacing.md,
+    // A hairline amber edge instead of a corner glow, which RTL clipped into a stray blob.
+    borderWidth: 1,
+    borderColor: colors.primaryMuted,
     overflow: 'hidden',
     ...shadow.raised,
-  },
-  glow: {
-    position: 'absolute',
-    top: -60,
-    end: -60,
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: colors.primaryBright,
-    opacity: 0.18,
   },
   today: {
     flexDirection: 'row',

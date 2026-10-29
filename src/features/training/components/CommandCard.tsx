@@ -30,7 +30,7 @@ export function CommandCard({ command, sessions, onOpen }: CommandCardProps) {
           <AppText variant="subheading">{`${command.order}. ${command.nameHe}`}</AppText>
           <AppText variant="caption" color="textSecondary">{`${command.nameEn} · מילת הפקודה: "${command.cueHe}"`}</AppText>
         </View>
-        <AppText variant="bodyStrong" color="accentMint">{`+${command.xpReward} XP`}</AppText>
+        <AppText variant="bodyStrong" color="accentGold">{`+${command.xpReward} XP`}</AppText>
       </View>
       <View style={styles.badges}>
         <Badge label={category} tone={command.category === 'LIFE_SAVING_SAFETY' ? 'danger' : 'primary'} />

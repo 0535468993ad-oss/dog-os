@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     borderColor: colors.borderStrong,
   },
   filled: {
-    backgroundColor: colors.accentCyan,
-    borderColor: colors.accentCyan,
+    backgroundColor: colors.accentBronze,
+    borderColor: colors.accentBronze,
   },
   compared: {
     borderColor: colors.accentOrange,

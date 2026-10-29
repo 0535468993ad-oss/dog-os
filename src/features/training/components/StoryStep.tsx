@@ -53,14 +53,14 @@ export function StoryStep({ index, step, checked, onToggle, focusLine, onMeasure
     >
       <Animated.View style={[styles.highlight, highlightStyle]} pointerEvents="none" />
       <Animated.View style={[styles.medallion, medallionStyle]} accessible={false} importantForAccessibility="no-hide-descendants">
-        <Ionicons name={checked ? 'checkmark-circle' : 'paw'} size={22} color={checked ? colors.accentMint : colors.accentCyan} accessible={false} />
+        <Ionicons name={checked ? 'checkmark-circle' : 'paw'} size={22} color={checked ? colors.accentGold : colors.accentBronze} accessible={false} />
       </Animated.View>
       <View style={styles.body}>
         <Checkbox checked={checked} onChange={onToggle} label={`שלב ${index + 1}${step.titleHe ? `: ${step.titleHe}` : ''}`}>
           {step.titleHe ? <AppText variant="bodyStrong">{`${index + 1}. ${step.titleHe}`}</AppText> : null}
           <AppText>{step.titleHe ? step.textHe : `${index + 1}. ${step.textHe}`}</AppText>
           {step.handlerMechanics ? <AppText variant="caption" color="textSecondary">{`ידיים, רצועה וגוף: ${step.handlerMechanics}`}</AppText> : null}
-          {step.markerCue ? <AppText variant="caption" color="accentMint">{`"${step.markerWord ?? 'כן!'}" – ${step.markerCue}`}</AppText> : null}
+          {step.markerCue ? <AppText variant="caption" color="accentGold">{`"${step.markerWord ?? 'כן!'}" – ${step.markerCue}`}</AppText> : null}
         </Checkbox>
       </View>
     </View>

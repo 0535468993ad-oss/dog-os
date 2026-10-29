@@ -28,7 +28,7 @@ describe('TAB_SCREEN_OPTIONS', () => {
     expect(TAB_SCREEN_OPTIONS.tabBarLabelStyle).toBe(tabBarLabel);
     expect(tabBarLabel).toMatchObject({ fontSize: 10 });
     expect(TAB_SCREEN_OPTIONS.tabBarActiveTintColor).toBe(colors.primaryBright);
-    expect(TAB_SCREEN_OPTIONS.tabBarInactiveTintColor).toBe(colors.textSecondary);
+    expect(TAB_SCREEN_OPTIONS.tabBarInactiveTintColor).toBe(colors.tabInactive);
   });
 });
 

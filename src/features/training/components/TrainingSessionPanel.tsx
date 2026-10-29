@@ -91,7 +91,7 @@ export function TrainingSessionPanel(props: TrainingSessionPanelProps) {
       <ProgressBar value={Math.min(1, timer.elapsed / timer.minSeconds)} label="התקדמות לזמן האימון המינימלי" />
       <ComboArena reps={arena.reps} combo={arena.combo} praise={arena.praise} onRep={logRep} onStuck={() => { props.onStruggle(); setArena({ ...arena, combo: 0 }); setStuck(true); }} />
       {stuck ? <StruggleSheet command={command} coachHe={persona.formatCopy('repStruggleCoach', vars)} onClose={() => setStuck(false)} /> : null}
-      <AppText variant="caption" color="accentMint" accessibilityLiveRegion="polite">
+      <AppText variant="caption" color="accentGold" accessibilityLiveRegion="polite">
         {totalBanked > 0 ? `נצבר באימון: +${totalBanked} XP, נזקפים עם אישור האימון` : `סמנו שלבים וחזרות: +${STEP_XP} XP לכל שלב, ובונוס קומבו על חזרות ברצף`}
       </AppText>
       {rescue ? null : <ChipGroup options={ENVIRONMENTS} value={environment} onChange={setEnvironment} accessibilityLabel="איפה התאמנתם" />}

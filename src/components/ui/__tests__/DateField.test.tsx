@@ -1,5 +1,5 @@
 // DateField (Dark Luxury): dark field on the dark surface, and the pickers render dark with the
-// cyan accent – native iOS sheet and the web input's color-scheme.
+// amber accent – native iOS sheet and the web input's color-scheme.
 import { render, screen, userEvent, within } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
@@ -33,14 +33,16 @@ describe('DateField (native)', () => {
     expect(flat(screen.getByRole('button', { name: /^תאריך:/ }).props.style).backgroundColor).toBe(colors.surfaceAlt);
   });
 
-  it('keeps the chosen date on one line in narrow layouts', async () => {
-    await render(<DateField label="תאריך" value="2026-10-20" onChange={jest.fn()} />);
+  it('never truncates the chosen Hebrew date, wrapping it at large text sizes instead', async () => {
+    await render(<DateField label="תאריך" value="2026-10-29" onChange={jest.fn()} />);
 
     const button = screen.getByRole('button', { name: /^תאריך:/ });
-    expect(within(button).getByText(/2026/).props.numberOfLines).toBe(1);
+    const date = within(button).getByText(/2026/);
+    expect(date.props.numberOfLines).toBeUndefined();
+    expect(date.props.ellipsizeMode).toBeUndefined();
   });
 
-  it('opens the iOS sheet with a dark, cyan-accented picker', async () => {
+  it('opens the iOS sheet with a dark, amber-accented picker', async () => {
     const user = userEvent.setup();
     await render(<DateField label="תאריך" value={null} onChange={jest.fn()} />);
 
@@ -48,7 +50,7 @@ describe('DateField (native)', () => {
 
     const picker = screen.getByTestId('native-picker');
     expect(picker.props.themeVariant).toBe('dark');
-    expect(picker.props.accentColor).toBe(colors.accentCyan);
+    expect(picker.props.accentColor).toBe(colors.primary);
   });
 });
 
@@ -56,7 +58,7 @@ describe('DateField (web input style)', () => {
   it('asks the browser for its dark date UI and uses the dark palette', () => {
     expect(inputStyle).toMatchObject({
       colorScheme: 'dark',
-      accentColor: colors.accentCyan,
+      accentColor: colors.primary,
       backgroundColor: colors.surfaceAlt,
       color: colors.textPrimary,
     });
