@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PressableScale } from '@/components/motion';
 import { AppText, Button } from '@/components/ui';
-import { colors, glow, radius, spacing } from '@/constants/theme';
+import { colors, glow, radius, spacing, tabularNums } from '@/constants/theme';
 
 import { AVATAR_FRAMES, INTEL_CARDS, VIP_TITLES } from '../data/lootTable';
 import { hapticLootTap } from '../hooks/haptics';
@@ -70,7 +70,7 @@ export function LootBoxModal({ visible, prompts, onOpen, onClose }: LootBoxModal
               <AppText variant="title" color="accentOrange" center>
                 {shown.titleHe}
               </AppText>
-              <AppText center>{shown.bodyHe}</AppText>
+              <AppText center style={tabularNums}>{shown.bodyHe}</AppText>
               <Button title="מעולה!" onPress={close} />
             </View>
           ) : taps >= 3 ? (

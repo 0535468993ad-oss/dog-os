@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   input: {
     ...typography.body,
     color: colors.textPrimary,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
     borderWidth: 2,
     borderColor: colors.borderStrong,
     borderRadius: radius.md,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   inputFocused: {
     borderColor: colors.focus,
     borderWidth: 2,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
   },
   inputError: {
     borderColor: colors.danger,

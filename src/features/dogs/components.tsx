@@ -35,7 +35,7 @@ export function DogAvatar({ dog, size = 48 }: { dog: Pick<DogRow, 'name' | 'prof
 
 /**
  * Header control showing the active dog; opens a picker when there are several dogs.
- * `onDark` switches text and accents to their heroNavy-safe variants.
+ * `onDark` switches text and accents to their heroSurface-safe variants.
  */
 export function DogSwitcher({ dogs, activeDog, onDark = false }: { dogs: DogRow[]; activeDog: DogRow; onDark?: boolean }) {
   const [open, setOpen] = useState(false);

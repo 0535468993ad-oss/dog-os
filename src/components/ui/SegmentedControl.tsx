@@ -2,10 +2,14 @@ import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { colors, MIN_TOUCH_AREA, radius, shadow, spacing } from '@/constants/theme';
+import { colors, MIN_TOUCH_AREA, shadow, spacing } from '@/constants/theme';
 
 import { MOTION, PressableScale } from '../motion';
 import { AppText } from './AppText';
+
+// The track's corner, and the pill's: the track radius minus its 4pt padding, so the curves stay concentric.
+const TRACK_RADIUS = 12;
+const PILL_RADIUS = TRACK_RADIUS - spacing.xs + 1;
 
 interface Segment<T extends string> {
   value: T;
@@ -19,7 +23,10 @@ interface SegmentedControlProps<T extends string> {
   accessibilityLabel: string;
 }
 
-/** Pill tab switcher; the selected segment's indicator fades and scales in on the UI thread. */
+/**
+ * Tab switcher on a recessed track; the selected segment is an amber pill whose indicator fades and scales
+ * in on the UI thread. Segments keep the 44pt touch target, so the track is 52 tall.
+ */
 export function SegmentedControl<T extends string>({ segments, value, onChange, accessibilityLabel }: SegmentedControlProps<T>) {
   return (
     <View style={styles.container} accessibilityRole="tablist" accessibilityLabel={accessibilityLabel}>
@@ -48,7 +55,7 @@ function SegmentButton({ label, selected, onPress }: { label: string; selected: 
   return (
     <PressableScale onPress={onPress} accessibilityRole="tab" accessibilityState={{ selected }} accessibilityLabel={label} style={styles.segment}>
       <Animated.View style={[StyleSheet.absoluteFill, styles.indicator, indicatorStyle]} accessible={false} />
-      <AppText variant="label" style={{ color: selected ? colors.onPrimary : colors.textPrimary }} numberOfLines={1}>
+      <AppText variant="label" style={{ color: selected ? colors.onPrimary : colors.textSecondary }} numberOfLines={1}>
         {label}
       </AppText>
     </PressableScale>
@@ -58,21 +65,23 @@ function SegmentButton({ label, selected, onPress }: { label: string; selected: 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.surfaceAlt,
-    borderRadius: radius.pill,
+    backgroundColor: colors.surfaceSunken,
+    borderRadius: TRACK_RADIUS,
+    borderWidth: 1,
+    borderColor: colors.border,
     padding: spacing.xs,
     gap: spacing.xxs,
   },
   segment: {
     flex: 1,
     minHeight: MIN_TOUCH_AREA,
-    borderRadius: radius.pill,
+    borderRadius: PILL_RADIUS,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.sm,
   },
   indicator: {
-    borderRadius: radius.pill,
+    borderRadius: PILL_RADIUS,
     backgroundColor: colors.primary,
     ...shadow.sm,
   },

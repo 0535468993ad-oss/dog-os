@@ -48,7 +48,6 @@ export interface LevelReward {
 export interface RankTier {
   level: number;
   titleHe: string;
-  titleEn: string;
   minXp: number;
   maxXp: number;
   /** Distinct training days required from level 4 on: XP alone cannot buy a rank. */

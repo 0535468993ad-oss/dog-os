@@ -6,6 +6,7 @@ export const TEL_AVIV_HIPSTER: PersonaDefinition = {
   id: 'TEL_AVIV_HIPSTER',
   nameHe: 'ההיפסטר מפלורנטין',
   taglineHe: 'אימון כמדיטציה זוגית',
+  icon: 'cafe-outline',
   copy: {
     homeGreetingMorning: 'היי אהוב, איזה דיוק שהגעת. האנרגיה של {dogName} לגמרי מבקשת גראונדינג היום.',
     homeGreetingEvening: 'ערב רך, אהוב. {streakDays} ימים של נוכחות משותפת – {dogName} מרגיש את זה.',
@@ -26,6 +27,7 @@ export const ANXIOUS_MOM: PersonaDefinition = {
   id: 'ANXIOUS_MOM',
   nameHe: 'האמא הפולנייה הלחוצה',
   taglineHe: 'רק שתאכלו ותתאמנו',
+  icon: 'heart-outline',
   copy: {
     homeGreetingMorning: 'נו, באמת תודה שנזכרת ש־{dogName} קיים! כל היום הוא שוכב ליד הדלת ונאנח.',
     homeGreetingEvening: 'כבר ערב ועוד לא שאלת מה שלומו? טוב, {streakDays} ימים ברצף, אז אני לא אגיד כלום.',

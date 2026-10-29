@@ -16,7 +16,7 @@ export default function AppLayout() {
     <Stack
       screenOptions={{
         contentStyle: { backgroundColor: colors.background },
-        headerTitleStyle: { fontFamily: fonts.bold },
+        headerTitleStyle: { fontFamily: fonts.extrabold },
         headerTintColor: colors.primary,
         headerBackButtonDisplayMode: 'minimal',
         headerShadowVisible: false,

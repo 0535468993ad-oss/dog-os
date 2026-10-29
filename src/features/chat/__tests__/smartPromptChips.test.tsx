@@ -1,13 +1,13 @@
 import { render, screen, userEvent } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
-import { colors, MIN_TOUCH_AREA } from '@/constants/theme';
+import { colors, MIN_TOUCH_AREA, tints } from '@/constants/theme';
 
 import { SmartPromptChips } from '../components/SmartPromptChips';
 import { promptChips } from '../utils/promptChips';
 
 function flat(element: { props: { style?: unknown } }) {
-  return StyleSheet.flatten(element.props.style as never) as { minHeight?: number; borderColor?: string; backgroundColor?: string };
+  return StyleSheet.flatten(element.props.style as never) as { minHeight?: number; borderColor?: string; borderWidth?: number; backgroundColor?: string; shadowColor?: string; color?: string };
 }
 
 describe('promptChips', () => {
@@ -33,16 +33,24 @@ describe('SmartPromptChips', () => {
     expect(onPick).toHaveBeenCalledWith('האם ענבים רעילים לכלבים?');
   });
 
-  it('colors chips by category and keeps 44pt touch targets', async () => {
+  it('renders every chip as a quiet glass card with no glow and 44pt touch targets', async () => {
     await render(<SmartPromptChips chips={chips} onPick={() => undefined} />);
-    const toxicity = flat(screen.getAllByRole('button', { name: /^רעילות:/ })[0]!);
-    const health = flat(screen.getAllByRole('button', { name: /^בריאות:/ })[0]!);
-    const general = flat(screen.getAllByRole('button', { name: /^כללי:/ })[0]!);
 
-    expect(toxicity).toMatchObject({ borderColor: colors.alert, backgroundColor: colors.alertMuted });
-    expect(health).toMatchObject({ borderColor: colors.health, backgroundColor: colors.healthMuted });
-    expect(general).toMatchObject({ borderColor: colors.aiBright, backgroundColor: colors.aiMuted });
-    for (const chip of screen.getAllByRole('button')) expect(flat(chip).minHeight).toBeGreaterThanOrEqual(MIN_TOUCH_AREA);
+    for (const chip of screen.getAllByRole('button')) {
+      const style = flat(chip);
+      expect(style).toMatchObject({ backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 });
+      expect(style.shadowColor).toBeUndefined();
+      expect(style.minHeight).toBeGreaterThanOrEqual(MIN_TOUCH_AREA);
+    }
+    expect(flat(screen.getByText('האם ענבים רעילים לכלבים?')).color).toBe(colors.textPrimary);
+  });
+
+  it('carries the category color in a tinted icon badge', async () => {
+    await render(<SmartPromptChips chips={chips} onPick={() => undefined} />);
+
+    expect(flat(screen.getAllByTestId('chip-icon-toxicity')[0]!).backgroundColor).toBe(tints.alert);
+    expect(flat(screen.getAllByTestId('chip-icon-health')[0]!).backgroundColor).toBe(tints.health);
+    expect(flat(screen.getAllByTestId('chip-icon-general')[0]!).backgroundColor).toBe(tints.ai);
   });
 
   it('is disabled while a reply is pending', async () => {

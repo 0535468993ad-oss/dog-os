@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 
 import { AppText } from '@/components/ui';
-import { colors, glow, radius, spacing } from '@/constants/theme';
+import { colors, glow, radius, spacing, tabularNums } from '@/constants/theme';
 
 interface XpFloatingBannerProps {
   /** Changes on every award, so the same amount twice still animates. */
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     ...glow(colors.accentMint),
   },
   text: {
+    ...tabularNums,
     color: colors.onAccent,
   },
 });

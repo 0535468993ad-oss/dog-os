@@ -17,8 +17,8 @@ export interface TabSpec {
 /** The main tabs, in display order (the first is the start of the RTL bar). */
 export const TABS: readonly TabSpec[] = [
   { name: 'index', title: 'ראשי', icon: 'home-outline', activeIcon: 'home' },
-  { name: 'training', title: 'אימונים', icon: 'school-outline', activeIcon: 'school' },
-  { name: 'chat', title: 'יועץ חכם', icon: 'chatbubbles-outline', activeIcon: 'chatbubbles' },
+  { name: 'training', title: 'אימונים', icon: 'flame-outline', activeIcon: 'flame' },
+  { name: 'chat', title: 'יועץ חכם', icon: 'sparkles-outline', activeIcon: 'sparkles' },
   { name: 'health', title: 'בריאות', icon: 'heart-outline', activeIcon: 'heart' },
   { name: 'profile', title: 'פרופיל', icon: 'paw-outline', activeIcon: 'paw' },
 ];

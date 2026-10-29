@@ -38,7 +38,7 @@ export function LevelUpCelebrationModal({ rank, dogName, onClose, onOpenVault }:
             <AppText variant="display" center accessibilityRole="header" style={textGlow(colors.accentCyan)}>
               {rank.titleHe}
             </AppText>
-            <AppText color="textSecondary" center>{`${dogName} · ${rank.titleEn}`}</AppText>
+            <AppText color="textSecondary" center>{dogName}</AppText>
             <GlassCard>
               <AppText variant="label" color="accentMint">
                 {rank.unlockedReward.availability === 'AVAILABLE' ? 'הפרס שנפתח' : 'בקרוב בדרגה הזו'}

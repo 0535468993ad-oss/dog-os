@@ -17,12 +17,12 @@ export function BusinessFooter() {
         {`${business.address} · ${business.email}`}
       </AppText>
       <View style={styles.footerLinks}>
-        <LegalLink doc="terms" />
-        <LegalLink doc="privacy" />
-        <LegalLink doc="cookies" />
-        <LegalLink doc="refunds" />
-        <LegalLink doc="accessibility" />
-        <LegalLink doc="licenses" label="רישיונות" />
+        <LegalLink doc="terms" tone="meta" />
+        <LegalLink doc="privacy" tone="meta" />
+        <LegalLink doc="cookies" tone="meta" />
+        <LegalLink doc="refunds" tone="meta" />
+        <LegalLink doc="accessibility" tone="meta" />
+        <LegalLink doc="licenses" label="רישיונות" tone="meta" />
       </View>
     </View>
   );

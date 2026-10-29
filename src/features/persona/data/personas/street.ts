@@ -7,6 +7,7 @@ export const ARS: PersonaDefinition = {
   id: 'ARS',
   nameHe: 'הערס השכונתי',
   taglineHe: 'כל אימון זה כבוד לשכונה',
+  icon: 'flash-outline',
   copy: {
     homeGreetingMorning: 'או! המלך חזר לשכונה! תראה איך {dogName} יושב כמו כריש מחכה לפקודה.',
     homeGreetingEvening: 'ערב טוב יא מלך! {streakDays} ימים ברצף, ו־{dogName} כבר מחכה ליד הדלת לסיבוב של הערב.',
@@ -25,8 +26,9 @@ export const ARS: PersonaDefinition = {
 
 export const DRILL_SERGEANT: PersonaDefinition = {
   id: 'DRILL_SERGEANT',
-  nameHe: 'הרס״ר הצבאי',
+  nameHe: 'מנטור משמעת קפדן',
   taglineHe: 'משמעת, דיוק, ואפס תירוצים',
+  icon: 'shield-outline',
   copy: {
     homeGreetingMorning: 'הקשב! המאסטר והלוחם {dogName} התייצבו במסדר! רצועה ביד, יוצאים למסלול!',
     homeGreetingEvening: 'מסדר ערב! {streakDays} ימי רצף. {dogName} מוכן לתרגיל לילה?',

@@ -1,6 +1,6 @@
 // DateField (Dark Luxury): dark field on the dark surface, and the pickers render dark with the
 // cyan accent – native iOS sheet and the web input's color-scheme.
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render, screen, userEvent, within } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
 import { colors } from '@/constants/theme';
@@ -30,7 +30,14 @@ describe('DateField (native)', () => {
 
     expect(flat(screen.getByText('תאריך').props.style).color).toBe(colors.textSecondary);
     expect(flat(screen.getByRole('alert').props.style).color).toBe(colors.dangerText);
-    expect(flat(screen.getByRole('button', { name: /^תאריך:/ }).props.style).backgroundColor).toBe(colors.surface);
+    expect(flat(screen.getByRole('button', { name: /^תאריך:/ }).props.style).backgroundColor).toBe(colors.surfaceAlt);
+  });
+
+  it('keeps the chosen date on one line in narrow layouts', async () => {
+    await render(<DateField label="תאריך" value="2026-10-20" onChange={jest.fn()} />);
+
+    const button = screen.getByRole('button', { name: /^תאריך:/ });
+    expect(within(button).getByText(/2026/).props.numberOfLines).toBe(1);
   });
 
   it('opens the iOS sheet with a dark, cyan-accented picker', async () => {
@@ -50,7 +57,7 @@ describe('DateField (web input style)', () => {
     expect(inputStyle).toMatchObject({
       colorScheme: 'dark',
       accentColor: colors.accentCyan,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.surfaceAlt,
       color: colors.textPrimary,
     });
   });

@@ -32,6 +32,18 @@ describe('TAB_SCREEN_OPTIONS', () => {
   });
 });
 
+describe('TABS', () => {
+  it('uses purposeful brand glyphs: home, flame, sparkles, heart, paw', () => {
+    expect(TABS.map((tab) => [tab.title, tab.icon, tab.activeIcon])).toEqual([
+      ['ראשי', 'home-outline', 'home'],
+      ['אימונים', 'flame-outline', 'flame'],
+      ['יועץ חכם', 'sparkles-outline', 'sparkles'],
+      ['בריאות', 'heart-outline', 'heart'],
+      ['פרופיל', 'paw-outline', 'paw'],
+    ]);
+  });
+});
+
 describe('tabOptions', () => {
   const home = TABS[0];
   if (!home) throw new Error('no tabs');

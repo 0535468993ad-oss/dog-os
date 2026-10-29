@@ -41,7 +41,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#080C14",
+          "backgroundColor": "#080A0F",
           "image": "./assets/icon.png",
           "imageWidth": 160
         }
@@ -60,8 +60,8 @@
                 "dark": "#00E5FF"
               },
               "windowBackground": {
-                "light": "#0F1522",
-                "dark": "#0F1522"
+                "light": "#121620",
+                "dark": "#121620"
               },
               "textColor": {
                 "light": "#F9FAFB",
@@ -76,8 +76,8 @@
                 "dark": "#9CA3AF"
               },
               "textColorPrimaryInverse": {
-                "light": "#080C14",
-                "dark": "#080C14"
+                "light": "#080A0F",
+                "dark": "#080A0F"
               }
             }
           }
@@ -107,6 +107,6 @@
     "experiments": {
       "typedRoutes": true
     },
-    "backgroundColor": "#080C14"
+    "backgroundColor": "#080A0F"
   }
 }

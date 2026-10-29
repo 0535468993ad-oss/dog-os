@@ -32,7 +32,7 @@ describe('CommandsTab', () => {
 
   it('shows the rank card and command cards with category, difficulty and XP', async () => {
     await renderTab();
-    expect(screen.getByText('ג׳קסון · גור מגשש')).toBeOnTheScreen();
+    expect(screen.getByText('ג׳קסון · קשב בסיסי')).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: /^4\. אליי \(Recall\), בטיחות מצילת חיים, בינוני, 100 XP, 0 אימונים$/ })).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: 'ארון הגביעים והפרסים' })).toBeOnTheScreen();
   });
@@ -131,6 +131,6 @@ async function renderTab() {
       <CommandsTab />
     </QueryClientProvider>,
   );
-  await screen.findByText('ג׳קסון · גור מגשש');
+  await screen.findByText('ג׳קסון · קשב בסיסי');
   return user;
 }

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, DateField, SectionHeader, TextField } from '@/components/ui';
 import type { WeightLogRow } from '@/lib/database.types';
-import { spacing } from '@/constants/theme';
+import { spacing, tabularNums } from '@/constants/theme';
 import { todayIso } from '@/utils/date';
 import { toUserMessage } from '@/utils/errors';
 
@@ -39,13 +39,13 @@ export function WeightCard({ dogId, weights }: { dogId: string; weights: WeightL
     <>
       <SectionHeader title="משקל" />
       <Card>
-        {latest ? <AppText variant="heading">{`${latest.weight_kg} ק״ג`}</AppText> : <AppText color="textSecondary">עדיין אין שקילות.</AppText>}
+        {latest ? <AppText variant="heading" style={tabularNums}>{`${latest.weight_kg} ק״ג`}</AppText> : <AppText color="textSecondary">עדיין אין שקילות.</AppText>}
         <WeightChart weights={weights} />
         <View style={styles.form}>
-          <View style={styles.flex}>
+          <View style={styles.field}>
             <TextField label="משקל (ק״ג)" value={weight} onChangeText={setWeight} inputMode="decimal" keyboardType="decimal-pad" placeholder="12.4" error={error} />
           </View>
-          <View style={styles.flex}>
+          <View style={styles.field}>
             <DateField label="תאריך" value={weighedOn} onChange={setWeighedOn} maximumDate={todayIso()} />
           </View>
         </View>
@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     flexWrap: 'wrap',
   },
-  flex: {
-    flex: 1,
+  // Each field keeps a usable width and wraps as a whole onto its own line, instead of squeezing the date.
+  field: {
+    flexGrow: 1,
+    flexBasis: 150,
   },
 });

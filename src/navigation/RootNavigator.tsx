@@ -35,7 +35,7 @@ export function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { fontFamily: fonts.bold },
+          headerTitleStyle: { fontFamily: fonts.extrabold },
           headerTintColor: colors.primary,
           headerBackButtonDisplayMode: 'minimal',
         }}

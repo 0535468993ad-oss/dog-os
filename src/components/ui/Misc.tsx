@@ -9,7 +9,7 @@ import { AppText } from './AppText';
 export function SectionHeader({ title, action }: { title: string; action?: ReactNode }) {
   return (
     <View style={styles.sectionHeader}>
-      <AppText variant="heading" accessibilityRole="header" style={styles.flex}>
+      <AppText variant="section" color="textLabel" accessibilityRole="header" style={styles.flex}>
         {title}
       </AppText>
       {action}
@@ -66,8 +66,9 @@ export function Disclaimer({ children }: { children: ReactNode }) {
   );
 }
 
-export function Divider() {
-  return <View style={styles.divider} accessible={false} />;
+/** A hairline separator; `inset` indents its start edge, e.g. past a row's leading icon. */
+export function Divider({ inset = 0 }: { inset?: number }) {
+  return <View style={[styles.divider, inset > 0 && { marginStart: inset }]} testID="divider" accessible={false} />;
 }
 
 export function BulletList({ items }: { items: readonly string[] }) {

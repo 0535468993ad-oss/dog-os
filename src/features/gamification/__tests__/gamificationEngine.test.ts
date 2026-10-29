@@ -22,8 +22,10 @@ const at = (state: Partial<GameState>): GameState => ({ ...EMPTY_GAME_STATE, ...
 describe('ranks, rewards and badges data', () => {
   it('has ten ranks with the spec titles and no alpha framing', () => {
     expect(RANKS.map((rank) => rank.level)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    expect(RANKS.map((rank) => rank.titleHe)).toEqual(['גור מגשש', 'שובר הרגלים', 'טירון ממושמע', 'צייד אותות', 'שומר הברזל', 'מאסטר דחפים', 'חיית שטח', 'עין הנץ', 'K9 מבצעי', 'Dog OS Legend']);
-    expect(RANKS.filter((rank) => /אלפא|alpha/i.test(`${rank.titleHe} ${rank.titleEn}`))).toEqual([]);
+    expect(RANKS.map((rank) => rank.titleHe)).toEqual(['קשב בסיסי', 'מיקוד ומשמעת', 'יציבות בשטח', 'תקשורת בהירה', 'שליטה בהסחות', 'דרייב מבוקר', 'משמעת מתקדמת', 'עבודה חופשית', 'שותפות עילית', 'עוצמה מאוזנת']);
+    expect(RANKS.filter((rank) => /אלפא|alpha/i.test(rank.titleHe))).toEqual([]);
+    // Hebrew UI: no Latin letters in any rank title.
+    expect(RANKS.filter((rank) => /[A-Za-z]/.test(rank.titleHe))).toEqual([]);
     for (const [index, rank] of RANKS.entries()) {
       const next = RANKS[index + 1];
       if (next) expect(rank.maxXp).toBe(next.minXp - 1);

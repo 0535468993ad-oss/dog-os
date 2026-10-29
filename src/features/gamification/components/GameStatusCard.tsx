@@ -32,7 +32,7 @@ export function GameStatusCard({ state, today, dogName, onOpenVault }: GameStatu
     <GlassCard style={tactical ? styles.tactical : undefined}>
       <View style={styles.row}>
         <View style={styles.flex}>
-          <AppText variant="caption" color={rank.themeColor}>{`דרגה ${rank.level} מתוך 10 · ${rank.titleEn}`}</AppText>
+          <AppText variant="caption" color={rank.themeColor}>{`דרגה ${rank.level} מתוך 10`}</AppText>
           <AppText variant="heading" accessibilityRole="header">{`${dogName} · ${rank.titleHe}`}</AppText>
         </View>
         <AppText variant="title" color="accentMint">{`${state.totalXp} XP`}</AppText>

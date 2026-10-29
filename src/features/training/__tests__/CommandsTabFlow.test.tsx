@@ -50,7 +50,7 @@ async function completeSit(result: CompletionOutcome) {
       <CommandsTab />
     </QueryClientProvider>,
   );
-  await screen.findByText('ג׳קסון · גור מגשש');
+  await screen.findByText('ג׳קסון · קשב בסיסי');
   await user.press(screen.getByRole('button', { name: /^1\. שב/ }));
   await user.press(screen.getByRole('button', { name: 'התחלת סשן' }));
   await user.press(screen.getByRole('button', { name: /^אישור ביצוע: / }));

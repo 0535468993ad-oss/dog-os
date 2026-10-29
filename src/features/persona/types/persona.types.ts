@@ -1,5 +1,7 @@
 // The persona engine's contracts: who talks to the owner, the variables copy can use, and every surface
 // a persona writes. Emergency flows never use a persona – they always speak clinically.
+import type Ionicons from '@expo/vector-icons/Ionicons';
+import type { ComponentProps } from 'react';
 
 export type PersonaId = 'ARS' | 'TEL_AVIV_HIPSTER' | 'DRILL_SERGEANT' | 'ANXIOUS_MOM' | 'CLINICAL_PRO';
 
@@ -35,6 +37,8 @@ export interface PersonaDefinition {
   id: PersonaId;
   nameHe: string;
   taglineHe: string;
+  /** The glyph beside the persona's name in the switcher chip. */
+  icon: ComponentProps<typeof Ionicons>['name'];
   copy: PersonaCopySurface;
 }
 

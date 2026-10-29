@@ -6,6 +6,7 @@ export const CLINICAL_PRO: PersonaDefinition = {
   id: 'CLINICAL_PRO',
   nameHe: 'הפרופסור לאתולוגיה',
   taglineHe: 'מדויק, מבוסס מחקר (ברירת מחדל)',
+  icon: 'medkit-outline',
   copy: {
     homeGreetingMorning: 'בוקר טוב. אימון קצר בבוקר, כש־{dogName} רגוע יחסית, מאפשר למידה מדויקת.',
     homeGreetingEvening: 'ערב טוב. {streakDays} ימי תרגול רצופים מחזקים את העקביות של {dogName}.',

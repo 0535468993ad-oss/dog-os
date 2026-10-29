@@ -27,7 +27,7 @@ export function RankRoadmap({ currentLevel }: { currentLevel: number }) {
               </AppText>
             </View>
             <View style={styles.flex}>
-              <AppText variant="subheading">{`${rank.titleHe} · ${rank.titleEn}`}</AppText>
+              <AppText variant="subheading">{rank.titleHe}</AppText>
               <AppText variant="caption" color="textSecondary">{`${rank.minXp} XP${days}`}</AppText>
               <AppText variant="caption">{rank.perkDescriptionHe}</AppText>
               {rank.unlockedReward.availability === 'COMING_SOON' ? <Badge label="בקרוב" tone="neutral" icon="time-outline" /> : null}

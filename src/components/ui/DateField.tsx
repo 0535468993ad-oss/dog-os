@@ -64,7 +64,7 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
         accessibilityHint="פותח בחירת תאריך"
         style={({ pressed }) => [styles.trigger, error ? styles.triggerError : null, pressed && styles.pressed]}
       >
-        <AppText color={value ? 'textPrimary' : 'textSecondary'} style={styles.text}>
+        <AppText color={value ? 'textPrimary' : 'textSecondary'} style={styles.text} numberOfLines={1}>
           {value ? formatDate(value) : 'בחרו תאריך'}
         </AppText>
         <Ionicons name="calendar-outline" size={20} color={colors.accentCyan} accessible={false} />
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
     borderWidth: 1.5,
     borderColor: colors.borderStrong,
     borderRadius: radius.md,

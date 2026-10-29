@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
-import { colors, radius, spacing } from '@/constants/theme';
+import { radius, spacing, tabularNums, tints, type ColorToken, type TintToken } from '@/constants/theme';
 
 import { LEAGUE_TIERS } from '../data/leagues';
 import type { LeagueStandings, LeagueZone } from '../types';
@@ -11,6 +11,13 @@ const ZONE_LABELS_HE: Readonly<Record<LeagueZone, string>> = {
   SAFE: 'אזור בטוח',
   DEMOTION: 'אזור ירידה',
 };
+
+// Gold, silver and bronze place badges for the podium; the number inside keeps the cue color-independent.
+const MEDALS: readonly { text: ColorToken; tint: TintToken }[] = [
+  { text: 'medalGold', tint: 'medalGold' },
+  { text: 'medalSilver', tint: 'medalSilver' },
+  { text: 'medalBronze', tint: 'medalBronze' },
+];
 
 interface WeeklyLeagueCardProps {
   standings: LeagueStandings;
@@ -34,15 +41,26 @@ export function WeeklyLeagueCard({ standings, overtakenAlertHe }: WeeklyLeagueCa
           </AppText>
         ) : null}
         <View accessibilityRole="list">
-          {standings.rows.map((row, index) => (
-            <View key={row.id} style={[styles.tableRow, row.isUser && styles.userRow]} accessible accessibilityLabel={`מקום ${index + 1}: ${row.nameHe}, ${row.xp} XP`}>
-              <AppText variant="caption" color={index < 3 ? 'accentMint' : 'textSecondary'} style={styles.place}>{`${index + 1}`}</AppText>
-              <AppText variant={row.isUser ? 'bodyStrong' : 'body'} style={styles.flex}>
-                {row.nameHe}
-              </AppText>
-              <AppText variant="caption">{`${row.xp} XP`}</AppText>
-            </View>
-          ))}
+          {standings.rows.map((row, index) => {
+            const medal = MEDALS[index];
+            return (
+              <View
+                key={row.id}
+                testID={row.isUser ? 'league-user-row' : undefined}
+                style={[styles.tableRow, row.isUser && styles.userRow]}
+                accessible
+                accessibilityLabel={`מקום ${index + 1}: ${row.nameHe}, ${row.xp} XP`}
+              >
+                <View testID={`league-place-${index + 1}`} style={[styles.place, medal && { backgroundColor: tints[medal.tint] }]}>
+                  <AppText variant="caption" color={medal ? medal.text : 'textSecondary'} style={[styles.placeText, tabularNums]}>{`${index + 1}`}</AppText>
+                </View>
+                <AppText variant={row.isUser ? 'bodyStrong' : 'body'} style={styles.flex}>
+                  {row.nameHe}
+                </AppText>
+                <AppText variant="caption" style={tabularNums}>{`${row.xp} XP`}</AppText>
+              </View>
+            );
+          })}
         </View>
         <AppText variant="caption" color="textSecondary">
           היריבים בליגה ממוחשבים – לא משתמשים אמיתיים. הם נותנים קצב לרוץ מולו. שלושת הראשונים עולים ליגה בסוף השבוע.
@@ -71,11 +89,22 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.sm,
     borderRadius: radius.sm,
+    // Every row reserves the border width, so the user's highlighted row doesn't shift the table.
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   userRow: {
-    backgroundColor: colors.surfaceAlt,
+    backgroundColor: tints.primaryHighlight,
+    borderColor: tints.primaryHighlightBorder,
   },
   place: {
-    width: 20,
+    minWidth: 26,
+    minHeight: 26,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  placeText: {
+    textAlign: 'center',
   },
 });

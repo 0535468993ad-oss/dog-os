@@ -69,7 +69,7 @@ describe('BreedIntelBadge', () => {
   it('links a profiled breed and hides for others', async () => {
     const user = userEvent.setup();
     await render(<BreedIntelBadge breedId="doberman" />);
-    await user.press(screen.getByRole('link', { name: 'כרטיס מודיעין גזע: דוברמן' }));
+    await user.press(screen.getByRole('link', { name: 'פרופיל ומודיעין גזע: דוברמן' }));
     expect(router.push).toHaveBeenCalledWith({ pathname: '/breeds/[breedId]', params: { breedId: 'doberman' } });
     // A picker breed with no profile of its own (see breedsSeedData.test.ts).
     await render(<BreedIntelBadge breedId="standard-poodle" />);

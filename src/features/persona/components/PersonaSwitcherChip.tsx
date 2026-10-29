@@ -21,7 +21,7 @@ export function PersonaSwitcherChip({ dogId, dogName }: { dogId: string; dogName
         accessibilityRole="button"
         accessibilityLabel={`הקול של האפליקציה: ${engine.persona.nameHe}. החלפה וחוזה הכבוד`}
       >
-        <Ionicons name="chatbubbles-outline" size={16} color={colors.accentCyan} accessible={false} />
+        <Ionicons name={engine.persona.icon} size={16} color={colors.primaryBright} accessible={false} />
         <AppText variant="caption" style={styles.label}>
           {engine.persona.nameHe}
         </AppText>

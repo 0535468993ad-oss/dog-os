@@ -12,7 +12,7 @@ type IconName = ComponentProps<typeof Ionicons>['name'];
 const ACTIONS: { icon: IconName; label: string; href: Href }[] = [
   { icon: 'chatbubbles-outline', label: 'יועץ חכם', href: '/chat' },
   { icon: 'pulse-outline', label: 'בודק סימפטומים', href: '/health' },
-  { icon: 'restaurant-outline', label: 'מטבח חירום', href: '/kitchen' },
+  { icon: 'leaf-outline', label: 'בטיחות מזון ותזונה', href: '/kitchen' },
   { icon: 'nutrition-outline', label: 'תזונה', href: '/nutrition' },
   { icon: 'paw-outline', label: 'בחירת כלב', href: '/breed-match' },
   { icon: 'library-outline', label: 'מודיעין גזעים', href: '/breeds' },

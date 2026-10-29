@@ -39,7 +39,7 @@ export function DogHeroCard({ dogs, dog, scrollY, taskCount }: DogHeroCardProps)
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.heroNavy,
+    backgroundColor: colors.heroSurface,
     borderRadius: radius.xl,
     padding: spacing.lg,
     gap: spacing.md,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm + 2,
     paddingVertical: spacing.xs,
   },
-  // primaryBright on heroNavy is 6.7:1: AA for normal-size text.
+  // primaryBright on heroSurface clears AA for normal-size text (theme.test.ts).
   todayText: {
     color: colors.primaryBright,
   },

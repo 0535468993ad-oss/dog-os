@@ -17,7 +17,7 @@ export function EmergencyKitchenScreen() {
 
   return (
     <Screen edges={['bottom']}>
-      <Stack.Screen options={{ title: 'מטבח חירום' }} />
+      <Stack.Screen options={{ title: 'בטיחות מזון ותזונה' }} />
       <AppText color="textSecondary">
         הבטן של הכלב רגישה, או שנגמר האוכל? כאן בודקים מה מותר לתת, ומכינים ארוחה עדינה ממה שיש במטבח.
       </AppText>

@@ -60,7 +60,7 @@ export const inputStyle = {
   fontFamily: typography.body.fontFamily,
   fontSize: typography.body.fontSize,
   color: colors.textPrimary,
-  backgroundColor: colors.surface,
+  backgroundColor: colors.surfaceAlt,
   colorScheme: 'dark',
   accentColor: colors.accentCyan,
   borderWidth: 1.5,

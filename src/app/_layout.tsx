@@ -1,4 +1,4 @@
-import { Heebo_400Regular, Heebo_500Medium, Heebo_600SemiBold, Heebo_700Bold, useFonts } from '@expo-google-fonts/heebo';
+import { Heebo_400Regular, Heebo_500Medium, Heebo_600SemiBold, Heebo_700Bold, Heebo_800ExtraBold, useFonts } from '@expo-google-fonts/heebo';
 import { QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -31,7 +31,7 @@ export const unstable_settings = {
 export { RouteErrorBoundary as ErrorBoundary } from '@/components/RouteErrorBoundary';
 
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({ Heebo_400Regular, Heebo_500Medium, Heebo_600SemiBold, Heebo_700Bold });
+  const [fontsLoaded, fontError] = useFonts({ Heebo_400Regular, Heebo_500Medium, Heebo_600SemiBold, Heebo_700Bold, Heebo_800ExtraBold });
 
   useEffect(() => {
     markAppReady();

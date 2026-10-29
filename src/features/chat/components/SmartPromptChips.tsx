@@ -1,20 +1,21 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { ComponentProps } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
-import { colors, glow, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
+import { colors, MIN_TOUCH_AREA, radius, spacing, tints, type ColorToken, type TintToken } from '@/constants/theme';
 
 import type { PromptCategory, PromptChip } from '../utils/promptChips';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
-// Text uses each hue's deep shade on its tint (≥ 4.8:1); the vivid hue is the border and the glow.
-const CATEGORY_STYLE: Record<PromptCategory, { tint: string; text: string; accent: string; icon: IconName; label: string }> = {
-  health: { tint: colors.healthMuted, text: colors.healthText, accent: colors.health, icon: 'medkit-outline', label: 'בריאות' },
-  toxicity: { tint: colors.alertMuted, text: colors.alertText, accent: colors.alert, icon: 'warning-outline', label: 'רעילות' },
-  general: { tint: colors.aiMuted, text: colors.ai, accent: colors.aiBright, icon: 'sparkles-outline', label: 'כללי' },
+// The category color lives only in the icon badge (glyph on its 12% tint, ≥ 4.5:1); the chip itself stays a
+// quiet glass card, and the spoken label names the category, so color is never the only cue.
+const CATEGORY_STYLE: Record<PromptCategory, { tint: TintToken; icon: ColorToken; glyph: IconName; label: string }> = {
+  health: { tint: 'health', icon: 'healthText', glyph: 'medkit-outline', label: 'בריאות' },
+  toxicity: { tint: 'alert', icon: 'alertText', glyph: 'warning-outline', label: 'רעילות' },
+  general: { tint: 'ai', icon: 'ai', glyph: 'sparkles-outline', label: 'כללי' },
 };
 
 interface SmartPromptChipsProps {
@@ -25,7 +26,7 @@ interface SmartPromptChipsProps {
   disabled?: boolean;
 }
 
-/** Horizontally scrolling, color-coded starter questions; tapping one sends it to the AI advisor. */
+/** Horizontally scrolling starter questions with category icon badges; tapping one sends it to the AI advisor. */
 export function SmartPromptChips({ chips, onPick, disabled = false }: SmartPromptChipsProps) {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row} accessibilityLabel="שאלות מוצעות" keyboardShouldPersistTaps="handled">
@@ -40,10 +41,12 @@ export function SmartPromptChips({ chips, onPick, disabled = false }: SmartPromp
             accessibilityLabel={`${style.label}: ${chip.question}`}
             accessibilityHint="שליחת השאלה ליועץ"
             accessibilityState={{ disabled }}
-            style={[styles.chip, { backgroundColor: style.tint, borderColor: style.accent }, !disabled && glow(style.accent), disabled && styles.disabled]}
+            style={[styles.chip, disabled && styles.disabled]}
           >
-            <Ionicons name={style.icon} size={16} color={style.text} accessible={false} />
-            <AppText variant="label" style={{ color: style.text }} numberOfLines={1}>
+            <View testID={`chip-icon-${chip.category}`} style={[styles.iconBadge, { backgroundColor: tints[style.tint] }]} accessible={false}>
+              <Ionicons name={style.glyph} size={14} color={colors[style.icon]} accessible={false} />
+            </View>
+            <AppText variant="label" color="textPrimary" numberOfLines={1}>
               {chip.question}
             </AppText>
           </PressableScale>
@@ -57,17 +60,26 @@ const styles = StyleSheet.create({
   row: {
     gap: spacing.sm,
     paddingHorizontal: spacing.md,
-    // Room for the glow, which would otherwise be clipped by the scroll view.
     paddingVertical: spacing.sm,
   },
   chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs + 2,
+    gap: spacing.sm,
     minHeight: MIN_TOUCH_AREA,
-    borderWidth: 1.5,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
     borderRadius: radius.pill,
-    paddingHorizontal: spacing.md,
+    paddingStart: spacing.xs + 2,
+    paddingEnd: spacing.md,
+  },
+  iconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabled: {
     opacity: 0.6,
