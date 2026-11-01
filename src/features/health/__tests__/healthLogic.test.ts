@@ -1,10 +1,39 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { makeSymptom, makeVaccination, makeVetArticle } from '@/test/fixtures';
 
+import { loadVetKnowledge } from '../api';
+
+import { parseStoredKnowledge, STORED_KNOWLEDGE_VERSION, toStoredKnowledge } from '../logic/storedKnowledge';
+import { NEARBY_EMERGENCY_VET_URL, normalizeVetPhone, telUrl } from '../logic/vetContact';
+
 import { buildFoodInput, parseDecimal, parseMeals } from '../logic/foodForm';
-import { MAX_MATCHES, triageSymptoms } from '../logic/symptomTriage';
+import { MAX_MATCHES, MULTI_SIGN_THRESHOLD, triageSymptoms } from '../logic/symptomTriage';
 import { vaccinationStatus } from '../logic/vaccinationStatus';
-import { emergencyArticles, filterVetArticles } from '../logic/vetSearch';
+import { emergencyArticles, filterVetArticles, normalizeSearch, resultCountLabel } from '../logic/vetSearch';
 import { parseWeightKg } from '../logic/weightInput';
+
+
+const mockNetwork = { offline: false };
+const mockTables: Record<string, unknown[]> = {
+  veterinary_knowledge_base: [{ ...makeVetArticle(), actions: [{ title: 'נוסעים', body: 'מיד' }] }],
+  vet_symptoms: [makeSymptom()],
+  vet_symptom_conditions: [{ symptom_id: 'vomiting', article_id: 'bloat' }],
+};
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: (table: string) => {
+      if (mockNetwork.offline) throw new Error('offline');
+      const result = Promise.resolve({ data: mockTables[table] ?? [], error: null });
+      const query = { order: () => result, then: result.then.bind(result) };
+      return { select: () => query };
+    },
+  },
+  unwrap: <T,>(response: { data: T; error: unknown }) => {
+    if (response.error) throw response.error;
+    return response.data;
+  },
+}));
 
 const TODAY = '2026-10-18';
 
@@ -55,6 +84,15 @@ describe('filterVetArticles', () => {
     expect(filterVetArticles(articles, { query: 'GDV', category: 'all', breedId: null }).map((a) => a.id)).toEqual(['bloat']);
   });
 
+  it('ignores letter case and extra spaces in the query', () => {
+    expect(filterVetArticles(articles, { query: '  gdv ', category: 'all', breedId: null }).map((a) => a.id)).toEqual(['bloat']);
+    expect(normalizeSearch('  GDV   בטן ')).toBe('gdv בטן');
+  });
+
+  it('words the result count in Hebrew', () => {
+    expect([0, 1, 12].map(resultCountLabel)).toEqual(['אין ערכים', 'ערך אחד', '12 ערכים']);
+  });
+
   it('picks the emergency articles', () => {
     expect(emergencyArticles(articles).map((a) => a.id)).toEqual(['bloat']);
   });
@@ -71,7 +109,7 @@ describe('triageSymptoms', () => {
   const base = { symptoms: [vomiting, lethargy], articles, conditionsBySymptom, checkedRedFlags: [] as string[] };
 
   it('has no verdict until a symptom is chosen', () => {
-    expect(triageSymptoms({ ...base, selectedIds: [] })).toEqual({ redFlagOptions: [], urgency: null, matches: [] });
+    expect(triageSymptoms({ ...base, selectedIds: [] })).toEqual({ redFlagOptions: [], urgency: null, reason: null, matches: [] });
   });
 
   it('takes the most urgent selected symptom', () => {
@@ -79,7 +117,20 @@ describe('triageSymptoms', () => {
   });
 
   it('escalates to emergency on any checked red flag', () => {
-    expect(triageSymptoms({ ...base, selectedIds: ['vomiting'], checkedRedFlags: ['דם בהקאה'] }).urgency).toBe('emergency');
+    expect(triageSymptoms({ ...base, selectedIds: ['vomiting'], checkedRedFlags: ['דם בהקאה'] })).toMatchObject({ urgency: 'emergency', reason: 'RED_FLAG' });
+  });
+
+  it(`raises ${MULTI_SIGN_THRESHOLD}+ home-care signs to a vet visit, but never one on its own`, () => {
+    const itching = makeSymptom({ id: 'itching', base_urgency: 'home_care' });
+    const input = { ...base, symptoms: [vomiting, itching] };
+    expect(triageSymptoms({ ...input, selectedIds: ['vomiting'] })).toMatchObject({ urgency: 'home_care', reason: 'SYMPTOM' });
+    expect(triageSymptoms({ ...input, selectedIds: ['vomiting', 'itching'] })).toMatchObject({ urgency: 'vet_visit', reason: 'MULTIPLE_SIGNS' });
+  });
+
+  it('never lowers an emergency symptom, whatever else is selected', () => {
+    const breathing = makeSymptom({ id: 'breathing', base_urgency: 'emergency' });
+    const itching = makeSymptom({ id: 'itching', base_urgency: 'home_care' });
+    expect(triageSymptoms({ ...base, symptoms: [breathing, itching, vomiting], selectedIds: ['breathing', 'itching', 'vomiting'] })).toMatchObject({ urgency: 'emergency', reason: 'SYMPTOM' });
   });
 
   it('ignores red flags that belong to symptoms no longer selected', () => {
@@ -129,3 +180,76 @@ describe('food form', () => {
     expect(Object.keys(errors).sort()).toEqual(['foodName', 'grams', 'meals']);
   });
 });
+
+describe('vet contact', () => {
+  it.each([
+    ['03-1234567', '031234567'],
+    [' 054 123 4567 ', '0541234567'],
+    ['+972 (54) 123-4567', '+972541234567'],
+  ])('normalizes %s', (input, phone) => {
+    expect(normalizeVetPhone(input)).toBe(phone);
+    expect(telUrl(phone)).toBe(`tel:${phone}`);
+  });
+
+  it.each([[''], ['12345'], ['abc-defg'], ['*2457'], ['1234567890123456']])('rejects %s', (input) => {
+    expect(normalizeVetPhone(input)).toBeNull();
+  });
+
+  it('searches maps for an open emergency vet', () => {
+    expect(NEARBY_EMERGENCY_VET_URL.startsWith('https://www.google.com/maps/search/?api=1&query=')).toBe(true);
+    expect(decodeURIComponent(NEARBY_EMERGENCY_VET_URL)).toContain('וטרינר חירום 24 שעות');
+  });
+});
+
+describe('stored knowledge (offline copy)', () => {
+  const knowledge = {
+    articles: [makeVetArticle({ actions: [{ title: 'נוסעים', body: 'מיד' }] })],
+    symptoms: [makeSymptom()],
+    conditionsBySymptom: new Map([['vomiting', ['bloat']]]),
+  };
+  const stored = () => JSON.parse(JSON.stringify(toStoredKnowledge(knowledge))) as Record<string, unknown>;
+
+  it('round-trips through JSON and marks the result offline', () => {
+    const parsed = parseStoredKnowledge(JSON.stringify(toStoredKnowledge(knowledge)));
+    expect(parsed).toEqual({ ...knowledge, offline: true });
+  });
+
+  it.each([
+    ['missing', null],
+    ['not JSON', '{oops'],
+    ['an old version', JSON.stringify({ ...stored(), v: STORED_KNOWLEDGE_VERSION + 1 })],
+    ['no articles', JSON.stringify({ ...stored(), articles: [] })],
+    ['an unknown category', JSON.stringify({ ...stored(), articles: [{ ...makeVetArticle(), category: 'constructor' }] })],
+    ['a malformed action', JSON.stringify({ ...stored(), articles: [{ ...makeVetArticle(), actions: [{ title: 1 }] }] })],
+    ['a bad urgency on a symptom', JSON.stringify({ ...stored(), symptoms: [{ ...makeSymptom(), base_urgency: 'later' }] })],
+    ['a broken symptom map', JSON.stringify({ ...stored(), mapping: [['vomiting', 'bloat']] })],
+  ])('rejects %s', (_, raw) => {
+    expect(parseStoredKnowledge(raw)).toBeNull();
+  });
+});
+
+describe('loadVetKnowledge', () => {
+  beforeEach(async () => {
+    mockNetwork.offline = false;
+    await AsyncStorage.clear();
+  });
+
+  it('throws the network error when offline with no device copy', async () => {
+    mockNetwork.offline = true;
+    await expect(loadVetKnowledge()).rejects.toThrow('offline');
+  });
+
+  it('keeps a device copy of every successful load and serves it offline after a restart', async () => {
+    const online = await loadVetKnowledge();
+    expect(online.offline).toBeUndefined();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    mockNetwork.offline = true;
+    const offline = await loadVetKnowledge();
+    expect(offline.offline).toBe(true);
+    expect(offline.articles.map((a) => a.id)).toEqual(['bloat']);
+    expect(offline.articles[0]?.actions).toEqual([{ title: 'נוסעים', body: 'מיד' }]);
+    expect(offline.conditionsBySymptom.get('vomiting')).toEqual(['bloat']);
+  });
+});
+

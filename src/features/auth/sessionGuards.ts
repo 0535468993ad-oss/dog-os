@@ -52,8 +52,8 @@ export function useInactivityTimeout(signedIn: boolean) {
 }
 
 /**
- * Email links (sign-up confirmation, password recovery). Native: turns the tokens in the deep link into
- * a session. Both platforms: a recovery link opens the set-password screen.
+ * Email links (sign-up confirmation, password recovery). Native: exchanges the PKCE code in the deep link
+ * for a session (links carrying raw tokens are refused). Both platforms: a recovery link opens the set-password screen.
  */
 export function useAuthDeepLinks() {
   const url = Linking.useLinkingURL();

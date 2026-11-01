@@ -1,10 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-import { AppText, IconButton } from '@/components/ui';
+import { AppText, SheetModal } from '@/components/ui';
 import type { DogRow } from '@/lib/database.types';
 import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 import { formatAge } from '@/utils/date';
@@ -65,40 +64,32 @@ export function DogSwitcher({ dogs, activeDog, onDark = false }: { dogs: DogRow[
         {multiple ? <Ionicons name="chevron-down" size={20} color={onDark ? colors.primaryBright : colors.textSecondary} accessible={false} /> : null}
       </Pressable>
 
-      <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
-        <View style={styles.backdrop}>
-          <SafeAreaView style={styles.sheet} accessibilityViewIsModal>
-            <View style={styles.sheetHeader}>
-              <AppText variant="heading" accessibilityRole="header">
-                בחירת כלב
-              </AppText>
-              <IconButton icon="close" accessibilityLabel="סגירה" onPress={() => setOpen(false)} />
-            </View>
-            {dogs.map((dog) => {
-              const selected = dog.id === activeDog.id;
-              return (
-                <Pressable
-                  key={dog.id}
-                  onPress={() => {
-                    setActive.mutate(dog.id);
-                    setOpen(false);
-                  }}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected, checked: selected }}
-                  accessibilityLabel={`${dog.name}, ${dog.breed}`}
-                  style={({ pressed }) => [styles.option, selected && styles.optionSelected, pressed && styles.pressed]}
-                >
-                  <DogAvatar dog={dog} size={40} />
-                  <AppText variant={selected ? 'bodyStrong' : 'body'} style={styles.flex}>
-                    {dog.name}
-                  </AppText>
-                  {selected ? <Ionicons name="checkmark" size={20} color={colors.primary} accessible={false} /> : null}
-                </Pressable>
-              );
-            })}
-          </SafeAreaView>
+      <SheetModal open={open} title="בחירת כלב" onClose={() => setOpen(false)}>
+        <View style={styles.sheetBody} accessibilityRole="radiogroup">
+          {dogs.map((dog) => {
+            const selected = dog.id === activeDog.id;
+            return (
+              <Pressable
+                key={dog.id}
+                onPress={() => {
+                  setActive.mutate(dog.id);
+                  setOpen(false);
+                }}
+                accessibilityRole="radio"
+                accessibilityState={{ selected, checked: selected }}
+                accessibilityLabel={`${dog.name}, ${dog.breed}`}
+                style={({ pressed }) => [styles.option, selected && styles.optionSelected, pressed && styles.pressed]}
+              >
+                <DogAvatar dog={dog} size={40} />
+                <AppText variant={selected ? 'bodyStrong' : 'body'} style={styles.flex}>
+                  {dog.name}
+                </AppText>
+                {selected ? <Ionicons name="checkmark" size={20} color={colors.primary} accessible={false} /> : null}
+              </Pressable>
+            );
+          })}
         </View>
-      </Modal>
+      </SheetModal>
     </>
   );
 }
@@ -133,25 +124,8 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.8,
   },
-  backdrop: {
-    flex: 1,
-    backgroundColor: colors.overlay,
-    justifyContent: 'center',
-    padding: spacing.md,
-  },
-  sheet: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.lg,
-    padding: spacing.sm,
-    width: '100%',
-    maxWidth: 480,
-    alignSelf: 'center',
-  },
-  sheetHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingStart: spacing.sm,
+  sheetBody: {
+    paddingHorizontal: spacing.sm,
   },
   option: {
     flexDirection: 'row',

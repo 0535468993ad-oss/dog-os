@@ -1,12 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useRef } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import Animated, { cancelAnimation, ReduceMotion, useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Modal, ScrollView, StyleSheet, View } from 'react-native';
+import Animated, { cancelAnimation, ReduceMotion, useAnimatedProps, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { PressableScale } from '@/components/motion';
 import { AppText, BulletList, ChipGroup, IconButton } from '@/components/ui';
+import { SPRINGS } from '@/constants/motion';
 import { colors, spacing } from '@/constants/theme';
 import { hapticCelebrate, hapticHeartbeat } from '@/features/gamification/hooks/haptics';
 
@@ -78,7 +80,8 @@ export function ThumbprintContractModal({ visible, dogId, dogName, onClose }: Th
     if (signedAt) return;
     stopBeat();
     cancelAnimation(progress);
-    progress.set(withTiming(0, { duration: 200 }));
+    // Letting go early springs the ring back from wherever it had reached.
+    progress.set(withSpring(0, SPRINGS.release));
   };
 
   const ringProps = useAnimatedProps(() => ({ strokeDashoffset: CIRCUMFERENCE * (1 - progress.get()) }));
@@ -102,7 +105,7 @@ export function ThumbprintContractModal({ visible, dogId, dogName, onClose }: Th
           <AppText variant="subheading">{interpolate(CONTRACT_TITLE_HE, { dogName })}</AppText>
           <BulletList items={CONTRACT_TERMS_HE.map((term) => interpolate(term, { dogName }))} />
           <View style={styles.thumbArea}>
-            <Pressable
+            <PressableScale
               onPressIn={onPressIn}
               onPressOut={onPressOut}
               accessibilityRole="button"
@@ -130,7 +133,7 @@ export function ThumbprintContractModal({ visible, dogId, dogName, onClose }: Th
                 />
               </Svg>
               <Ionicons name={signedAt ? 'checkmark-done' : 'finger-print'} size={48} color={signedAt ? colors.accentGold : colors.textPrimary} accessible={false} />
-            </Pressable>
+            </PressableScale>
             <AppText variant="caption" color="textSecondary" center accessibilityLiveRegion="polite">
               {signedAt ? `נחתם ב־${new Date(signedAt).toLocaleDateString('he-IL')}` : 'החזיקו את האגודל שלוש שניות. זו התחייבות – לא נקראת טביעת אצבע.'}
             </AppText>

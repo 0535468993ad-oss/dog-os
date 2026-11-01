@@ -4,6 +4,7 @@ import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSeque
 
 import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
+import { SPRINGS } from '@/constants/motion';
 import { colors, radius, spacing } from '@/constants/theme';
 import { comboMultiplier } from '@/features/gamification/utils/combo';
 
@@ -30,7 +31,8 @@ export function ComboArena({ reps, combo, praise, onRep, onStuck }: ComboArenaPr
   const reduceMotion = useReducedMotion();
   const pop = useSharedValue(1);
   useEffect(() => {
-    if (combo > 0 && !reduceMotion) pop.set(withSequence(withSpring(1.25, { damping: 6 }), withSpring(1, { damping: 12 })));
+    // The rep tap is the momentum: the badge pops at touch-down speed and is the one place allowed to bounce back.
+    if (combo > 0 && !reduceMotion) pop.set(withSequence(withSpring(1.15, SPRINGS.press), withSpring(1, SPRINGS.momentum)));
   }, [combo, pop, reduceMotion]);
   const popStyle = useAnimatedStyle(() => ({ transform: [{ scale: pop.get() }] }));
   const fever = comboMultiplier(combo) >= 5;

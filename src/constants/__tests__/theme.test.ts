@@ -60,6 +60,8 @@ const TEXT_PAIRS: Pair[] = [
   ['onAccent', 'accentOrange', 'text on orange fills'],
   ['onAccent', 'accentBronze', 'text on bronze fills'],
   ['onAccent', 'alert', 'seasonal alert badges'],
+  ['onAccent', 'danger', 'numbered emergency steps and the emergency header icon'],
+  ['onAccent', 'primary', 'numbered first-aid steps'],
   ['onAccent', 'health', 'vet reminder badges'],
   ['textPrimary', 'dangerMuted', 'danger-tone cards'],
   ['tabInactive', 'background', 'inactive tab labels on the canvas'],

@@ -1,14 +1,15 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card } from '@/components/ui';
-import { spacing } from '@/constants/theme';
+import { colors, spacing } from '@/constants/theme';
 
 import type { VetArticle } from '../api';
 import { URGENCY, VET_CATEGORY_LABELS } from '../labels';
 
-/** Encyclopedia entry summary: title, urgency badge (text + icon) and category; opens the full article. */
+/** Encyclopedia entry summary: badges (urgency in text + icon, category), title and full summary. */
 // Memoized: the encyclopedia re-renders its whole filtered list on every search keystroke.
 export const VetArticleCard = memo(function VetArticleCard({ article }: { article: VetArticle }) {
   const urgency = article.urgency ? URGENCY[article.urgency] : null;
@@ -17,27 +18,37 @@ export const VetArticleCard = memo(function VetArticleCard({ article }: { articl
       onPress={() => router.push({ pathname: '/health/article/[articleId]', params: { articleId: article.id } })}
       accessibilityLabel={`${article.title}${urgency ? `, ${urgency.label}` : ''}`}
     >
-      <View style={styles.row}>
-        <AppText variant="subheading" style={styles.flex}>
-          {article.title}
-        </AppText>
+      {/* Badges on their own wrapping row, so they never squeeze the title. */}
+      <View style={styles.badges}>
         {urgency ? <Badge label={urgency.label} tone={urgency.tone} icon={urgency.icon} /> : null}
+        <Badge label={VET_CATEGORY_LABELS[article.category]} tone="info" />
       </View>
-      <AppText variant="caption" color="textSecondary" numberOfLines={2}>
-        {article.summary}
-      </AppText>
-      <Badge label={VET_CATEGORY_LABELS[article.category]} tone="info" />
+      <View style={styles.row}>
+        <View style={styles.text}>
+          <AppText variant="subheading">{article.title}</AppText>
+          <AppText variant="caption" color="textSecondary">
+            {article.summary}
+          </AppText>
+        </View>
+        <Ionicons name="chevron-back" size={18} color={colors.textSecondary} accessible={false} />
+      </View>
     </Card>
   );
 });
 
 const styles = StyleSheet.create({
+  badges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
-  flex: {
+  text: {
     flex: 1,
+    gap: spacing.xxs,
   },
 });

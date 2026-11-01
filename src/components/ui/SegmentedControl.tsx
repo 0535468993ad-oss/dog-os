@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
 
+import { SPRINGS } from '@/constants/motion';
 import { colors, MIN_TOUCH_AREA, shadow, spacing } from '@/constants/theme';
 
-import { MOTION, PressableScale } from '../motion';
+import { PressableScale } from '../motion';
 import { AppText } from './AppText';
 
 // The track's corner, and the pill's: the track radius minus its 4pt padding, so the curves stay concentric.
@@ -44,7 +45,8 @@ function SegmentButton({ label, selected, onPress }: { label: string; selected: 
 
   useEffect(() => {
     const target = selected ? 1 : 0;
-    progress.set(reduceMotion ? target : withTiming(target, { duration: MOTION.durations.base }));
+    // A spring, not a fixed timing: quick taps across segments retarget mid-flight instead of jumping.
+    progress.set(reduceMotion ? target : withSpring(target, { ...SPRINGS.ui, overshootClamping: true }));
   }, [selected, reduceMotion, progress]);
 
   const indicatorStyle = useAnimatedStyle(() => {

@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSequence, withSpring } from 'react-native-reanimated';
 
 import { AppText } from '@/components/ui';
+import { SPRINGS } from '@/constants/motion';
 import { colors, glow, radius, spacing, tabularNums } from '@/constants/theme';
 
 interface XpFloatingBannerProps {
@@ -20,7 +21,7 @@ export function XpFloatingBanner({ awardKey, xp, multiplier }: XpFloatingBannerP
   useEffect(() => {
     if (awardKey === 0) return;
     progress.set(0);
-    progress.set(reduceMotion ? 1 : withSequence(withTiming(1, { duration: 450 }), withDelay(900, withTiming(2, { duration: 450 }))));
+    progress.set(reduceMotion ? 1 : withSequence(withSpring(1, SPRINGS.ui), withDelay(900, withSpring(2, SPRINGS.ui))));
   }, [awardKey, reduceMotion, progress]);
 
   const style = useAnimatedStyle(() => {

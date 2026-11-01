@@ -1,14 +1,14 @@
 import DateTimePicker, { DateTimePickerAndroid, type DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
-import { Modal, Platform, Pressable, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, MIN_TOUCH_AREA, radius, spacing } from '@/constants/theme';
 import { formatDate, parseIsoDate, toIsoDate } from '@/utils/date';
 
 import { AppText } from './AppText';
 import { Button } from './Button';
+import { SheetModal } from './sheet/SheetModal';
 
 export interface DateFieldProps {
   label: string;
@@ -80,36 +80,31 @@ export function DateField({ label, value, onChange, minimumDate, maximumDate, er
       ) : null}
 
       {Platform.OS === 'ios' ? (
-        <Modal visible={iosOpen} transparent animationType="slide" onRequestClose={() => setIosOpen(false)}>
-          <View style={styles.backdrop}>
-            <SafeAreaView edges={['bottom']} style={styles.sheet} accessibilityViewIsModal>
-              <AppText variant="heading" accessibilityRole="header">
-                {label}
-              </AppText>
-              <DateTimePicker
-                value={draft}
-                mode="date"
-                display="inline"
-                locale="he-IL"
-                minimumDate={min}
-                maximumDate={max}
-                onChange={(_event, date) => date && setDraft(date)}
-                themeVariant="dark"
-                accentColor={colors.primary}
+        <SheetModal open={iosOpen} title={label} onClose={() => setIosOpen(false)}>
+          <View style={styles.sheetBody}>
+            <DateTimePicker
+              value={draft}
+              mode="date"
+              display="inline"
+              locale="he-IL"
+              minimumDate={min}
+              maximumDate={max}
+              onChange={(_event, date) => date && setDraft(date)}
+              themeVariant="dark"
+              accentColor={colors.primary}
+            />
+            <View style={styles.actions}>
+              <Button title="ביטול" variant="secondary" onPress={() => setIosOpen(false)} />
+              <Button
+                title="אישור"
+                onPress={() => {
+                  onChange(toIsoDate(draft));
+                  setIosOpen(false);
+                }}
               />
-              <View style={styles.actions}>
-                <Button title="ביטול" variant="secondary" onPress={() => setIosOpen(false)} />
-                <Button
-                  title="אישור"
-                  onPress={() => {
-                    onChange(toIsoDate(draft));
-                    setIosOpen(false);
-                  }}
-                />
-              </View>
-            </SafeAreaView>
+            </View>
           </View>
-        </Modal>
+        </SheetModal>
       ) : null}
     </View>
   );
@@ -139,18 +134,8 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
-  backdrop: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: colors.overlay,
-  },
-  sheet: {
-    backgroundColor: colors.background,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    borderTopLeftRadius: radius.lg,
-    borderTopRightRadius: radius.lg,
-    padding: spacing.md,
+  sheetBody: {
+    paddingHorizontal: spacing.md,
     gap: spacing.md,
   },
   actions: {

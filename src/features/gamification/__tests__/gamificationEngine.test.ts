@@ -1,6 +1,7 @@
 // The dopamine engine: awardXp (multiplier, cap, level-up events), badges, reward claims, and the
 // rank/reward/badge data.
 import { BADGES } from '../data/badgesData';
+import { AVATAR_FRAMES } from '../data/lootTable';
 import { RANKS } from '../data/ranksData';
 import { LEVEL_REWARDS } from '../data/rewardsData';
 import { awardXp, checkBadgeProgress, claimReward } from '../services/gamificationEngine';
@@ -46,6 +47,11 @@ describe('ranks, rewards and badges data', () => {
   it('keeps rewards that need outside inputs locked', () => {
     const comingSoon = LEVEL_REWARDS.filter((reward) => reward.availability === 'COMING_SOON').map((reward) => reward.id);
     expect(comingSoon).toEqual(['ai-nutrition-mode', 'voucher-treats-10', 'ai-behavior-mode', 'web-id-tag', 'vip-beta']);
+  });
+
+  it('describes rewards and frames in the warm palette only', () => {
+    const copy = [...LEVEL_REWARDS.flatMap((reward) => [reward.titleHe, reward.descriptionHe]), ...AVATAR_FRAMES.map((frame) => frame.nameHe)];
+    expect(copy.filter((text) => /ציאן|מנטה|טורקיז|תכלת/.test(text))).toEqual([]);
   });
 
   it('defines the seven badges', () => {

@@ -5,12 +5,14 @@ import { StyleSheet, View } from 'react-native';
 import { AppText, Badge, BulletList, Card, Disclaimer, ErrorState, LoadingState, Screen, SectionHeader, StaleDataNotice } from '@/components/ui';
 import { cacheState } from '@/lib/queryView';
 import { BREED_BY_ID } from '@/features/dogs/breeds';
-import { colors, spacing } from '@/constants/theme';
+import { colors, radius, spacing } from '@/constants/theme';
 import { toUserMessage } from '@/utils/errors';
 
+import { EmergencyActions } from './encyclopedia/EmergencyActions';
 import { useVetKnowledge } from './hooks';
 import { MEDICAL_DISCLAIMER, ORGAN_SYSTEM_LABELS, URGENCY, VET_CATEGORY_LABELS } from './labels';
 
+/** A full encyclopedia article: urgency, signs, numbered steps, causes, when to call the vet, prevention. */
 export function VetArticleScreen({ articleId }: { articleId: string }) {
   const knowledge = useVetKnowledge();
 
@@ -26,7 +28,7 @@ export function VetArticleScreen({ articleId }: { articleId: string }) {
   return (
     <Screen edges={['bottom']}>
       <Stack.Screen options={{ title: article.title }} />
-      <StaleDataNotice visible={cacheState(knowledge.error, true) === 'stale'} onRetry={() => void knowledge.refetch()} />
+      <StaleDataNotice visible={cacheState(knowledge.error, true) === 'stale' || !!knowledge.data.offline} onRetry={() => void knowledge.refetch()} />
       <AppText variant="title" accessibilityRole="header">
         {article.title}
       </AppText>
@@ -47,6 +49,8 @@ export function VetArticleScreen({ articleId }: { articleId: string }) {
         </Card>
       ) : null}
 
+      {article.urgency === 'emergency' ? <EmergencyActions /> : null}
+
       <AppText variant="bodyStrong">{article.summary}</AppText>
       {article.overview ? <AppText>{article.overview}</AppText> : null}
 
@@ -63,9 +67,18 @@ export function VetArticleScreen({ articleId }: { articleId: string }) {
         <>
           <SectionHeader title={article.category === 'emergency' ? 'מה עושים עכשיו' : 'מה עושים'} />
           {article.actions.map((action, index) => (
-            <Card key={action.title}>
-              <AppText variant="subheading">{`${index + 1}. ${action.title}`}</AppText>
-              <AppText color="textSecondary">{action.body}</AppText>
+            <Card key={action.title} accessibilityLabel={`שלב ${index + 1}: ${action.title}. ${action.body}`}>
+              <View style={styles.row}>
+                <View style={[styles.step, article.category === 'emergency' && styles.stepUrgent]}>
+                  <AppText variant="label" style={styles.stepText}>
+                    {String(index + 1)}
+                  </AppText>
+                </View>
+                <View style={[styles.flex, styles.stepBody]}>
+                  <AppText variant="subheading">{action.title}</AppText>
+                  <AppText color="textSecondary">{action.body}</AppText>
+                </View>
+              </View>
             </Card>
           ))}
         </>
@@ -118,5 +131,23 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+  },
+  // Numbered first-aid steps: amber for general advice, red (dark digits) for emergencies.
+  step: {
+    width: 28,
+    height: 28,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepUrgent: {
+    backgroundColor: colors.danger,
+  },
+  stepText: {
+    color: colors.onAccent,
+  },
+  stepBody: {
+    gap: spacing.xxs,
   },
 });

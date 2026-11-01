@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import type {
   CareUrgency,
   FoodPortionRow,
@@ -10,6 +12,9 @@ import type {
   WeightLogRow,
 } from '@/lib/database.types';
 import { supabase, unwrap } from '@/lib/supabase';
+import { reportError } from '@/utils/errors';
+
+import { parseStoredKnowledge, toStoredKnowledge } from './logic/storedKnowledge';
 
 export interface HealthData {
   vaccinations: VaccinationRow[];
@@ -115,6 +120,8 @@ export interface VetKnowledge {
   symptoms: VetSymptomRow[];
   /** symptom id -> article ids */
   conditionsBySymptom: Map<string, string[]>;
+  /** Served from the device copy because the network failed: screens say so and offer a retry. */
+  offline?: boolean;
 }
 
 function parseActions(value: Json): VetAction[] {
@@ -141,6 +148,41 @@ export async function fetchVetKnowledge(): Promise<VetKnowledge> {
     symptoms: unwrap(symptoms),
     conditionsBySymptom,
   };
+}
+
+const KNOWLEDGE_COPY_KEY = 'vet-knowledge:v1';
+const VET_PHONE_KEY = 'vet-phone:v1';
+
+/**
+ * The knowledge base, falling back to the device copy when the network fails, so first aid opens with no
+ * signal. Each successful fetch refreshes the copy; with no copy either, the network error is thrown.
+ */
+export async function loadVetKnowledge(): Promise<VetKnowledge> {
+  try {
+    const knowledge = await fetchVetKnowledge();
+    AsyncStorage.setItem(KNOWLEDGE_COPY_KEY, JSON.stringify(toStoredKnowledge(knowledge))).catch((error: unknown) => reportError(error, 'health/saveKnowledgeCopy'));
+    return knowledge;
+  } catch (error) {
+    const copy = parseStoredKnowledge(await AsyncStorage.getItem(KNOWLEDGE_COPY_KEY).catch(() => null));
+    if (copy) return copy;
+    throw error;
+  }
+}
+
+/** The owner's vet number, kept on this device only (never uploaded). */
+export async function loadVetPhone(): Promise<string | null> {
+  return AsyncStorage.getItem(VET_PHONE_KEY);
+}
+
+/** Saves the vet number on this device, or removes it when null. */
+export async function saveVetPhone(phone: string | null): Promise<void> {
+  if (phone === null) await AsyncStorage.removeItem(VET_PHONE_KEY);
+  else await AsyncStorage.setItem(VET_PHONE_KEY, phone);
+}
+
+/** Removes the signed-out user's device-only health data (the vet number; shared knowledge stays). */
+export async function clearDeviceHealthData(): Promise<void> {
+  await AsyncStorage.removeItem(VET_PHONE_KEY);
 }
 
 export const URGENCY_ORDER: Record<CareUrgency, number> = { emergency: 0, vet_visit: 1, home_care: 2 };

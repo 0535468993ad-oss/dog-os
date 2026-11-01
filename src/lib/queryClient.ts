@@ -52,6 +52,7 @@ export const queryKeys = {
   chatHasOlder: (dogId: string | null) => ['chat', dogId ?? 'general', 'hasOlder'] as const,
   health: (dogId: string) => ['health', dogId] as const,
   vetKnowledge: ['vet-knowledge'] as const,
+  vetPhone: ['vet-phone'] as const,
   /** Prefix of every journal query for a dog: invalidate it after a write. */
   journal: (dogId: string) => ['journal', dogId] as const,
   journalFeed: (dogId: string) => ['journal', dogId, 'feed'] as const,

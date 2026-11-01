@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Badge, Card, Skeleton, SkeletonBlock } from '@/components/ui';
 import type { AiSharing } from '@/features/legal/types';
-import { colors, radius, spacing } from '@/constants/theme';
+import { colors, radius, spacing, tints } from '@/constants/theme';
 
 import type { InsightKind } from '../logic/insight';
 import type { InsightsToShow } from '../logic/selectInsights';
@@ -88,11 +88,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // On the tint, not the card's own surface color, or the disc disappears into the card.
   insightIcon: {
     width: 34,
     height: 34,
-    borderRadius: 17,
-    backgroundColor: colors.surface,
+    borderRadius: radius.pill,
+    backgroundColor: tints.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },

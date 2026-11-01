@@ -13,13 +13,16 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 
+import { SPRINGS } from '@/constants/motion';
+
 // Motion system. Everything animates transform/opacity on the UI thread (Reanimated worklets), so it holds
 // 60 FPS regardless of JS work, and everything honours the OS "reduce motion" setting (WCAG 2.3.3).
+// Springs come from src/constants/motion.ts: critically damped unless the user threw something.
 
 export const MOTION = {
   pressScale: 0.97,
   pressOpacity: 0.88,
-  spring: { damping: 18, stiffness: 320, mass: 0.6 },
+  spring: SPRINGS.ui,
   /** Timing for state changes (selection, toggles): quick enough to feel direct, long enough to be seen. */
   durations: { fast: 150, base: 220, slow: 320 },
   staggerMs: 55,
@@ -37,12 +40,17 @@ export const MOTION = {
 /** Spring "fade in from below" for list items, staggered by position. Skipped under reduced motion. */
 export function enterAt(index: number) {
   return FadeInDown.springify()
+    .mass(MOTION.spring.mass)
+    .stiffness(MOTION.spring.stiffness)
     .damping(MOTION.spring.damping)
     .delay(Math.min(index, MOTION.maxStaggered) * MOTION.staggerMs)
     .reduceMotion(ReduceMotion.System);
 }
 
-/** Press feedback: a small spring scale and dim while pressed. Static under reduced motion. */
+/**
+ * Press feedback: a small scale and dim on touch-down, quick enough to read as instant, eased back on release.
+ * The spring retargets from the live value, so a quick tap-and-release never jumps. Static under reduced motion.
+ */
 export function usePressFeedback() {
   const reduceMotion = useReducedMotion();
   const pressed = useSharedValue(0);
@@ -57,8 +65,8 @@ export function usePressFeedback() {
 
   return {
     style,
-    onPressIn: () => pressed.set(withSpring(1, MOTION.spring)),
-    onPressOut: () => pressed.set(withSpring(0, MOTION.spring)),
+    onPressIn: () => pressed.set(withSpring(1, SPRINGS.press)),
+    onPressOut: () => pressed.set(withSpring(0, SPRINGS.release)),
   };
 }
 

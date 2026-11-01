@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PressableScale } from '@/components/motion';
 import { AppText, Button } from '@/components/ui';
+import { SPRINGS } from '@/constants/motion';
 import { colors, glow, radius, spacing, tabularNums } from '@/constants/theme';
 
 import { AVATAR_FRAMES, INTEL_CARDS, VIP_TITLES } from '../data/lootTable';
@@ -48,8 +49,8 @@ export function LootBoxModal({ visible, prompts, onOpen, onClose }: LootBoxModal
 
   const tap = () => {
     hapticLootTap(taps);
-    if (taps === 0 && !reduceMotion) shake.set(withSequence(withTiming(-12, { duration: 60 }), withTiming(12, { duration: 60 }), withTiming(-8, { duration: 60 }), withSpring(0)));
-    if (taps === 1) crack.set(withTiming(1, { duration: reduceMotion ? 0 : 250 }));
+    if (taps === 0 && !reduceMotion) shake.set(withSequence(withTiming(-12, { duration: 60 }), withTiming(12, { duration: 60 }), withTiming(-8, { duration: 60 }), withSpring(0, SPRINGS.release)));
+    if (taps === 1) crack.set(reduceMotion ? 1 : withSpring(1, SPRINGS.ui));
     if (taps === 2) setReward(onOpen());
     setTaps(taps + 1);
   };

@@ -42,17 +42,29 @@ function DogRecords({ dog }: { dog: DogRow }) {
   return (
     <View style={styles.list}>
       <StaleDataNotice visible={cacheState(health.error, true) === 'stale'} onRetry={() => void health.refetch()} />
-      <VaccinationList vaccinations={vaccinations} />
-      <WeightCard dogId={dog.id} weights={weights} />
-      <FoodList food={food} />
-      <NotesList notes={notes} />
+      <View style={styles.section}>
+        <VaccinationList vaccinations={vaccinations} />
+      </View>
+      <View style={styles.section}>
+        <WeightCard dogId={dog.id} weights={weights} />
+      </View>
+      <View style={styles.section}>
+        <FoodList food={food} />
+      </View>
+      <View style={styles.section}>
+        <NotesList notes={notes} />
+      </View>
       <Button title="דוח בריאות והתנהגות לווטרינר / למאלף" icon="document-text-outline" variant="secondary" onPress={() => router.push('/report')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // Sections sit further apart than the cards inside them, so each header reads with its own content.
   list: {
-    gap: spacing.md,
+    gap: spacing.lg,
+  },
+  section: {
+    gap: spacing.sm,
   },
 });

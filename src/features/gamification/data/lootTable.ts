@@ -16,9 +16,10 @@ export const INTEL_CARDS: readonly IntelCard[] = [
   { id: 'reward-welfare', titleHe: 'תגמול עדיף', factHe: 'כלבים שאולפו בשיטות אוורסיביות הראו יותר התנהגויות לחץ ומצב רגשי שלילי יותר מכלבים שאולפו בתגמול.', sourceHe: 'Vieira de Castro et al., 2020' },
 ];
 
+// Ids are stored in users' inventories and stay fixed; only the display names follow the warm palette.
 export const AVATAR_FRAMES: readonly { id: string; nameHe: string }[] = [
-  { id: 'frame-mint', nameHe: 'מסגרת מנטה זוהרת' },
-  { id: 'frame-cyan', nameHe: 'מסגרת ציאן טקטית' },
+  { id: 'frame-mint', nameHe: 'מסגרת זהב זוהרת' },
+  { id: 'frame-cyan', nameHe: 'מסגרת ברונזה טקטית' },
   { id: 'frame-orange', nameHe: 'מסגרת להבה כתומה' },
   { id: 'frame-indigo', nameHe: 'מסגרת אינדיגו לילית' },
 ];

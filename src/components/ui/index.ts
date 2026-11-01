@@ -14,6 +14,7 @@ export * from './SegmentedControl';
 export * from './StaleDataNotice';
 export * from './Skeleton';
 export * from './select/Select';
+export * from './sheet/SheetModal';
 export * from './StateViews';
 export * from './TextField';
 export * from './Toast';

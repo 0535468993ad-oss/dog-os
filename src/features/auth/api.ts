@@ -105,9 +105,9 @@ export async function createSessionFromUrl(url: string): Promise<string | null> 
     const redirectType: unknown = (data as { redirectType?: unknown }).redirectType;
     return typeof redirectType === 'string' ? redirectType : 'signup';
   }
-  // Implicit-flow links sent before the switch to PKCE (they expire within an hour of being sent).
-  const { error } = await supabase.auth.setSession({ access_token: callback.accessToken, refresh_token: callback.refreshToken });
-  return error ? null : callback.type;
+  // Links carrying raw tokens (the pre-PKCE implicit flow) are refused: any link or app could otherwise
+  // sign this device into someone else's account. Those links expired within an hour of the PKCE switch.
+  return null;
 }
 
 export type AuthCallback =

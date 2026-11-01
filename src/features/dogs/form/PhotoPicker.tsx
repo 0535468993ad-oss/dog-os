@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { PressableScale } from '@/components/motion';
 import { AppText } from '@/components/ui';
 import { colors, radius, spacing } from '@/constants/theme';
 
@@ -20,7 +21,7 @@ export function PhotoPicker({ photo, storedPhotoPath, dogName, onPick }: PhotoPi
   const hasPhoto = !!photo || !!storedPhotoPath;
   return (
     <View style={styles.row}>
-      <Pressable onPress={onPick} accessibilityRole="button" accessibilityLabel={hasPhoto ? 'החלפת תמונת פרופיל' : 'הוספת תמונת פרופיל'} style={styles.button}>
+      <PressableScale onPress={onPick} accessibilityRole="button" accessibilityLabel={hasPhoto ? 'החלפת תמונת פרופיל' : 'הוספת תמונת פרופיל'} style={styles.button}>
         {photo ? (
           <Image source={{ uri: photo.uri }} style={styles.photo} accessibilityLabel="התמונה שנבחרה" alt="התמונה שנבחרה" />
         ) : (
@@ -29,7 +30,7 @@ export function PhotoPicker({ photo, storedPhotoPath, dogName, onPick }: PhotoPi
         <AppText variant="label" color="primary">
           {hasPhoto ? 'החלפת תמונה' : 'הוספת תמונה (רשות)'}
         </AppText>
-      </Pressable>
+      </PressableScale>
     </View>
   );
 }

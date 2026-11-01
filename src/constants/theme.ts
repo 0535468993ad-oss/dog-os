@@ -190,10 +190,12 @@ export type TypographyVariant = 'display' | 'title' | 'heading' | 'subheading' |
 // A ~1.25 modular scale. Headings use bold/semibold so hierarchy reads from weight and size together.
 // `title` is the screen hero title; `section` heads a group below it: bold and bright, so it outranks the
 // group's own action buttons. Body and caption get Hebrew-friendly leading (~1.6) for multi-line copy.
+// Tracking and leading follow size, as optical sizing does: large type tightens (about -0.02em, leading
+// ~1.2) because its letters read too far apart as they grow; body stays at 0, and the 10pt tab label opens slightly.
 export const typography: Record<TypographyVariant, TextStyle> = {
-  display: { fontFamily: fonts.bold, fontSize: 32, lineHeight: 40 },
-  title: { fontFamily: fonts.extrabold, fontSize: 28, lineHeight: 36, letterSpacing: -0.5 },
-  heading: { fontFamily: fonts.semibold, fontSize: 19, lineHeight: 26 },
+  display: { fontFamily: fonts.bold, fontSize: 32, lineHeight: 38, letterSpacing: -0.6 },
+  title: { fontFamily: fonts.extrabold, fontSize: 28, lineHeight: 34, letterSpacing: -0.5 },
+  heading: { fontFamily: fonts.semibold, fontSize: 19, lineHeight: 26, letterSpacing: -0.2 },
   subheading: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 22 },
   body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 26 },
   bodyStrong: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 26 },
@@ -206,7 +208,7 @@ export const typography: Record<TypographyVariant, TextStyle> = {
 export const tabularNums: TextStyle = { fontVariant: ['tabular-nums'] };
 
 // iOS HIG tab bar label: 10 pt medium. Not part of the AppText scale; font scaling stays uncapped.
-export const tabBarLabel: TextStyle = { fontFamily: fonts.medium, fontSize: 10, lineHeight: 12 };
+export const tabBarLabel: TextStyle = { fontFamily: fonts.medium, fontSize: 10, lineHeight: 12, letterSpacing: 0.1 };
 
 // Elevation on a dark canvas: black shadows need real opacity to read.
 export const shadow = {
