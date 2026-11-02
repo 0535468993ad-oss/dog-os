@@ -38,7 +38,19 @@ export function AuthHero({ height }: { height: number }) {
           </View>
         </>
       ) : (
-        <Image source={HERO_IMAGE} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityLabel={HERO_IMAGE_ALT} alt={HERO_IMAGE_ALT} />
+        <>
+          <Image source={HERO_IMAGE} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityLabel={HERO_IMAGE_ALT} alt={HERO_IMAGE_ALT} />
+          {/* A light shade under the status bar keeps its white clock and icons readable against a bright sky. */}
+          <Svg style={[styles.topShade, { height: insets.top + spacing.xxl }]} accessible={false}>
+            <Defs>
+              <LinearGradient id="heroTop" x1="0" y1="0" x2="0" y2="1">
+                <Stop offset="0" stopColor={colors.background} stopOpacity={0.55} />
+                <Stop offset="1" stopColor={colors.background} stopOpacity={0} />
+              </LinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill="url(#heroTop)" />
+          </Svg>
+        </>
       )}
       {/* The fade starts well above the card's rounded edge, so the overlap never shows a seam. */}
       <Svg style={styles.fade} accessible={false}>
@@ -77,6 +89,12 @@ const styles = StyleSheet.create({
     ...shadow.raised,
     shadowColor: colors.primary,
     shadowOpacity: 0.3,
+  },
+  topShade: {
+    position: 'absolute',
+    start: 0,
+    end: 0,
+    top: 0,
   },
   fade: {
     position: 'absolute',

@@ -1,6 +1,7 @@
 import { render, screen, userEvent } from '@testing-library/react-native';
 
 import { signInWithProvider } from '../api';
+import { HERO_IMAGE_ALT } from '../signIn/heroImage';
 import { SignInScreen } from '../SignInScreen';
 
 jest.mock('../api', () => ({
@@ -26,6 +27,7 @@ describe('SignInScreen', () => {
   it('greets the user over the hero and offers email, Google and Apple sign-in', async () => {
     await render(<SignInScreen />);
 
+    expect(screen.getByLabelText(HERO_IMAGE_ALT)).toBeOnTheScreen();
     expect(screen.getByRole('header', { name: 'ברוכים השבים' })).toBeOnTheScreen();
     expect(screen.getByText('מוכנים להרפתקה הבאה עם Dog OS?')).toBeOnTheScreen();
     expect(screen.getByLabelText('אימייל')).toBeOnTheScreen();
