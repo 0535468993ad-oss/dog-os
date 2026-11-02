@@ -29,21 +29,28 @@ describe('TextField focus state', () => {
     const onBlur = jest.fn();
     await render(<TextField label="שם" onFocus={onFocus} onBlur={onBlur} />);
     const input = screen.getByLabelText('שם');
+    // The boundary is drawn by the row around the input, which also holds any icon or reveal button.
+    const boundary = () => flat(screen.getByTestId('text-field-control')).borderColor;
 
-    expect(flat(input).borderColor).toBe(colors.borderStrong);
+    expect(boundary()).toBe(colors.borderStrong);
     await fireEvent(input, 'focus');
-    expect(flat(screen.getByLabelText('שם')).borderColor).toBe(colors.focus);
+    expect(boundary()).toBe(colors.focus);
     expect(onFocus).toHaveBeenCalledTimes(1);
 
     await fireEvent(input, 'blur');
-    expect(flat(screen.getByLabelText('שם')).borderColor).toBe(colors.borderStrong);
+    expect(boundary()).toBe(colors.borderStrong);
     expect(onBlur).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the error boundary even while focused', async () => {
     await render(<TextField label="שם" error="שדה חובה" />);
     await fireEvent(screen.getByLabelText('שם'), 'focus');
-    expect(flat(screen.getByLabelText('שם')).borderColor).toBe(colors.danger);
+    expect(flat(screen.getByTestId('text-field-control')).borderColor).toBe(colors.danger);
+  });
+
+  it('draws the bronze brand boundary when asked', async () => {
+    await render(<TextField label="שם" tone="brand" />);
+    expect(flat(screen.getByTestId('text-field-control')).borderColor).toBe(colors.accentBronze);
   });
 });
 

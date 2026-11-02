@@ -101,6 +101,9 @@ const NON_TEXT_PAIRS: Pair[] = [
   ['info', 'surface', 'info-tone card accent bar'],
   ['focus', 'surfaceAlt', 'focused field boundary on the recessed surface'],
   ['danger', 'surfaceAlt', 'field error boundary on the recessed surface'],
+  ['accentBronze', 'surfaceAlt', 'bronze sign-in field boundary'],
+  ['accentBronze', 'background', 'bronze sign-in field boundary on the obsidian card'],
+  ['primaryBright', 'background', 'amber links and icons on the obsidian card'],
   ['primary', 'surface', 'amber avatar ring on cards'],
 ];
 

@@ -21,7 +21,7 @@ export interface LegalDocument {
 
 export const LEGAL_VERSIONS = {
   terms_of_service: '2026-10-18',
-  privacy_policy: '2026-10-18',
+  privacy_policy: '2026-11-02',
   ai_disclaimer: '2026-10-18',
 } as const;
 
@@ -49,6 +49,7 @@ const privacy: LegalDocument = {
       heading: '2. איזה מידע אנו אוספים',
       paragraphs: [
         'פרטי חשבון: כתובת דוא״ל וסיסמה (הסיסמה נשמרת בצורה מוצפנת חד-כיוונית אצל ספק האימות ואיננו יכולים לראות אותה). שם תצוגה – רק אם בחרת להזין.',
+        'התחברות עם Google או Apple (אם בחרת בה): אנו מקבלים מהספק רק את כתובת הדוא״ל ומזהה חשבון קבוע. ב-Apple אפשר לבחור להסתיר את הכתובת, ואז נקבל כתובת ממסר פרטית. איננו מקבלים את הסיסמה שלך אצל הספק ואין לנו גישה לשום מידע אחר בחשבון שם.',
         'מידע על הכלב שהזנת: שם, גזע, תאריך לידה, גודל, משקל ותמונת פרופיל (רשות).',
         'רשומות בריאות ותזונה שהזנת: חיסונים, יומן משקל, תוכנית האכלה והערות רפואיות.',
         'נתוני אימון ויומן: התקדמות במודולי אימון, מאמרים שמורים ורשומות יומן התנהגות.',
@@ -72,6 +73,7 @@ const privacy: LegalDocument = {
       paragraphs: [
         'Supabase Inc. – אחסון בסיס הנתונים, אימות משתמשים, אחסון קבצים והרצת פונקציות שרת. המידע נשמר בשרתים של Supabase [אזור השרתים של הפרויקט].',
         'Anthropic PBC (Claude API) – בעת שימוש בצ׳אט ובתובנות היומיות, נשלחים ל-Anthropic תוכן ההודעה שלך ותקציר פרופיל הכלב (גזע, גיל, משקל, חיסונים, אימונים ורשומות יומן אחרונות) לצורך יצירת התשובה. לפי התנאים המסחריים של Anthropic, מידע הנשלח דרך ה-API אינו משמש לאימון מודלים כברירת מחדל, והוא נשמר אצלה לתקופה מוגבלת בהתאם למדיניותה.',
+        'Google LLC ו-Apple Inc. – רק אם בחרת להתחבר באמצעותם: הם מאמתים את זהותך ומעבירים לנו את כתובת הדוא״ל ומזהה החשבון. השימוש שלהם במידע כפוף למדיניות הפרטיות שלהם.',
         'Expo / חנויות האפליקציות – הפצת האפליקציה ועדכוניה.',
         'כל ספקי השירות מחויבים לשמור על סודיות המידע ולהשתמש בו רק לצורך מתן השירות לנו.',
         'כלי ניתוח (Analytics): נכון לגרסה זו איננו משתמשים בכלי ניתוח או פרסום. אם יתווספו – הם יופעלו באתר רק לאחר הסכמתך המפורשת (ראו מדיניות העוגיות).',
@@ -343,7 +345,7 @@ const accessibility: LegalDocument = {
 const licenses: LegalDocument = {
   id: 'licenses',
   title: 'רישיונות קוד פתוח, גופנים ואייקונים',
-  version: '2026-10-18',
+  version: '2026-11-02',
   sections: [
     {
       heading: '1. כללי',
@@ -361,6 +363,7 @@ const licenses: LegalDocument = {
       heading: '3. אייקונים ותמונות',
       paragraphs: [
         'Ionicons (באמצעות @expo/vector-icons) – © Ionic, רישיון MIT.',
+        'הלוגו "G" של Google הוא סימן מסחר של Google LLC ומוצג בכפתור ההתחברות בהתאם להנחיות המיתוג של Google לכפתורי התחברות. הלוגו וכפתור "Sign in with Apple" הם סימני מסחר של Apple Inc.; ב-iOS מוצג הכפתור הרשמי של Apple.',
         'השירות אינו משתמש בתמונות מאגר. תמונות הכלב שאתם מעלים שייכות לכם ונשמרות בתיקייה פרטית.',
       ],
     },
@@ -368,7 +371,7 @@ const licenses: LegalDocument = {
       heading: '4. ספריות קוד (רישיון MIT)',
       paragraphs: [
         'React, React DOM ו-React Native – © Meta Platforms, Inc. and affiliates.',
-        'Expo SDK, Expo Router ומודולי Expo (expo-image, expo-image-picker, expo-print, expo-sharing, expo-file-system, expo-font, expo-localization, expo-linking, expo-splash-screen, expo-status-bar, expo-constants, expo-haptics, expo-audio) – © 650 Industries, Inc.',
+        'Expo SDK, Expo Router ומודולי Expo (expo-image, expo-image-picker, expo-print, expo-sharing, expo-file-system, expo-font, expo-localization, expo-linking, expo-splash-screen, expo-status-bar, expo-constants, expo-haptics, expo-audio, expo-apple-authentication, expo-web-browser, expo-crypto) – © 650 Industries, Inc.',
         'React Native Web – © Nicolas Gallagher. React Navigation – © React Navigation Contributors. react-native-screens ו-react-native-svg – © Software Mansion ותורמים. react-native-safe-area-context – © 2019 Th3rd Wave.',
         '@react-native-async-storage/async-storage ו-@react-native-community/datetimepicker – © React Native Community.',
         'supabase-js – © Supabase, Inc. TanStack Query – © Tanner Linsley.',

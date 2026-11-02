@@ -37,12 +37,17 @@ export function validateSignIn(mode: AuthMode, values: SignInValues): SignInErro
   return errors;
 }
 
-/** Per-mode copy: screen title, submit button, and the switch-mode prompt and button. */
-export const MODE_COPY: Record<AuthMode, { title: string; submit: string; switchPrompt: string; switchAction: string }> = {
-  signIn: { title: 'ברוכים השבים', submit: 'התחברות', switchPrompt: 'עדיין אין לכם חשבון?', switchAction: 'הרשמה' },
-  signUp: { title: 'יצירת חשבון', submit: 'יצירת חשבון', switchPrompt: 'כבר יש לכם חשבון?', switchAction: 'התחברות' },
-  reset: { title: 'איפוס סיסמה', submit: 'שליחת קישור לאיפוס', switchPrompt: 'כבר יש לכם חשבון?', switchAction: 'התחברות' },
+/** Per-mode copy: screen title and caption, submit button, and the switch-mode prompt and button. */
+export const MODE_COPY: Record<AuthMode, { title: string; caption: string; submit: string; switchPrompt: string; switchAction: string }> = {
+  signIn: { title: 'ברוכים השבים', caption: 'מוכנים להרפתקה הבאה עם Dog OS?', submit: 'התחברות', switchPrompt: 'עדיין אין לכם חשבון?', switchAction: 'יצירת חשבון' },
+  signUp: { title: 'יצירת חשבון', caption: 'חשבון אחד לאימונים, לבריאות ולכל מה שהכלב שלכם צריך.', submit: 'יצירת חשבון', switchPrompt: 'כבר יש לכם חשבון?', switchAction: 'התחברות' },
+  reset: { title: 'איפוס סיסמה', caption: 'נשלח אליכם קישור לבחירת סיסמה חדשה.', submit: 'שליחת קישור לאיפוס', switchPrompt: 'כבר יש לכם חשבון?', switchAction: 'התחברות' },
 };
+
+/** Hero height: about 40% of the screen, bounded so the form stays reachable on small phones and the photo doesn't dominate a tablet. */
+export function heroHeight(windowHeight: number): number {
+  return Math.round(Math.min(Math.max(windowHeight * 0.4, 220), 440));
+}
 
 /** Where the switch-mode button leads: sign-up and reset go back to sign-in; sign-in goes to sign-up. */
 export function switchTarget(mode: AuthMode): AuthMode {

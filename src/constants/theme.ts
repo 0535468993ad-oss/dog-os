@@ -220,6 +220,14 @@ export const shadow = {
 // Minimum touch target (WCAG 2.5.5 / platform guidelines).
 export const MIN_TOUCH_AREA = 44;
 
+/**
+ * Third-party marks drawn exactly as their owners specify (Google's sign-in branding guidelines). Not UI
+ * colors: only the logo artwork that carries them may use these.
+ */
+export const brandMarks = {
+  google: { blue: '#4285F4', green: '#34A853', yellow: '#FBBC05', red: '#EA4335' },
+} as const;
+
 /** A soft colored glow behind text (text shadows; works on every platform). */
 export function textGlow(color: string): TextStyle {
   return { textShadowColor: color, textShadowRadius: 12, textShadowOffset: { width: 0, height: 0 } };

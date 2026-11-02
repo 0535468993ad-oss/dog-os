@@ -3,6 +3,7 @@ import { Pressable, type GestureResponderEvent, type PressableProps, type StyleP
 import Animated, {
   Extrapolation,
   FadeInDown,
+  SlideInDown,
   interpolate,
   ReduceMotion,
   useAnimatedScrollHandler,
@@ -44,6 +45,15 @@ export function enterAt(index: number) {
     .stiffness(MOTION.spring.stiffness)
     .damping(MOTION.spring.damping)
     .delay(Math.min(index, MOTION.maxStaggered) * MOTION.staggerMs)
+    .reduceMotion(ReduceMotion.System);
+}
+
+/** A card rising into place from below (sheet-style entrances). Critically damped, skipped under reduced motion. */
+export function riseIn() {
+  return SlideInDown.springify()
+    .mass(MOTION.spring.mass)
+    .stiffness(MOTION.spring.stiffness)
+    .damping(MOTION.spring.damping)
     .reduceMotion(ReduceMotion.System);
 }
 

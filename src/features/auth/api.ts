@@ -1,8 +1,14 @@
 import type { AuthError } from '@supabase/supabase-js';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Crypto from 'expo-crypto';
 import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
+import { Platform } from 'react-native';
 
 import { LEGAL_VERSIONS } from '@/features/legal/documents';
 import { supabase } from '@/lib/supabase';
+
+import { isAppleCancel, type SocialOutcome, type SocialProvider } from './signIn/socialLogic';
 
 export interface Credentials {
   email: string;
@@ -87,6 +93,53 @@ export async function requestPasswordReset(email: string): Promise<AuthResult> {
 export async function updatePassword(password: string): Promise<AuthResult> {
   const { error } = await supabase.auth.updateUser({ password });
   return error ? fail(error) : { ok: true, value: undefined };
+}
+
+// Social sign-ins carry no consent metadata, so a new account lands on the consent screen (consentGate)
+// before anything else is reachable – the same documents and versions as email sign-up.
+const SOCIAL_FAILED = { ok: false, message: 'ההתחברות לא הושלמה. נסו שוב.' } as const;
+
+/**
+ * iOS: Sign in with Apple through the system sheet. Apple receives a SHA-256 of a one-time nonce and
+ * Supabase the raw nonce, so an intercepted identity token can't be replayed. Only the email is requested.
+ */
+export async function signInWithAppleNative(): Promise<AuthResult<SocialOutcome>> {
+  const rawNonce = Crypto.randomUUID();
+  const hashedNonce = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, rawNonce);
+  let identityToken: string | null;
+  try {
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
+      nonce: hashedNonce,
+    });
+    identityToken = credential.identityToken;
+  } catch (error) {
+    return isAppleCancel(error) ? { ok: true, value: 'cancelled' } : SOCIAL_FAILED;
+  }
+  if (!identityToken) return SOCIAL_FAILED;
+  const { error } = await supabase.auth.signInWithIdToken({ provider: 'apple', token: identityToken, nonce: rawNonce });
+  return error ? fail(error) : { ok: true, value: 'signedIn' };
+}
+
+/**
+ * Google, and Apple off iOS, through the provider's page (PKCE). Web hands the whole page over and
+ * supabase-js finishes on return; native opens an auth session and exchanges the returned code.
+ */
+export async function signInWithProvider(provider: SocialProvider): Promise<AuthResult<SocialOutcome>> {
+  const returnTo = redirectTo();
+  if (Platform.OS === 'web') {
+    const { error } = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: returnTo } });
+    return error ? fail(error) : { ok: true, value: 'redirecting' };
+  }
+  const { data, error } = await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: returnTo, skipBrowserRedirect: true } });
+  if (error) return fail(error);
+  const result = await WebBrowser.openAuthSessionAsync(data.url, returnTo);
+  if (result.type !== 'success') return { ok: true, value: 'cancelled' };
+  await createSessionFromUrl(result.url);
+  // Android can also deliver the redirect as an app link, which the session guard may exchange first;
+  // the code works once, so whichever exchange won, a session now exists or the sign-in failed.
+  const { data: current } = await supabase.auth.getSession();
+  return current.session ? { ok: true, value: 'signedIn' } : SOCIAL_FAILED;
 }
 
 /**
